@@ -1,8 +1,8 @@
 '''
-This file contains the updates for the Gibbs samplers, computing the conditional
-posterior parameter values.
+This file contains the parameter value updates for the Gibbs samplers, 
+computing the conditional posterior parameter values.
 
-Updates for U, V - format (Likelihood) Prior:
+Parameters for U, V - format (Likelihood) Prior:
 - (Gaussian) Gaussian
 - (Gaussian) Gaussian + Wishart
 - (Gaussian) Gaussian + Automatic Relevance Determination
@@ -16,7 +16,7 @@ Updates for U, V - format (Likelihood) Prior:
 - (Poisson)  Gamma + hierarchical
 - (Poisson)  Dirichlet
 
-Other updates:
+Other parameters for:
 - tau (noise) from Gamma [model: all with Gaussian likelihood]
 - mu, Sigma from Normal - Inverse Wishart [model: Gaussian + Wishart]
 - lambdak from Automatic Relevance Determination [model: Gaussian + Automatic Relevance Determination]
@@ -38,8 +38,8 @@ def gaussian_tau_alpha_beta(alpha, beta, R, M, U, V):
     beta_s = beta + squared_error / 2.
     return (alpha_s, beta_s)
 
-def poisson_zij_n_p(Rij, Ui, Vj):
-    """ n and p (vector) for zij with Mult(Rij,(Ui0Vj0,..,UiKVjK)) prior. """
+def poisson_Zij_n_p(Rij, Ui, Vj):
+    """ n and p (vector) for Zij with Mult(Rij,(Ui0Vj0,..,UiKVjK)) prior. """
     n = Rij
     p = Ui * Vj
     return (n, p)
@@ -104,6 +104,7 @@ def gaussian_ard_alpha_beta(alpha0, beta0, Uk, Vk):
     alpha_s = alpha0 + I / 2. + J / 2.
     beta_s = beta0 + Uk.sum() / 2. + Vk.sum() / 2.
     return (alpha_s, beta_s)
+
 
 ''' (Gausian) Gaussian + Volume Prior '''
 def adjugate_matrix(matrix):
@@ -171,10 +172,10 @@ def gaussian_tn_mu_tau(k, muU, tauU, R, M, U, V, tau):
 
 
 ''' (Gausian) Truncated Normal + hierarchical '''
-def gaussian_tn_hierarchical_mu_tau(k, muUik, tauUik, R, M, U, V, tau):
+def gaussian_tn_hierarchical_mu_tau(k, muUk, tauUk, R, M, U, V, tau):
     """ mu and tau for Uik with TN(muUik,tauUik) prior, with hierarchical prior 
-        for muUik, tauUik. """
-    return gaussian_tn_hierarchical_mu_tau(k=k, muU=muUik, tauU=tauUik, R=R, M=M, U=U, V=V, tau=tau)
+        for muUik, tauUik. We do updates per column of U (so Uk). """
+    return gaussian_tn_mu_tau(k=k, muU=muUk, tauU=tauUk, R=R, M=M, U=U, V=V, tau=tau)
 
 def tn_hierarchical_mu_m_t(mu_mu, tau_mu, U, muU, tauU):
     """ m and t for mu^U_ik with hierarchical prior (hyperparams mu_mu, tau_mu).
@@ -216,11 +217,11 @@ def poisson_gamma_a_b(a, b, Mi, Vk, Zik):
     
     
 ''' (Poisson) Gamma + hierarchical '''
-def poisson_gamma_hierarchical_a_b(a, hiU, Mi, Vk, Zik):
-    """ a_s and b_s for Uik with Gamma(a,h_i^U) prior, and h^U_i ~ Gamma(ap,ap/bp). """
-    return poisson_gamma_a_b(a=a, b=hiU, Mi=Mi, Vk=Vk, Zik=Zik)
+def poisson_gamma_hierarchical_a_b(a, hUi, Mi, Vk, Zik):
+    """ a_s and b_s for Uik with Gamma(a,h^U_i) prior, and h^U_i ~ Gamma(ap,ap/bp). """
+    return poisson_gamma_a_b(a=a, b=hUi, Mi=Mi, Vk=Vk, Zik=Zik)
 
-def gamma_hierarchical_hiU_a_b(ap, bp, a, Ui):
+def gamma_hierarchical_hUi_a_b(ap, bp, a, Ui):
     """ a_s and b_s for h^U_i with Gamma(ap,ap/bp) prior, and Uik ~ Gamma(a,h_i^U). """
     K = Ui.shape
     a_s = ap + K * a
@@ -229,9 +230,9 @@ def gamma_hierarchical_hiU_a_b(ap, bp, a, Ui):
 
 
 ''' (Poisson) Dirichlet '''
-def poisson_dirichlet_alpha(alpha, Mi, zi):
+def poisson_dirichlet_alpha(alpha, Mi, Zi):
     """ alpha (vector) for Ui with Dir(alpha) prior in Poisson models. """
-    assert Mi.shape == zi.shape[0] and alpha.shape == zi.shape[1]
-    alpha_s = alpha + (Mi * zi.T).sum(axis=1)
+    assert Mi.shape == Zi.shape[0] and alpha.shape == Zi.shape[1]
+    alpha_s = alpha + (Mi * Zi.T).sum(axis=1)
     assert alpha_s.shape == alpha.shape
     return alpha_s

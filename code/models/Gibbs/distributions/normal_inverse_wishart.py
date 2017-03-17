@@ -9,12 +9,12 @@ To sample:
 https://en.wikipedia.org/wiki/Normal-inverse-Wishart_distribution#Generating_normal-inverse-Wishart_random_variates
 """
 from scipy.stats import invwishart
-from multivariate_normal import MN_draw
+from multivariate_normal import multivariate_normal_draw
 
 # Draw a value for mu, Sigma ~ NIW(mu0,beta0,v0,W0)
 def normal_inverse_wishart_draw(mu0,beta0,v0,W0):
     Sigma = invwishart.rvs(df=v0, scale=W0)
-    mu = MN_draw(mu=mu0,sigma=Sigma/beta0)
+    mu = multivariate_normal_draw(mu=mu0,sigma=Sigma/beta0)
     return (mu,Sigma)
     
        

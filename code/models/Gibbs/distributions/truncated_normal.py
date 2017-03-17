@@ -26,15 +26,12 @@ This means that we need to use the mean and variance of an exponential when
 Therefore we use it when |mu| < 30*std.
 """
 
-import math, numpy, time
-import matplotlib.pyplot as plt
-from scipy.stats import truncnorm, norm
-from scipy.special import erfc
+import math, numpy
 import rtnorm
 
 
-# TN draws     
-def TN_draw(mu,tau):
+# Truncated normal draws     
+def truncated_normal_draw(mu,tau):
     sigma = numpy.float64(1.0) / math.sqrt(tau)
     if tau == 0.:
         return 0.
@@ -42,38 +39,12 @@ def TN_draw(mu,tau):
     #a,b = -mu/sigma, numpy.inf
     #d = truncnorm(a, b, loc=mu, scale=sigma).rvs(1)[0]
     return d if (d >= 0. and d != numpy.inf and d != -numpy.inf and not numpy.isnan(d)) else 0.
-              
-# TN expectation        
-def TN_expectation(mu,tau):
-    sigma = numpy.float64(1.0) / math.sqrt(tau)
-    if mu < -30 * sigma:
-        exp = 1./(abs(mu)*tau)
-    else:
-        x = - mu / sigma
-        lambdax = norm.pdf(x)/(0.5*erfc(x/math.sqrt(2)))
-        exp = mu + sigma * lambdax
-    return exp if (exp >= 0.0 and exp != numpy.inf and exp != -numpy.inf and not numpy.isnan(exp)) else 0.
-       
-# TN variance
-def TN_variance(mu,tau):
-    sigma = numpy.float64(1.0) / math.sqrt(tau)
-    if mu < -30 * sigma:
-        var = (1./(abs(mu)*tau))**2
-    else:
-        x = - mu / sigma
-        lambdax = norm.pdf(x)/(0.5*erfc(x/math.sqrt(2)))
-        deltax = lambdax*(lambdax-x)
-        var = sigma**2 * ( 1 - deltax )
-    return var if (var >= 0.0 and var != numpy.inf and var != -numpy.inf and not numpy.isnan(var)) else 0.       
-       
-# TN mode
-def TN_mode(mu):
-    return max(0.0,mu)     
-       
-
 
 '''
 # Draw 10000 values and plot. Also plot pdf of Truncated Normal, and regular Normal.
+import time
+import matplotlib.pyplot as plt
+
 draws = 10000
 mu, sigma, tau = 1., 3., 1./9.
 lower, upper = (0-mu)/sigma, numpy.inf

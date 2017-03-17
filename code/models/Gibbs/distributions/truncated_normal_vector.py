@@ -33,8 +33,8 @@ from scipy.special import erfc
 import rtnorm
 
 
-# TN draws
-def TN_vector_draw(mus,taus):
+# Truncated normal draws, vector
+def truncated_normal_vector_draw(mus,taus):
     sigmas = numpy.float64(1.0) / numpy.sqrt(taus)
     draws = []
     for (mu,sigma,tau) in zip(mus,sigmas,taus):
@@ -48,34 +48,6 @@ def TN_vector_draw(mus,taus):
     draws = parallel_draw(self.mu,self.sigma,self.tau)
     '''     
     return draws           
-       
-# TN expectation    
-def TN_vector_expectation(mus,taus):
-    sigmas = numpy.float64(1.0) / numpy.sqrt(taus)
-    x = - numpy.float64(mus) / sigmas
-    lambdax = norm.pdf(x)/(0.5*erfc(x/math.sqrt(2)))
-    exp = mus + sigmas * lambdax
-    
-    # Exp expectation - overwrite value if mu < -30*sigma
-    exp = [1./(numpy.abs(mu)*tau) if mu < -30 * sigma else v for v,mu,tau,sigma in zip(exp,mus,taus,sigmas)]
-    return [v if (v >= 0.0 and v != numpy.inf and v != -numpy.inf and not numpy.isnan(v)) else 0. for v in exp]
-    
-# TN variance
-def TN_vector_variance(mus,taus):
-    sigmas = numpy.float64(1.0) / numpy.sqrt(taus)
-    x = - numpy.float64(mus) / sigmas
-    lambdax = norm.pdf(x)/(0.5*erfc(x/math.sqrt(2)))
-    deltax = lambdax*(lambdax-x)
-    var = sigmas**2 * ( 1 - deltax )
-    
-    # Exp variance - overwrite value if mu < -30*sigma
-    var = [(1./(numpy.abs(mu)*tau))**2 if mu < -30 * sigma else v for v,mu,tau,sigma in zip(var,mus,taus,sigmas)]
-    return [v if (v >= 0.0 and v != numpy.inf and v != -numpy.inf and not numpy.isnan(v)) else 0. for v in var]      
-       
-# TN mode
-def TN_vector_mode(mus):
-    zeros = numpy.zeros(len(mus))
-    return numpy.maximum(zeros,mus)   
        
 
 """ Methods for parallel draws """
