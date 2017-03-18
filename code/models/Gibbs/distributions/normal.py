@@ -4,7 +4,7 @@ Class representing an normal distribution, allowing us to sample from it.
 from numpy.random import normal
 import numpy, math
 
-# Draw a value for tau ~ Gamma(alpha,beta)
+# Draw a value for Uik ~ N(mu,tau^-1)
 def normal_draw(mu,tau):
     sigma = numpy.float64(1.0) / math.sqrt(tau)
     return normal(loc=mu,scale=sigma,size=None)
