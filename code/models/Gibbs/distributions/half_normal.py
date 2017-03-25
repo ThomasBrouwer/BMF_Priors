@@ -9,7 +9,10 @@ from scipy.stats import halfnorm
 # Draw a value for x ~ HN(sigma)
 def half_normal_draw(sigma):
     return halfnorm.rvs(loc=0,scale=sigma)
-    
+
+def half_normal_mean(sigma):
+    assert False, "Not implemented yet!"    
+       
        
 '''
 # Example draw

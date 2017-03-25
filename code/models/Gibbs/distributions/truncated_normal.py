@@ -28,6 +28,8 @@ Therefore we use it when |mu| < 30*std.
 
 import math, numpy
 import rtnorm
+from scipy.stats import norm
+from scipy.special import erfc
 
 
 # Truncated normal draws     
@@ -40,6 +42,16 @@ def truncated_normal_draw(mu,tau):
     #d = truncnorm(a, b, loc=mu, scale=sigma).rvs(1)[0]
     return d if (d >= 0. and d != numpy.inf and d != -numpy.inf and not numpy.isnan(d)) else 0.
 
+def truncated_normal_mean(mu,tau):
+    sigma = numpy.float64(1.0) / math.sqrt(tau)
+    if mu < -30 * sigma:
+        exp = 1./(abs(mu)*tau)
+    else:
+        x = - mu / sigma
+        lambdax = norm.pdf(x)/(0.5*erfc(x/math.sqrt(2)))
+        exp = mu + sigma * lambdax
+    return exp if (exp >= 0.0 and exp != numpy.inf and exp != -numpy.inf and not numpy.isnan(exp)) else 0.
+       
 '''
 # Draw 10000 values and plot. Also plot pdf of Truncated Normal, and regular Normal.
 import time

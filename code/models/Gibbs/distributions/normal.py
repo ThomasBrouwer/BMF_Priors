@@ -9,6 +9,9 @@ def normal_draw(mu,tau):
     sigma = numpy.float64(1.0) / math.sqrt(tau)
     return normal(loc=mu,scale=sigma,size=None)
     
+def normal_mean(mu,tau):
+    return 0.    
+    
        
 '''
 # Do 1000 draws and plot them

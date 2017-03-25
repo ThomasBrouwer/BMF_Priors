@@ -48,7 +48,7 @@ def poisson_Zij_n_p(Rij, Ui, Vj):
 ''' (Gausian) Gaussian '''
 def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
     """ mu and sigma for Ui with N(0,I/lamb) prior (I=identity matrix). """
-    assert Ri.shape == Mi.shape and Ri.shape == V.shape[0]
+    assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0]
     K = V.shape[1]
     V_masked = (Mi * V.T).T # zero rows when j not in Mi
     precision = lamb * numpy.eye(K) + tau * ( numpy.dot(V_masked.T,V_masked) )
@@ -62,7 +62,7 @@ def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
 ''' (Gausian) Gaussian + Wishart '''
 def gaussian_gaussian_wishart_mu_sigma(muU, sigmaU_inv, Ri, Mi, V, tau):
     """ mu and sigma for Ui with N(muU,sigmaU) prior. """
-    assert Ri.shape == Mi.shape and Ri.shape == V.shape[0]
+    assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0]
     V_masked = (Mi * V.T).T # zero rows when j not in Mi
     precision = sigmaU_inv + tau * ( numpy.dot(V_masked.T,V_masked) )
     sigma = numpy.linalg.inv(precision)
@@ -89,7 +89,7 @@ def gaussian_wishart_beta0_v0_mu0_W0(beta0, v0, mu0, W0_inv, U):
 ''' (Gausian) Gaussian + Automatic Relevance Determination '''
 def gaussian_gaussian_ard_mu_sigma(lamb, Ri, Mi, V, tau):
     """ mu and sigma for Ui with N(0,diag(1/lamb)) prior. lamb is a vector. """
-    assert Ri.shape == Mi.shape and Ri.shape == V.shape[0] and lamb.shape[0] == V.shape[1]
+    assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0] and lamb.shape[0] == V.shape[1]
     V_masked = (Mi * V.T).T # zero rows when j not in Mi
     precision = numpy.diag(lamb) + tau * ( numpy.dot(V_masked.T,V_masked) )
     sigma = numpy.linalg.inv(precision)

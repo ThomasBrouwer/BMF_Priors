@@ -8,6 +8,9 @@ def exponential_draw(lambdax):
     scale = 1.0 / lambdax
     return exponential(scale=scale,size=None)
         
+def exponential_mean(lambdax):
+    return 1./lambdax        
+        
 '''
 # Do 1000 draws and plot them
 import matplotlib.pyplot as plt
