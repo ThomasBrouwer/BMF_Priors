@@ -7,7 +7,8 @@ Updates for U, V - format (Likelihood) Prior:
 - (Gaussian) Gaussian (multivariate posterior)
 - (Gaussian) Gaussian + Wishart
 - (Gaussian) Gaussian + Automatic Relevance Determination
-- (Gaussian) Gaussian + Volume Prior
+- (Gaussian) Volume Prior
+- (Gaussian) Volume Prior (nonnegative)
 - (Gaussian) Exponential
 - (Gaussian) Exponential + ARD
 - (Gaussian) Truncated Normal
@@ -53,6 +54,7 @@ from distributions.gamma import gamma_draw
 from distributions.multivariate_normal import multivariate_normal_draw
 from distributions.normal_inverse_wishart import normal_inverse_wishart_draw
 from distributions.normal import normal_draw
+from distributions.truncated_normal import truncated_normal_draw
 from distributions.truncated_normal_vector import truncated_normal_vector_draw
 from distributions.multinomial import multinomial_draw
 from distributions.dirichlet import dirichlet_draw
@@ -169,9 +171,9 @@ def update_lambda_gaussian_gaussian_ard(alpha0, beta0, U, V):
     return new_lambda
 
 
-''' (Gausian) Gaussian + Volume Prior '''
-def update_U_gaussian_gaussian_vp(gamma, R, M, U, V, tau):
-    """ Update U for All Gaussian + VP model. """
+''' (Gausian) Volume Prior '''
+def update_U_gaussian_volumeprior(gamma, R, M, U, V, tau):
+    """ Update U for Gaussian + Volume Prior model. """
     I, K = U.shape
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
     for i,k in itertools.product(range(I),range(K)):
@@ -180,9 +182,26 @@ def update_U_gaussian_gaussian_vp(gamma, R, M, U, V, tau):
         U[i,k] = normal_draw(mu=muUik, tau=tauUik)
     return U
     
-def update_V_gaussian_gaussian_vp(gamma, R, M, U, V, tau):
-    """ Update V for All Gaussian + VP model. """
-    return update_U_gaussian_gaussian_vp(gamma=gamma, R=R.T, M=M.T, U=V, V=U, tau=tau)
+def update_V_gaussian_volumeprior(gamma, R, M, U, V, tau):
+    """ Update V for Gaussian + Volume Prior model. """
+    return update_U_gaussian_volumeprior(gamma=gamma, R=R.T, M=M.T, U=V, V=U, tau=tau)
+
+
+''' (Gausian) Gaussian + Volume Prior '''
+def update_U_gaussian_volumeprior_nonnegative(gamma, R, M, U, V, tau):
+    """ Update U for Gaussian + nonnegative Volume Prior model. """
+    I, K = U.shape
+    assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
+    for i,k in itertools.product(range(I),range(K)):
+        muUik, tauUik = gaussian_gaussian_vp_mu_sigma(
+            i=i, k=k, gamma=gamma, Ri=R[i,:], Mi=M[i,:], U=U, V=V, tau=tau)
+        U[i,k] = truncated_normal_draw(mu=muUik, tau=tauUik)
+    return U
+    
+def update_V_gaussian_volumeprior_nonnegative(gamma, R, M, U, V, tau):
+    """ Update V for All Gaussian + nonnegative Volume Prior model. """
+    return update_U_gaussian_volumeprior_nonnegative(
+        gamma=gamma, R=R.T, M=M.T, U=V, V=U, tau=tau)
 
 
 ''' (Gausian) Exponential '''
@@ -226,7 +245,7 @@ def update_lambda_gaussian_exponential_ard(alpha0, beta0, U, V):
     
 
 ''' (Gausian) Truncated Normal '''
-def update_U_gaussian_tn(muU, tauU, R, M, U, V, tau):
+def update_U_gaussian_truncatednormal(muU, tauU, R, M, U, V, tau):
     """ Update U for Gaussian + Truncated Normal model. """
     I, K = U.shape
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
@@ -236,13 +255,14 @@ def update_U_gaussian_tn(muU, tauU, R, M, U, V, tau):
         U[:,k] = truncated_normal_vector_draw(mus=muUk_s, taus=tauUk_s)
     return U
     
-def update_V_gaussian_tn(muU, tauU, R, M, U, V, tau):
+def update_V_gaussian_truncatednormal(muV, tauV, R, M, U, V, tau):
     """ Update V for Gaussian + Truncated Normal model. """
-    return update_U_gaussian_tn(muU=muU, tauU=tauU, R=R.T, M=M.T, U=V, V=U, tau=tau)
+    return update_U_gaussian_truncatednormal(
+        muU=muV, tauU=tauV, R=R.T, M=M.T, U=V, V=U, tau=tau)
 
 
 ''' (Gausian) Truncated Normal + hierarchical '''
-def update_U_gaussian_tn_hierarchical(muUk, tauUk, R, M, U, V, tau):
+def update_U_gaussian_truncatednormal_hierarchical(muUk, tauUk, R, M, U, V, tau):
     """ Update U for Gaussian + Truncated Normal + hierarchical model. """
     I, K = U.shape
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
@@ -252,12 +272,12 @@ def update_U_gaussian_tn_hierarchical(muUk, tauUk, R, M, U, V, tau):
         U[:,k] = truncated_normal_vector_draw(mus=muUk_s, taus=tauUk_s)
     return U
     
-def update_V_gaussian_tn_hierarchical(muUk, tauUk, R, M, U, V, tau):
+def update_V_gaussian_truncatednormal_hierarchical(muUk, tauUk, R, M, U, V, tau):
     """ Update V for Gaussian + Truncated Normal + hierarchical model. """
-    return update_U_gaussian_tn_hierarchical(
+    return update_U_gaussian_truncatednormal_hierarchical(
         muUk=muUk, tauUk=tauUk, R=R.T, M=M.T, U=V, V=U, tau=tau)
     
-def update_muU_gaussian_tn_hierarchical(mu_mu, tau_mu, U, muU, tauU):
+def update_muU_gaussian_truncatednormal_hierarchical(mu_mu, tau_mu, U, muU, tauU):
     """ Update muU (matrix) for Gaussian + Truncated Normal + hierarchical model. """
     I, K = U.shape
     assert U.shape == muU.shape and U.shape == tauU.shape
@@ -267,12 +287,12 @@ def update_muU_gaussian_tn_hierarchical(mu_mu, tau_mu, U, muU, tauU):
         new_muU[i,k] = normal_draw(mu=m_mu[i,k], tau=t_mu[i,k])
     return new_muU
 
-def update_muV_gaussian_tn_hierarchical(mu_mu, tau_mu, V, muV, tauV):
+def update_muV_gaussian_truncatednormal_hierarchical(mu_mu, tau_mu, V, muV, tauV):
     """ Update muV (matrix) for Gaussian + Truncated Normal + hierarchical model. """
-    return update_muU_gaussian_tn_hierarchical(
+    return update_muU_gaussian_truncatednormal_hierarchical(
         mu_mu=mu_mu, tau_mu=tau_mu, U=V, muU=muV, tauU=tauV)
     
-def update_tauU_gaussian_tn_hierarchical(a, b, U, muU):
+def update_tauU_gaussian_truncatednormal_hierarchical(a, b, U, muU):
     """ Update tauU (matrix) for Gaussian + Truncated Normal + hierarchical model. """
     I, K = U.shape
     assert U.shape == muU.shape
@@ -282,13 +302,13 @@ def update_tauU_gaussian_tn_hierarchical(a, b, U, muU):
         new_tauU[i,k] = gamma_draw(alpha=a_s[i,k], beta=b_s[i,k])
     return new_tauU
 
-def update_tauV_gaussian_tn_hierarchical(a, b, V, muV):
+def update_tauV_gaussian_truncatednormal_hierarchical(a, b, V, muV):
     """ Update tauV (matrix) for Gaussian + Truncated Normal + hierarchical model. """
-    return update_tauU_gaussian_tn_hierarchical(a=a, b=b, U=V, muU=muV)
+    return update_tauU_gaussian_truncatednormal_hierarchical(a=a, b=b, U=V, muU=muV)
 
 
 ''' (Gausian) Half Normal '''
-def update_U_gaussian_hn(sigma, R, M, U, V, tau):
+def update_U_gaussian_halfnormal(sigma, R, M, U, V, tau):
     """ Update U for Gaussian + Half Normal model. """
     I, K = U.shape
     assert R.shape == M.shape and U.shape[0] == R.shape[0] and V.shape[0] == R.shape[1]
@@ -298,9 +318,9 @@ def update_U_gaussian_hn(sigma, R, M, U, V, tau):
         U[:,k] = truncated_normal_vector_draw(mus=muUk_s, taus=tauUk_s)
     return U
     
-def update_V_gaussian_hn(sigma, R, M, U, V, tau):
+def update_V_gaussian_halfnormal(sigma, R, M, U, V, tau):
     """ Update V for Gaussian + Half Normal model. """
-    return update_U_gaussian_hn(sigma=sigma, R=R.T, M=M.T, U=V, V=U, tau=tau)
+    return update_U_gaussian_halfnormal(sigma=sigma, R=R.T, M=M.T, U=V, V=U, tau=tau)
 
 
 ''' (Poisson) Gamma '''
@@ -331,9 +351,9 @@ def update_U_poisson_gamma_hierarchical(a, hU, M, V, Z):
         U[i,k] = gamma_draw(alpha=a_s, beta=b_s)
     return U
 
-def update_U_poisson_gamma_hierarchical(a, hV, M, U, Z):
+def update_V_poisson_gamma_hierarchical(a, hV, M, U, Z):
     """ Update V for Poisson + Gamma + hierarchical model. """
-    return update_V_poisson_gamma_hierarchical(a=a, hU=hV, M=M.T, V=U, Z=Z.transpose(1,0,2))
+    return update_U_poisson_gamma_hierarchical(a=a, hU=hV, M=M.T, V=U, Z=Z.transpose(1,0,2))
     
 def update_hU_poisson_gamma_hierarchical(ap, bp, a, U):
     """ Update hU (vector) for Poisson + Gamma + hierarchical model. """

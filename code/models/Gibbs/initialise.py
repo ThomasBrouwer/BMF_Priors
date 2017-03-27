@@ -45,14 +45,14 @@ def initialise_U_exponential(init, I, K, lamb):
         U[i,k] = ( exponential_draw(lambdax=lambdax) if init == 'random' else exponential_mean(lambdax=lambdax) )
     return U
 
-def initialise_U_truncated_normal(init, I, K, mu, tau):
+def initialise_U_truncatednormal(init, I, K, mu, tau):
     """ Initialise U, with prior Uik ~ TruncatedNormal(mu,tau). """
     U = numpy.zeros((I,K))
     for i,k in itertools.product(range(I),range(K)):
         U[i,k] = ( truncated_normal_draw(mu=mu, tau=tau) if init == 'random' else truncated_normal_mean(mu=mu, tau=tau) )
     return U
 
-def initialise_U_half_normal(init, I, K, sigma):
+def initialise_U_halfnormal(init, I, K, sigma):
     """ Initialise U, with prior Uik ~ HalfNormal(sigma). """
     U = numpy.zeros((I,K))
     for i,k in itertools.product(range(I),range(K)):

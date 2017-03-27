@@ -21,7 +21,7 @@ OPTIONS_INIT = ['random', 'exp']
 DEFAULT_HYPERPARAMETERS = {
     'alpha': 1.,
     'beta': 1.,
-    'lamb': 1.,
+    'lamb': 0.1,
 }
 
 class BMF_Gaussian_Gaussian_univariate(BMF_Gaussian_Gaussian_multivariate):

@@ -28,10 +28,22 @@ all_performances; and timestamps in all_times.
 
 import numpy, math
 
-class BMF:
-    def __init__(self,R,M,K,hyperparameters):
+class BMF(object):
+    def __init__(self,R,M,K):
         """ Set up the class. """
-        assert False, "Implement this method for your class!"
+        self.R = numpy.array(R,dtype=float)
+        self.M = numpy.array(M,dtype=float)
+        self.K = K
+        
+        assert len(self.R.shape) == 2, "Input matrix R is not a two-dimensional array, " \
+            "but instead %s-dimensional." % len(self.R.shape)
+        assert self.R.shape == self.M.shape, "Input matrix R is not of the same size as " \
+            "the indicator matrix M: %s and %s respectively." % (self.R.shape,self.M.shape)
+            
+        (self.I,self.J) = self.R.shape
+        self.size_Omega = self.M.sum()
+        self.check_empty_rows_columns()      
+        
         
     def train(self,init,iterations):
         """ Initialise and run the model. """

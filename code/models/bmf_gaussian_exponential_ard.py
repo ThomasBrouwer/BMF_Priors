@@ -4,7 +4,6 @@ Bayesian Matrix Factorisation with Gaussian likelihood and Exponential priors.
 Rij ~ N(Ui*Vj,tau^-1),   Uik ~ E(lamb_k),              Vjk ~ E(lamb_k)
 tau ~ Gamma(alpha,beta), lamb_k ~ Gamma(alpha0,beta0)
 
-
 Random variables: U, V, lamb, tau.
 Hyperparameters: alpha, beta, alpha0, beta0.
 """
@@ -33,19 +32,7 @@ DEFAULT_HYPERPARAMETERS = {
 class BMF_Gaussian_Exponential_ARD(BMF):
     def __init__(self,R,M,K,hyperparameters={}):
         """ Set up the class. """
-        self.R = numpy.array(R,dtype=float)
-        self.M = numpy.array(M,dtype=float)
-        self.K = K
-        
-        assert len(self.R.shape) == 2, "Input matrix R is not a two-dimensional array, " \
-            "but instead %s-dimensional." % len(self.R.shape)
-        assert self.R.shape == self.M.shape, "Input matrix R is not of the same size as " \
-            "the indicator matrix M: %s and %s respectively." % (self.R.shape,self.M.shape)
-            
-        (self.I,self.J) = self.R.shape
-        self.size_Omega = self.M.sum()
-        self.check_empty_rows_columns()      
-        
+        super(BMF_Gaussian_Exponential_ARD, self).__init__(R, M, K)
         self.alpha =   hyperparameters.get('alpha',  DEFAULT_HYPERPARAMETERS['alpha'])
         self.beta =    hyperparameters.get('beta',   DEFAULT_HYPERPARAMETERS['beta'])   
         self.alpha0 =  hyperparameters.get('alpha0', DEFAULT_HYPERPARAMETERS['alpha0']) 

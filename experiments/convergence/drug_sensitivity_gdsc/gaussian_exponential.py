@@ -21,7 +21,7 @@ settings = {
     'R': R, 
     'M': M, 
     'K': 20, 
-    'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':1. }, 
+    'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':0.1 }, 
     'init': 'random', 
     'iterations': 200,
 }

@@ -1,18 +1,18 @@
 """
-Bayesian Matrix Factorisation with Gaussian likelihood and Exponential priors.
+Bayesian Matrix Factorisation with Gaussian likelihood and Truncated Normal priors.
 
-Rij ~ N(Ui*Vj,tau^-1), tau ~ Gamma(alpha,beta), Uik ~ E(lamb), Vjk ~ E(lamb)
+Rij ~ N(Ui*Vj,tau^-1), tau ~ Gamma(alpha,beta), Uik ~ TN(muUV,tauUV), Vjk ~ TN(muUV,tauUV)
 
 Random variables: U, V, tau.
-Hyperparameters: alpha, beta, lamb.
+Hyperparameters: alpha, beta, sigma.
 """
 
 from bmf import BMF
 from Gibbs.updates import update_tau_gaussian
-from Gibbs.updates import update_U_gaussian_exponential
-from Gibbs.updates import update_V_gaussian_exponential
+from Gibbs.updates import update_U_gaussian_truncatednormal
+from Gibbs.updates import update_V_gaussian_truncatednormal
 from Gibbs.initialise import initialise_tau_gamma
-from Gibbs.initialise import initialise_U_exponential
+from Gibbs.initialise import initialise_U_truncatednormal
 
 import numpy
 import time
@@ -22,24 +22,28 @@ OPTIONS_INIT = ['random', 'exp']
 DEFAULT_HYPERPARAMETERS = {
     'alpha': 1.,
     'beta': 1.,
-    'lamb': 0.1,
+    'muUV': 0.1,
+    'tauUV': 0.1,
 }
 
-class BMF_Gaussian_Exponential(BMF):
+class BMF_Gaussian_TruncatedNormal(BMF):
     def __init__(self,R,M,K,hyperparameters={}):
         """ Set up the class. """
-        super(BMF_Gaussian_Exponential, self).__init__(R, M, K)
+        super(BMF_Gaussian_TruncatedNormal, self).__init__(R, M, K)
         self.alpha = hyperparameters.get('alpha', DEFAULT_HYPERPARAMETERS['alpha'])
         self.beta =  hyperparameters.get('beta',  DEFAULT_HYPERPARAMETERS['beta'])   
-        self.lamb =  hyperparameters.get('lamb',  DEFAULT_HYPERPARAMETERS['lamb'])     
+        self.muUV =  hyperparameters.get('muUV',  DEFAULT_HYPERPARAMETERS['muUV']) 
+        self.tauUV = hyperparameters.get('tauUV', DEFAULT_HYPERPARAMETERS['tauUV'])    
         
         
     def initialise(self,init):
         """ Initialise the values of the random variables in this model. """
         assert init in OPTIONS_INIT, \
             "Unknown initialisation option: %s. Should be one of %s." % (init, OPTIONS_INIT)
-        self.U = initialise_U_exponential(init=init, I=self.I, K=self.K, lamb=self.lamb)
-        self.V = initialise_U_exponential(init=init, I=self.J, K=self.K, lamb=self.lamb)
+        self.U = initialise_U_truncatednormal(
+            init=init, I=self.I, K=self.K, mu=self.muUV, tau=self.tauUV)
+        self.V = initialise_U_truncatednormal(
+            init=init, I=self.J, K=self.K, mu=self.muUV, tau=self.tauUV)
         self.tau = initialise_tau_gamma(
             alpha=self.alpha, beta=self.beta, R=self.R, M=self.M, U=self.U, V=self.V)
         
@@ -55,10 +59,10 @@ class BMF_Gaussian_Exponential(BMF):
         time_start = time.time()
         for it in range(iterations):
             # Update the random variables
-            self.U = update_U_gaussian_exponential(
-                lamb=self.lamb, R=self.R, M=self.M, U=self.U, V=self.V, tau=self.tau) 
-            self.V = update_V_gaussian_exponential(
-                lamb=self.lamb, R=self.R, M=self.M, U=self.U, V=self.V, tau=self.tau)
+            self.U = update_U_gaussian_truncatednormal(
+                muU=self.muUV, tauU=self.tauUV, R=self.R, M=self.M, U=self.U, V=self.V, tau=self.tau) 
+            self.V = update_V_gaussian_truncatednormal(
+                muV=self.muUV, tauV=self.tauUV, R=self.R, M=self.M, U=self.U, V=self.V, tau=self.tau)
             self.tau = update_tau_gaussian(
                 alpha=self.alpha, beta=self.beta, R=self.R, M=self.M, U=self.U, V=self.V)
             
