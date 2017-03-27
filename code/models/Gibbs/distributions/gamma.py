@@ -14,7 +14,7 @@ def gamma_draw(alpha,beta):
     return gamma(shape=shape,scale=scale,size=None)
         
 # Gamma expectation
-def gamma_expectation(alpha,beta): 
+def gamma_mean(alpha,beta): 
     alpha, beta = float(alpha), float(beta)      
     return alpha / beta
         

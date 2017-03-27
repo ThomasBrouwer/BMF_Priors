@@ -143,7 +143,7 @@ def update_muV_sigmaV_gaussian_gaussian_wishart(beta0, v0, mu0, W0_inv, V):
     
 
 ''' (Gausian) Gaussian + Automatic Relevance Determination '''
-def update_U_gaussian_gaussian_ard(lamb, R, M, V, tau):
+def update_U_gaussian_gaussian_multivariate_ard(lamb, R, M, V, tau):
     """ Update U for All Gaussian + ARD model. """
     I, K = R.shape[0], V.shape[1]
     assert R.shape == M.shape and R.shape[1] == V.shape[0]
@@ -154,9 +154,9 @@ def update_U_gaussian_gaussian_ard(lamb, R, M, V, tau):
         U[i,:] = multivariate_normal_draw(mu=muUi, sigma=sigmaUi)
     return U
     
-def update_V_gaussian_gaussian_ard(lamb, R, M, U, tau):
+def update_V_gaussian_gaussian_multivariate_ard(lamb, R, M, U, tau):
     """ Update V for All Gaussian + ARD model. """
-    return update_U_gaussian_gaussian_ard(lamb=lamb, R=R.T, M=M.T, V=U, tau=tau)
+    return update_U_gaussian_gaussian_multivariate_ard(lamb=lamb, R=R.T, M=M.T, V=U, tau=tau)
 
 def update_lambda_gaussian_gaussian_ard(alpha0, beta0, U, V):
     """ Update lambda (vector) for All Gaussian + ARD model. """

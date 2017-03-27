@@ -113,9 +113,9 @@ def gaussian_gaussian_ard_mu_sigma(lamb, Ri, Mi, V, tau):
 
 def gaussian_ard_alpha_beta(alpha0, beta0, Uk, Vk):
     """ alpha_s and beta_s for lambdak with Gamma(alpha0,beta0) prior. """
-    I, J = Uk.shape, Vk.shape
+    I, J = Uk.shape[0], Vk.shape[0]
     alpha_s = alpha0 + I / 2. + J / 2.
-    beta_s = beta0 + Uk.sum() / 2. + Vk.sum() / 2.
+    beta_s = beta0 + (Uk**2).sum() / 2. + (Vk**2).sum() / 2.
     return (alpha_s, beta_s)
 
 
@@ -155,7 +155,7 @@ def gaussian_exponential_mu_tau(k, lamb, R, M, U, V, tau):
     tauUk = tau * ( M * V[:,k]**2 ).sum(axis=1)
     muUk = 1. / tauUk * ( -lamb + tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
     assert tauUk.shape == muUk.shape    
-    return (tauUk, muUk)
+    return (muUk, tauUk)
 
 
 ''' (Gausian) Exponential + Automatic Relevance Determination '''
@@ -166,7 +166,7 @@ def gaussian_exponential_ard_mu_tau(k, lambdak, R, M, U, V, tau):
 
 def exponential_ard_alpha_beta(alpha0, beta0, Uk, Vk):
     """ alpha_s and beta_s for lambdak with Gamma(alpha0,beta0) prior. """
-    I, J = Uk.shape, Vk.shape
+    I, J = Uk.shape[0], Vk.shape[0]
     alpha_s = alpha0 + I + J
     beta_s = beta0 + Uk.sum() + Vk.sum()
     return (alpha_s, beta_s)
@@ -181,7 +181,7 @@ def gaussian_tn_mu_tau(k, muU, tauU, R, M, U, V, tau):
     tauUk = tauU + tau * ( M * V[:,k]**2 ).sum(axis=1)
     muUk = 1. / tauUk * ( muU * tauU + tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
     assert tauUk.shape == muUk.shape    
-    return (tauUk, muUk)
+    return (muUk, tauUk)
 
 
 ''' (Gausian) Truncated Normal + hierarchical '''
@@ -218,7 +218,7 @@ def gaussian_hn_mu_tau(k, sigma, R, M, U, V, tau):
     tauUk = 1. / sigma**2 + tau * ( M * V[:,k]**2 ).sum(axis=1)
     muUk = 1. / tauUk * ( tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
     assert tauUk.shape == muUk.shape    
-    return (tauUk, muUk)
+    return (muUk, tauUk)
 
 
 ''' (Poisson) Gamma '''
