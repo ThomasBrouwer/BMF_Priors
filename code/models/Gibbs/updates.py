@@ -3,7 +3,8 @@ This file contains the updates for the variables, where we draw new values for
 tau, U, V, etc.
 
 Updates for U, V - format (Likelihood) Prior:
-- (Gaussian) Gaussian
+- (Gaussian) Gaussian (univariate posterior)
+- (Gaussian) Gaussian (multivariate posterior)
 - (Gaussian) Gaussian + Wishart
 - (Gaussian) Gaussian + Automatic Relevance Determination
 - (Gaussian) Gaussian + Volume Prior
@@ -27,6 +28,7 @@ Other updates:
 '''
 
 from parameters import gaussian_tau_alpha_beta
+from parameters import gaussian_gaussian_mu_tau
 from parameters import gaussian_gaussian_mu_sigma
 from parameters import gaussian_gaussian_wishart_mu_sigma
 from parameters import gaussian_wishart_beta0_v0_mu0_W0
@@ -77,10 +79,26 @@ def update_Z_poisson(R, M, U, V):
             new_Z[i,j,:] = multinomial_draw(n=n_ij, p=p_ij)
     return new_Z
     
+    
+''' (Gausian) Gaussian (univariate posterior) '''
+def update_U_gaussian_gaussian_univariate(lamb, R, M, U, V, tau):
+    """ Update U for All Gaussian model (univariate posterior). """
+    I, K = R.shape[0], V.shape[1]
+    assert R.shape == M.shape and R.shape[1] == V.shape[0]
+    for k in range(K):
+        muUk, tauUk = gaussian_gaussian_mu_tau(k=k, lamb=lamb, R=R, M=M, U=U, V=V, tau=tau)
+        for i in range(I):
+            U[i,k] = normal_draw(mu=muUk[i], tau=tauUk[i])
+    return U
 
-''' (Gausian) Gaussian '''
-def update_U_gaussian_gaussian(lamb, R, M, V, tau):
-    """ Update U for All Gaussian model. """
+def update_V_gaussian_gaussian_univariate(lamb, R, M, U, V, tau):  
+    """ Update V for All Gaussian model (univariate posterior). """
+    return update_U_gaussian_gaussian_univariate(lamb=lamb, R=R.T, M=M.T, U=V, V=U, tau=tau)
+
+
+''' (Gausian) Gaussian (multivariate posterior) '''
+def update_U_gaussian_gaussian_multivariate(lamb, R, M, V, tau):
+    """ Update U for All Gaussian model (multivariate posterior). """
     I, K = R.shape[0], V.shape[1]
     assert R.shape == M.shape and R.shape[1] == V.shape[0]
     U = numpy.zeros((I,K))
@@ -89,9 +107,9 @@ def update_U_gaussian_gaussian(lamb, R, M, V, tau):
         U[i,:] = multivariate_normal_draw(mu=muUi, sigma=sigmaUi)
     return U
 
-def update_V_gaussian_gaussian(lamb, R, M, U, tau):  
-    """ Update V for All Gaussian model. """
-    return update_U_gaussian_gaussian(lamb=lamb, R=R.T, M=M.T, V=U, tau=tau)
+def update_V_gaussian_gaussian_multivariate(lamb, R, M, U, tau):  
+    """ Update V for All Gaussian model (multivariate posterior). """
+    return update_U_gaussian_gaussian_multivariate(lamb=lamb, R=R.T, M=M.T, V=U, tau=tau)
 
 
 ''' (Gausian) Gaussian + Wishart '''

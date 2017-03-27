@@ -3,7 +3,8 @@ This file contains the parameter value updates for the Gibbs samplers,
 computing the conditional posterior parameter values.
 
 Parameters for U, V - format (Likelihood) Prior:
-- (Gaussian) Gaussian
+- (Gaussian) Gaussian (univariate posterior)
+- (Gaussian) Gaussian (multivariate posterior)
 - (Gaussian) Gaussian + Wishart
 - (Gaussian) Gaussian + Automatic Relevance Determination
 - (Gaussian) Gaussian + Volume Prior
@@ -45,7 +46,7 @@ def poisson_Zij_n_p(Rij, Ui, Vj):
     return (n, p)
 
 
-''' (Gausian) Gaussian '''
+''' (Gausian) Gaussian (multivariate posterior). '''
 def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
     """ mu and sigma for Ui with N(0,I/lamb) prior (I=identity matrix). """
     assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0]
@@ -57,6 +58,18 @@ def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
     mu = numpy.dot(sigma, tau * numpy.dot(Ri_masked, V))
     assert mu.shape[0] == V.shape[1] and sigma.shape == (V.shape[1], V.shape[1])
     return (mu, sigma)
+
+
+''' (Gausian) Gaussian (univariate posterior). '''
+def gaussian_gaussian_mu_tau(k, lamb, R, M, U, V, tau):
+    """ muUk and tauUk (vectors) for Uk with N(0,I/lamb) prior (I=identity matrix). """
+    I, J, K = R.shape[0], R.shape[1], U.shape[1]
+    assert R.shape == M.shape and V.shape == (J,K) and U.shape[0] == I
+    tauUk = lamb + tau * ( M * V[:,k]**2 ).sum(axis=1)
+    muUk = tau * ( M * ( ( R - numpy.dot(U,V.T) + numpy.outer(U[:,k],V[:,k])) * V[:,k] ) ).sum(axis=1)
+    muUk /= tauUk   
+    assert muUk.shape == (I,) and tauUk.shape == (I,)
+    return (muUk, tauUk)
 
 
 ''' (Gausian) Gaussian + Wishart '''

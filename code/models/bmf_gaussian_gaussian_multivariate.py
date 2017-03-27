@@ -1,5 +1,6 @@
 """
-Bayesian Matrix Factorisation with Gaussian likelihood and Gaussian priors.
+Bayesian Matrix Factorisation with Gaussian likelihood and Gaussian priors
+(multivariate posterior).
 
 Rij ~ N(Ui*Vj,tau^-1), tau ~ Gamma(alpha,beta), Ui ~ N(0,I/lamb), Vj ~ N(0,I/lamb)
 
@@ -9,7 +10,8 @@ Hyperparameters: alpha, beta, lamb.
 
 from bmf import BMF
 from Gibbs.updates import update_tau_gaussian
-from Gibbs.updates import update_U_gaussian_gaussian, update_V_gaussian_gaussian
+from Gibbs.updates import update_U_gaussian_gaussian_multivariate
+from Gibbs.updates import update_V_gaussian_gaussian_multivariate
 from Gibbs.initialise import initialise_tau_gamma
 from Gibbs.initialise import initialise_U_gaussian
 
@@ -24,7 +26,7 @@ DEFAULT_HYPERPARAMETERS = {
     'lamb': 1.,
 }
 
-class BMF_Gaussian_Gaussian(BMF):
+class BMF_Gaussian_Gaussian_multivariate(BMF):
     def __init__(self,R,M,K,hyperparameters={}):
         """ Set up the class. """
         self.R = numpy.array(R,dtype=float)
@@ -66,9 +68,9 @@ class BMF_Gaussian_Gaussian(BMF):
         time_start = time.time()
         for it in range(iterations):
             # Update the random variables
-            self.U = update_U_gaussian_gaussian(
+            self.U = update_U_gaussian_gaussian_multivariate(
                 lamb=self.lamb, R=self.R, M=self.M, V=self.V, tau=self.tau) 
-            self.V = update_V_gaussian_gaussian(
+            self.V = update_V_gaussian_gaussian_multivariate(
                 lamb=self.lamb, R=self.R, M=self.M, U=self.U, tau=self.tau)
             self.tau = update_tau_gaussian(
                 alpha=self.alpha, beta=self.beta, R=self.R, M=self.M, U=self.U, V=self.V)
