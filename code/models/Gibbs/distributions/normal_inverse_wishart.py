@@ -13,10 +13,14 @@ from multivariate_normal import multivariate_normal_draw
 
 # Draw a value for mu, Sigma ~ NIW(mu0,beta0,v0,W0)
 def normal_inverse_wishart_draw(mu0,beta0,v0,W0):
-    Sigma = invwishart.rvs(df=v0, scale=W0)
-    mu = multivariate_normal_draw(mu=mu0,sigma=Sigma/beta0)
-    return (mu,Sigma)
+    sigma = invwishart.rvs(df=v0, scale=W0)
+    mu = multivariate_normal_draw(mu=mu0,sigma=sigma/beta0)
+    return (mu,sigma)
     
+def normal_inverse_wishart_mean(mu0,beta0,v0,W0):
+    # Mean of InverseWishart is W0 / ( v0 - K - 1 ). Mean of Normal is mu0.
+    K = mu0.shape[0]
+    return (mu0, W0 / (v0 - K - 1))
        
 '''
 # Example draw

@@ -115,10 +115,12 @@ def update_V_gaussian_gaussian_multivariate(lamb, R, M, U, tau):
 
 
 ''' (Gausian) Gaussian + Wishart '''
-def update_U_gaussian_gaussian_wishart(muU, sigmaU_inv, R, M, V, tau):
+def update_U_gaussian_gaussian_wishart(muU, sigmaU, R, M, V, tau):
     """ Update U for All Gaussian + Wishart model. """
     I, K = R.shape[0], V.shape[1]
     assert R.shape == M.shape and R.shape[1] == V.shape[0]
+    assert muU.shape == (K,) and sigmaU.shape == (K,K)
+    sigmaU_inv = numpy.linalg.inv(sigmaU)
     U = numpy.zeros((I,K))
     for i in range(I):
         muUi, sigmaUi = gaussian_gaussian_wishart_mu_sigma(
@@ -126,22 +128,22 @@ def update_U_gaussian_gaussian_wishart(muU, sigmaU_inv, R, M, V, tau):
         U[i,:] = multivariate_normal_draw(mu=muUi, sigma=sigmaUi)
     return U
 
-def update_V_gaussian_gaussian_wishart(muV, sigmaV_inv, R, M, U, tau):  
+def update_V_gaussian_gaussian_wishart(muV, sigmaV, R, M, U, tau):  
     """ Update V for All Gaussian + Wishart model. """
     return update_U_gaussian_gaussian_wishart(
-        muU=muV, sigmaU_inv=sigmaV_inv, R=R.T, M=M.T, V=U, tau=tau)
+        muU=muV, sigmaU=sigmaV, R=R.T, M=M.T, V=U, tau=tau)
 
-def update_muU_sigmaU_gaussian_gaussian_wishart(beta0, v0, mu0, W0_inv, U):
+def update_muU_sigmaU_gaussian_gaussian_wishart(mu0, beta0, v0, W0_inv, U):
     """ Update muU and sigmaU for All Gaussian + Wishart model. """
     beta0_s, v0_s, mu0_s, W0_s = gaussian_wishart_beta0_v0_mu0_W0(
         beta0=beta0, v0=v0, mu0=mu0, W0_inv=W0_inv, U=U)
     new_muU, new_sigmaU = normal_inverse_wishart_draw(mu0=mu0_s,beta0=beta0_s,v0=v0_s,W0=W0_s)
     return (new_muU, new_sigmaU)
 
-def update_muV_sigmaV_gaussian_gaussian_wishart(beta0, v0, mu0, W0_inv, V):
+def update_muV_sigmaV_gaussian_gaussian_wishart(mu0, beta0, v0, W0_inv, V):
     """ Update muV and sigmaV for All Gaussian + Wishart model. """
     return update_muU_sigmaU_gaussian_gaussian_wishart(
-        beta0=beta0, v0=v0, mu0=mu0, W0_inv=W0_inv, U=V)
+        mu0=mu0, beta0=beta0, v0=v0, W0_inv=W0_inv, U=V)
     
 
 ''' (Gausian) Gaussian + Automatic Relevance Determination '''
@@ -262,20 +264,20 @@ def update_V_gaussian_truncatednormal(muV, tauV, R, M, U, V, tau):
 
 
 ''' (Gausian) Truncated Normal + hierarchical '''
-def update_U_gaussian_truncatednormal_hierarchical(muUk, tauUk, R, M, U, V, tau):
+def update_U_gaussian_truncatednormal_hierarchical(muU, tauU, R, M, U, V, tau):
     """ Update U for Gaussian + Truncated Normal + hierarchical model. """
     I, K = U.shape
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
     for k in range(K):
         muUk_s, tauUk_s = gaussian_tn_hierarchical_mu_tau(
-            k=k, muUk=muUk, tauUk=tauUk, R=R, M=M, U=U, V=V, tau=tau)
+            k=k, muUk=muU[:,k], tauUk=tauU[:,k], R=R, M=M, U=U, V=V, tau=tau)
         U[:,k] = truncated_normal_vector_draw(mus=muUk_s, taus=tauUk_s)
     return U
     
-def update_V_gaussian_truncatednormal_hierarchical(muUk, tauUk, R, M, U, V, tau):
+def update_V_gaussian_truncatednormal_hierarchical(muV, tauV, R, M, U, V, tau):
     """ Update V for Gaussian + Truncated Normal + hierarchical model. """
     return update_U_gaussian_truncatednormal_hierarchical(
-        muUk=muUk, tauUk=tauUk, R=R.T, M=M.T, U=V, V=U, tau=tau)
+        muU=muV, tauU=tauV, R=R.T, M=M.T, U=V, V=U, tau=tau)
     
 def update_muU_gaussian_truncatednormal_hierarchical(mu_mu, tau_mu, U, muU, tauU):
     """ Update muU (matrix) for Gaussian + Truncated Normal + hierarchical model. """

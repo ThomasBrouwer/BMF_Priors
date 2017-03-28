@@ -46,6 +46,18 @@ def poisson_Zij_n_p(Rij, Ui, Vj):
     return (n, p)
 
 
+''' (Gausian) Gaussian (univariate posterior). '''
+def gaussian_gaussian_mu_tau(k, lamb, R, M, U, V, tau):
+    """ muUk and tauUk (vectors) for Uk with N(0,I/lamb) prior (I=identity matrix). """
+    I, J, K = R.shape[0], R.shape[1], U.shape[1]
+    assert R.shape == M.shape and V.shape == (J,K) and U.shape[0] == I
+    tauUk = lamb + tau * ( M * V[:,k]**2 ).sum(axis=1)
+    muUk = tau * ( M * ( ( R - numpy.dot(U,V.T) + numpy.outer(U[:,k],V[:,k])) * V[:,k] ) ).sum(axis=1)
+    muUk /= tauUk   
+    assert muUk.shape == (I,) and tauUk.shape == (I,)
+    return (muUk, tauUk)
+
+
 ''' (Gausian) Gaussian (multivariate posterior). '''
 def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
     """ mu and sigma for Ui with N(0,I/lamb) prior (I=identity matrix). """
@@ -58,18 +70,6 @@ def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
     mu = numpy.dot(sigma, tau * numpy.dot(Ri_masked, V))
     assert mu.shape[0] == V.shape[1] and sigma.shape == (V.shape[1], V.shape[1])
     return (mu, sigma)
-
-
-''' (Gausian) Gaussian (univariate posterior). '''
-def gaussian_gaussian_mu_tau(k, lamb, R, M, U, V, tau):
-    """ muUk and tauUk (vectors) for Uk with N(0,I/lamb) prior (I=identity matrix). """
-    I, J, K = R.shape[0], R.shape[1], U.shape[1]
-    assert R.shape == M.shape and V.shape == (J,K) and U.shape[0] == I
-    tauUk = lamb + tau * ( M * V[:,k]**2 ).sum(axis=1)
-    muUk = tau * ( M * ( ( R - numpy.dot(U,V.T) + numpy.outer(U[:,k],V[:,k])) * V[:,k] ) ).sum(axis=1)
-    muUk /= tauUk   
-    assert muUk.shape == (I,) and tauUk.shape == (I,)
-    return (muUk, tauUk)
 
 
 ''' (Gausian) Gaussian + Wishart '''
@@ -91,7 +91,7 @@ def gaussian_wishart_beta0_v0_mu0_W0(beta0, v0, mu0, W0_inv, U):
     beta0_s = beta0 + I
     v0_s = v0 + I
     U_bar = U.sum(axis=0) / float(I) # vector giving average per column of U
-    S_bar = numpy.dot(U.T, U) # matrix giving covariance of columns of U
+    S_bar = numpy.dot(U.T, U) / float(I) # matrix giving covariance of columns of U
     mu0_s = ( beta0 * mu0 + I * U_bar) / ( beta0 + I )
     W0_s_inv = W0_inv + I * S_bar + (beta0*I)/(beta0+I) * numpy.outer(mu0-U_bar, mu0-U_bar)
     W0_s = numpy.linalg.inv(W0_s_inv)
@@ -205,7 +205,6 @@ def tn_hierarchical_tau_a_b(a, b, U, muU):
     assert U.shape == muU.shape
     a_s = a * numpy.ones(U.shape)
     b_s = b + ( U * muU )**2
-    assert b_s
     return (a_s, b_s)
 
 

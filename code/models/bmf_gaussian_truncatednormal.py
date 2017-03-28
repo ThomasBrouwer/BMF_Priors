@@ -4,7 +4,7 @@ Bayesian Matrix Factorisation with Gaussian likelihood and Truncated Normal prio
 Rij ~ N(Ui*Vj,tau^-1), tau ~ Gamma(alpha,beta), Uik ~ TN(muUV,tauUV), Vjk ~ TN(muUV,tauUV)
 
 Random variables: U, V, tau.
-Hyperparameters: alpha, beta, sigma.
+Hyperparameters: alpha, beta, muUV, tauUV.
 """
 
 from bmf import BMF

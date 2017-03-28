@@ -1,13 +1,13 @@
 '''
 Measure convergence on the GDSC drug sensitivity dataset, with the Gaussian +
-Truncated Normal model.
+Truncated Normal + hierarchical model.
 '''
 
 project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
-from BMF_Priors.code.models.bmf_gaussian_truncatednormal import BMF_Gaussian_TruncatedNormal
+from BMF_Priors.code.models.bmf_gaussian_truncatednormal_hierarchical import BMF_Gaussian_TruncatedNormal_Hierarchical
 from BMF_Priors.data.drug_sensitivity.load_data import load_gdsc_ic50
 from BMF_Priors.experiments.convergence.convergence_experiment import measure_convergence_time
 
@@ -16,12 +16,12 @@ import matplotlib.pyplot as plt
 
 ''' Run the experiment. '''
 R, M = load_gdsc_ic50()
-model_class = BMF_Gaussian_TruncatedNormal
+model_class = BMF_Gaussian_TruncatedNormal_Hierarchical
 settings = {
     'R': R, 
     'M': M, 
     'K': 20, 
-    'hyperparameters': { 'alpha':1., 'beta':1., 'muUV':0.1, 'tauUV':0.1 }, 
+    'hyperparameters': { 'alpha':1., 'beta':1., 'mu_mu':0.1, 'tau_mu':0.1, 'a':1., 'b':1. }, 
     'init': 'random', 
     'iterations': 200,
 }

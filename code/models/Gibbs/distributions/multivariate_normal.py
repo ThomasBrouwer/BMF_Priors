@@ -9,3 +9,6 @@ def multivariate_normal_draw(mu,precision=None,sigma=None):
     if sigma is None:
         sigma = numpy.linalg.inv(precision)
     return multivariate_normal(mean=mu,cov=sigma,size=None)
+
+def multivariate_normal_mean(mu,precision=None,sigma=None):
+    return mu
