@@ -14,10 +14,9 @@ GM:      160,     254,       40640,     1.0
 import numpy
 
 folder_data = '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/methylation/' # '/home/tab43/Documents/Projects/libraries/BNMTF_ARD/data/methylation/' # 
-file_gene_expression = 'matched_methylation_genePromoter'
-file_promoter_methylation = 'matched_methylation_genePromoter'
-file_gene_body_methylation = 'matched_methylation_geneBody'
-file_driver_genes = 'intogen-BRCA-drivers-data.geneid'
+file_promoter_methylation = folder_data+'matched_methylation_genePromoter'
+file_gene_body_methylation = folder_data+'matched_methylation_geneBody'
+file_driver_genes = folder_data+'intogen-BRCA-drivers-data.geneid'
 
 DELIM = '\t'
 
