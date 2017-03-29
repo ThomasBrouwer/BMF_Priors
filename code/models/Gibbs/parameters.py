@@ -43,6 +43,7 @@ def poisson_Zij_n_p(Rij, Ui, Vj):
     """ n and p (vector) for Zij with Mult(Rij,(Ui0Vj0,..,UiKVjK)) prior. """
     n = Rij
     p = Ui * Vj
+    p /= p.sum()
     return (n, p)
 
 
@@ -244,7 +245,7 @@ def gamma_hierarchical_hUi_a_b(ap, bp, a, Ui):
 ''' (Poisson) Dirichlet '''
 def poisson_dirichlet_alpha(alpha, Mi, Zi):
     """ alpha (vector) for Ui with Dir(alpha) prior in Poisson models. """
-    assert Mi.shape == Zi.shape[0] and alpha.shape == Zi.shape[1]
+    assert Mi.shape[0] == Zi.shape[0] and alpha.shape[0] == Zi.shape[1]
     alpha_s = alpha + (Mi * Zi.T).sum(axis=1)
     assert alpha_s.shape == alpha.shape
     return alpha_s

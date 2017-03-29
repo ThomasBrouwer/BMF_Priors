@@ -325,6 +325,7 @@ def update_V_gaussian_halfnormal(sigma, R, M, U, V, tau):
     return update_U_gaussian_halfnormal(sigma=sigma, R=R.T, M=M.T, U=V, V=U, tau=tau)
 
 
+
 ''' (Poisson) Gamma '''
 def update_U_poisson_gamma(a, b, M, V, Z):
     """ Update U for Poisson + Gamma model. """
@@ -375,11 +376,12 @@ def update_hV_poisson_gamma_hierarchical(ap, bp, a, V):
 def update_U_poisson_dirichlet(alpha, M, Z):
     """ Update U for Poisson + Dirichlet model. """
     I, J, K = Z.shape
-    assert M.shape == (I,J) and alpha.shape == (I,)
+    assert M.shape == (I,J) and alpha.shape == (K,)
     U = numpy.zeros((I,K))
     for i in range(I):
         alpha_s = poisson_dirichlet_alpha(alpha=alpha, Mi=M[i], Zi=Z[i,:,:])
         U[i,:] = dirichlet_draw(alpha=alpha_s)
+    return U
         
 def update_V_poisson_dirichlet(alpha, M, Z):
     """ Update V for Poisson + Dirichlet model. """

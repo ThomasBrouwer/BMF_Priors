@@ -11,6 +11,8 @@ from distributions.exponential import exponential_draw, exponential_mean
 from distributions.truncated_normal import truncated_normal_draw, truncated_normal_mean
 from distributions.half_normal import half_normal_draw, half_normal_mean
 from distributions.normal_inverse_wishart import normal_inverse_wishart_draw, normal_inverse_wishart_mean
+from distributions.multinomial import multinomial_draw, multinomial_mean
+from distributions.dirichlet import dirichlet_draw, dirichlet_mean
 
 import itertools
 import numpy
@@ -101,10 +103,29 @@ def initialise_U_volumeprior_nonnegative(init, I, K, gamma):
         We cannot sample from this prior, so we initialise U_ik ~ TN(0,1). """
     return initialise_U_truncatednormal(init=init, I=I, K=K, mu=0., tau=1.)
     
-def initialise_Z_multinomial():
-    #TODO:
-    pass
+def initialise_Z_multinomial(init, R, U, V):
+    """ Initialise Z, with prior Zij ~ Multinomial(Rij, (Ui0*Vj0,..,UiK*VjK)). """
+    I, J, K = R.shape[0], R.shape[1], U.shape[1]
+    assert U.shape[0] == I and V.shape == (J,K)
+    initialise = multinomial_draw if init == 'random' else multinomial_mean
+    Z = numpy.zeros((I,J,K))
+    for i,j in itertools.product(range(I),range(J)):
+        p = U[i,:] * V[j,:]
+        p /= p.sum()
+        Z[i,j,:] = initialise(n=R[i,j], p=p)
+    return Z
 
-def initialise_U_gamma():
-    #TODO:
-    pass
+def initialise_U_gamma(init, I, K, a, b):
+    initialise = gamma_draw if init == 'random' else gamma_mean
+    U = numpy.zeros((I,K))
+    for i,k in itertools.product(range(I),range(K)):
+        U[i,k] = initialise(alpha=a, beta=b)
+    return U
+
+def initialise_U_dirichlet(init, I, K, alpha):
+    initialise = dirichlet_draw if init == 'random' else dirichlet_mean
+    assert alpha.shape == (K,)
+    U = numpy.zeros((I,K))
+    for i in range(I):
+        U[i,:] = initialise(alpha=alpha)
+    return U

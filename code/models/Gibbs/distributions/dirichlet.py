@@ -3,9 +3,12 @@ Class representing a Dirichlet distribution, allowing us to sample from it.
 """
 from numpy.random import dirichlet
 
-# Multinomial draws
+# Dirichlet draws
 def dirichlet_draw(alpha):
     return dirichlet(alpha=alpha)
+    
+def dirichlet_mean(alpha):
+    return alpha / alpha.sum()
         
 '''
 # Example draws

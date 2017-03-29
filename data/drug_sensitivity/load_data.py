@@ -62,6 +62,26 @@ def load_ccle_ec50(location=file_ccle_ec50):
     ''' Return (R_ccle_ec50, M_ccle_ec50). '''
     return load_data_create_mask(location)
 
+def load_gdsc_ic50_integer(location=file_gdsc_ic50):
+    ''' As load_gdsc_ic50(), but cast all floats to integers. '''
+    R, M = load_gdsc_ic50()
+    return (numpy.array(R, dtype=int), M)
+
+def load_ctrp_ec50_integer(location=file_ctrp_ec50):
+    ''' As load_ctrp_ec50(), but cast all floats to integers. '''
+    R, M = load_ctrp_ec50()
+    return (numpy.array(R, dtype=int), M)
+
+def load_ccle_ic50_integer(location=file_ccle_ic50):
+    ''' As load_ccle_ic50(), but cast all floats to integers. '''
+    R, M = load_ccle_ic50()
+    return (numpy.array(R, dtype=int), M)
+
+def load_ccle_ec50_integer(location=file_ccle_ec50):
+    ''' As load_ccle_ec50(), but cast all floats to integers. '''
+    R, M = load_ccle_ec50()
+    return (numpy.array(R, dtype=int), M)
+
 
 '''
 R_gdsc, M_gdsc = load_gdsc_ic50()
@@ -69,3 +89,10 @@ R_ctrp, M_ctrp = load_ctrp_ec50()
 R_ccle_ic, M_ccle_ic = load_ccle_ic50()
 R_ccle_ec, M_ccle_ec = load_ccle_ec50()
 '''
+
+#'''
+R_gdsc, M_gdsc = load_gdsc_ic50_integer()
+R_ctrp, M_ctrp = load_ctrp_ec50_integer()
+R_ccle_ic, M_ccle_ic = load_ccle_ic50_integer()
+R_ccle_ec, M_ccle_ec = load_ccle_ec50_integer()
+#'''
