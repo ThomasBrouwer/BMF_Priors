@@ -35,7 +35,7 @@ from parameters import gaussian_gaussian_wishart_mu_sigma
 from parameters import gaussian_wishart_beta0_v0_mu0_W0
 from parameters import gaussian_gaussian_ard_mu_sigma
 from parameters import gaussian_ard_alpha_beta
-from parameters import gaussian_gaussian_vp_mu_sigma
+from parameters import gaussian_gaussian_volumeprior_mu_sigma
 from parameters import gaussian_exponential_mu_tau
 from parameters import gaussian_exponential_ard_mu_tau
 from parameters import exponential_ard_alpha_beta
@@ -179,7 +179,7 @@ def update_U_gaussian_volumeprior(gamma, R, M, U, V, tau):
     I, K = U.shape
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
     for i,k in itertools.product(range(I),range(K)):
-        muUik, tauUik = gaussian_gaussian_vp_mu_sigma(
+        muUik, tauUik = gaussian_gaussian_volumeprior_mu_sigma(
             i=i, k=k, gamma=gamma, Ri=R[i,:], Mi=M[i,:], U=U, V=V, tau=tau)
         U[i,k] = normal_draw(mu=muUik, tau=tauUik)
     return U
@@ -195,7 +195,7 @@ def update_U_gaussian_volumeprior_nonnegative(gamma, R, M, U, V, tau):
     I, K = U.shape
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
     for i,k in itertools.product(range(I),range(K)):
-        muUik, tauUik = gaussian_gaussian_vp_mu_sigma(
+        muUik, tauUik = gaussian_gaussian_volumeprior_mu_sigma(
             i=i, k=k, gamma=gamma, Ri=R[i,:], Mi=M[i,:], U=U, V=V, tau=tau)
         U[i,k] = truncated_normal_draw(mu=muUik, tau=tauUik)
     return U

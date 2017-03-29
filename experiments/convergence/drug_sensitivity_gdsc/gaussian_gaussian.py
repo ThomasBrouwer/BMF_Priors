@@ -7,7 +7,7 @@ project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
-from BMF_Priors.code.models.bmf_gaussian_gaussian_multivariate import BMF_Gaussian_Gaussian_multivariate
+from BMF_Priors.code.models.bmf_gaussian_gaussian import BMF_Gaussian_Gaussian
 from BMF_Priors.data.drug_sensitivity.load_data import load_gdsc_ic50
 from BMF_Priors.experiments.convergence.convergence_experiment import measure_convergence_time
 
@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 ''' Run the experiment. '''
 R, M = load_gdsc_ic50()
-model_class = BMF_Gaussian_Gaussian_multivariate
+model_class = BMF_Gaussian_Gaussian
 settings = {
     'R': R, 
     'M': M, 

@@ -1,6 +1,6 @@
 """
-Bayesian Matrix Factorisation with Gaussian likelihood, Gaussian priors
-(multivariate posterior) and Wishart prior.
+Bayesian Matrix Factorisation with Gaussian likelihood, Gaussian priors, and 
+Wishart prior.
 
 Rij ~ N(Ui*Vj,tau^-1),                 tau ~ Gamma(alpha,beta), 
 Ui ~ N(muU, sigmaU),                   Vj ~ N(muU, sigmaU),
@@ -31,7 +31,7 @@ OPTIONS_INIT = ['random', 'exp']
 DEFAULT_HYPERPARAMETERS = {
     'alpha': 1.,
     'beta': 1.,
-    'mu0': 0.1,
+    'mu0': 0.,
     'beta0': 1.,
     'v0': 1.,
     'W0': 1.,

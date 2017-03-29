@@ -1,13 +1,13 @@
 '''
-Measure convergence on the GDSC drug sensitivity dataset, with the All Gaussian
-model (multivariate posterior).
+Measure convergence on the GDSC drug sensitivity dataset, with the Gaussian + 
+Gaussian + Volume Prior model.
 '''
 
 project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
-from BMF_Priors.code.models.bmf_gaussian_gaussian_multivariate_ard import BMF_Gaussian_Gaussian_multivariate_ARD
+from BMF_Priors.code.models.bmf_gaussian_gaussian_volumeprior import BMF_Gaussian_Gaussian_VolumePrior
 from BMF_Priors.data.drug_sensitivity.load_data import load_gdsc_ic50
 from BMF_Priors.experiments.convergence.convergence_experiment import measure_convergence_time
 
@@ -16,12 +16,12 @@ import matplotlib.pyplot as plt
 
 ''' Run the experiment. '''
 R, M = load_gdsc_ic50()
-model_class = BMF_Gaussian_Gaussian_multivariate_ARD
+model_class = BMF_Gaussian_Gaussian_VolumePrior
 settings = {
     'R': R, 
     'M': M, 
     'K': 20, 
-    'hyperparameters': { 'alpha':1., 'beta':1., 'alpha0':1., 'beta0':1. }, 
+    'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**-50 }, 
     'init': 'random', 
     'iterations': 200,
 }

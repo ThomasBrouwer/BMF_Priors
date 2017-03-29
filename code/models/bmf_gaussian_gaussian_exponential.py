@@ -1,9 +1,8 @@
 """
-Bayesian Matrix Factorisation with Gaussian likelihood and Gaussian priors
-(multivariate posterior) and ARD.
+Bayesian Matrix Factorisation with Gaussian likelihood, Exponential prior over
+U, and Gaussian over V.
 
-Rij ~ N(Ui*Vj,tau^-1),   Ui ~ N(0,I/lamb),             Vj ~ N(0,I/lamb), 
-tau ~ Gamma(alpha,beta), lamb_k ~ Gamma(alpha0,beta0)
+Rij ~ N(Ui*Vj,tau^-1), tau ~ Gamma(alpha,beta), Uik ~ E(lamb), Vj ~ N(0,I/lamb)
 
 Random variables: U, V, tau.
 Hyperparameters: alpha, beta, lamb.
@@ -11,12 +10,11 @@ Hyperparameters: alpha, beta, lamb.
 
 from bmf import BMF
 from Gibbs.updates import update_tau_gaussian
-from Gibbs.updates import update_U_gaussian_gaussian_multivariate_ard
-from Gibbs.updates import update_V_gaussian_gaussian_multivariate_ard
-from Gibbs.updates import update_lambda_gaussian_gaussian_ard
+from Gibbs.updates import update_U_gaussian_exponential
+from Gibbs.updates import update_V_gaussian_gaussian_multivariate
 from Gibbs.initialise import initialise_tau_gamma
+from Gibbs.initialise import initialise_U_exponential
 from Gibbs.initialise import initialise_U_gaussian
-from Gibbs.initialise import initialise_lamb_ard
 
 import numpy
 import time
@@ -26,27 +24,23 @@ OPTIONS_INIT = ['random', 'exp']
 DEFAULT_HYPERPARAMETERS = {
     'alpha': 1.,
     'beta': 1.,
-    'alpha0': 1.,
-    'beta0': 1.,
+    'lamb': 0.1,
 }
 
-class BMF_Gaussian_Gaussian_multivariate_ARD(BMF):
+class BMF_Gaussian_Gaussian_Exponential(BMF):
     def __init__(self,R,M,K,hyperparameters={}):
         """ Set up the class. """
-        super(BMF_Gaussian_Gaussian_multivariate_ARD, self).__init__(R, M, K)
-        self.alpha =   hyperparameters.get('alpha',  DEFAULT_HYPERPARAMETERS['alpha'])
-        self.beta =    hyperparameters.get('beta',   DEFAULT_HYPERPARAMETERS['beta'])   
-        self.alpha0 =  hyperparameters.get('alpha0', DEFAULT_HYPERPARAMETERS['alpha0']) 
-        self.beta0 =   hyperparameters.get('beta0',  DEFAULT_HYPERPARAMETERS['beta0'])  
+        super(BMF_Gaussian_Gaussian_Exponential, self).__init__(R, M, K)
+        self.alpha = hyperparameters.get('alpha', DEFAULT_HYPERPARAMETERS['alpha'])
+        self.beta =  hyperparameters.get('beta',  DEFAULT_HYPERPARAMETERS['beta'])   
+        self.lamb =  hyperparameters.get('lamb',  DEFAULT_HYPERPARAMETERS['lamb'])     
         
         
     def initialise(self,init):
         """ Initialise the values of the random variables in this model. """
         assert init in OPTIONS_INIT, \
             "Unknown initialisation option: %s. Should be one of %s." % (init, OPTIONS_INIT)
-        self.lamb = initialise_lamb_ard(
-            init=init, K=self.K, alpha0=self.alpha0, beta0=self.beta0)
-        self.U = initialise_U_gaussian(init=init, I=self.I, K=self.K, lamb=self.lamb)
+        self.U = initialise_U_exponential(init=init, I=self.I, K=self.K, lamb=self.lamb)
         self.V = initialise_U_gaussian(init=init, I=self.J, K=self.K, lamb=self.lamb)
         self.tau = initialise_tau_gamma(
             alpha=self.alpha, beta=self.beta, R=self.R, M=self.M, U=self.U, V=self.V)
@@ -56,7 +50,6 @@ class BMF_Gaussian_Gaussian_multivariate_ARD(BMF):
         """ Run the Gibbs sampler for the specified number of iterations. """
         self.all_U = numpy.zeros((iterations,self.I,self.K))  
         self.all_V = numpy.zeros((iterations,self.J,self.K))   
-        self.all_lamb = numpy.zeros((iterations,self.K))
         self.all_tau = numpy.zeros(iterations) 
         self.all_times = []
         self.all_performances = { metric: [] for metric in METRICS } 
@@ -64,18 +57,15 @@ class BMF_Gaussian_Gaussian_multivariate_ARD(BMF):
         time_start = time.time()
         for it in range(iterations):
             # Update the random variables
-            self.U = update_U_gaussian_gaussian_multivariate_ard(
-                lamb=self.lamb, R=self.R, M=self.M, V=self.V, tau=self.tau) 
-            self.V = update_V_gaussian_gaussian_multivariate_ard(
+            self.U = update_U_gaussian_exponential(
+                lamb=self.lamb, R=self.R, M=self.M, U=self.U, V=self.V, tau=self.tau) 
+            self.V = update_V_gaussian_gaussian_multivariate(
                 lamb=self.lamb, R=self.R, M=self.M, U=self.U, tau=self.tau)
-            self.lamb = update_lambda_gaussian_gaussian_ard(
-                alpha0=self.alpha0, beta0=self.beta0, U=self.U, V=self.V)
             self.tau = update_tau_gaussian(
                 alpha=self.alpha, beta=self.beta, R=self.R, M=self.M, U=self.U, V=self.V)
             
             # Store the draws
             self.all_U[it], self.all_V[it] = numpy.copy(self.U), numpy.copy(self.V)
-            self.all_lamb[it] = numpy.copy(self.lamb)
             self.all_tau[it] = self.tau
             
             # Print the performance, store performance and time

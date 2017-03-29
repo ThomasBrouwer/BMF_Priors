@@ -1,13 +1,13 @@
 '''
 Measure convergence on the GDSC drug sensitivity dataset, with the All Gaussian
-model (multivariate posterior) and Wishart prior.
+model (multivariate posterior).
 '''
 
 project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
-from BMF_Priors.code.models.bmf_gaussian_gaussian_wishart import BMF_Gaussian_Gaussian_Wishart
+from BMF_Priors.code.models.bmf_gaussian_gaussian_ard import BMF_Gaussian_Gaussian_ARD
 from BMF_Priors.data.drug_sensitivity.load_data import load_gdsc_ic50
 from BMF_Priors.experiments.convergence.convergence_experiment import measure_convergence_time
 
@@ -16,14 +16,13 @@ import matplotlib.pyplot as plt
 
 ''' Run the experiment. '''
 R, M = load_gdsc_ic50()
-model_class = BMF_Gaussian_Gaussian_Wishart
-K = 20
+model_class = BMF_Gaussian_Gaussian_ARD
 settings = {
     'R': R, 
     'M': M, 
-    'K': K, 
-    'hyperparameters': { 'alpha':1., 'beta':1., 'mu0':0., 'beta0':1., 'v0':K, 'W0':1. }, 
-    'init': 'exp', 
+    'K': 20, 
+    'hyperparameters': { 'alpha':1., 'beta':1., 'alpha0':1., 'beta0':1. }, 
+    'init': 'random', 
     'iterations': 200,
 }
 

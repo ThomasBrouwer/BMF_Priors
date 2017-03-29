@@ -19,10 +19,6 @@ def initialise_tau_gamma(alpha, beta, R, M, U, V):
     """ Initialise tau using the model updates. """
     return update_tau_gaussian(alpha=alpha, beta=beta, R=R, M=M, U=U, V=V)
 
-def initialise_Z_multinomial():
-    #TODO:
-    pass
-
 def initialise_lamb_ard(init, K, alpha0, beta0):
     """ Initialise lamb (vector), with prior lamb_k ~ Gamma(alpha0,beta0). """
     initialise = gamma_draw if init == 'random' else gamma_mean
@@ -94,5 +90,16 @@ def initialise_U_halfnormal(init, I, K, sigma):
     for i,k in itertools.product(range(I),range(K)):
         U[i,k] = initialise(sigma=sigma)
     return U
+    
+def initialise_U_volumeprior(init, I, K, gamma):
+    """ Initialise U, with prior U ~ VP(gamma).
+        We cannot sample from this prior, so we initialise U_ik ~ N(0,1). """
+    return initialise_U_gaussian(init=init, I=I, K=K, lamb=1.)
+    
+def initialise_Z_multinomial():
+    #TODO:
+    pass
 
-#TODO: many more
+def initialise_U_gamma():
+    #TODO:
+    pass

@@ -1,6 +1,6 @@
 """
 Bayesian Matrix Factorisation with Gaussian likelihood and Gaussian priors
-(univariate posterior).
+(multivariate posterior).
 
 Rij ~ N(Ui*Vj,tau^-1), tau ~ Gamma(alpha,beta), Ui ~ N(0,I/lamb), Vj ~ N(0,I/lamb)
 
@@ -8,10 +8,12 @@ Random variables: U, V, tau.
 Hyperparameters: alpha, beta, lamb.
 """
 
-from bmf_gaussian_gaussian import BMF_Gaussian_Gaussian
+from bmf import BMF
 from Gibbs.updates import update_tau_gaussian
-from Gibbs.updates import update_U_gaussian_gaussian_univariate
-from Gibbs.updates import update_V_gaussian_gaussian_univariate
+from Gibbs.updates import update_U_gaussian_gaussian_multivariate
+from Gibbs.updates import update_V_gaussian_gaussian_multivariate
+from Gibbs.initialise import initialise_tau_gamma
+from Gibbs.initialise import initialise_U_gaussian
 
 import numpy
 import time
@@ -24,7 +26,25 @@ DEFAULT_HYPERPARAMETERS = {
     'lamb': 0.1,
 }
 
-class BMF_Gaussian_Gaussian_univariate(BMF_Gaussian_Gaussian):
+class BMF_Gaussian_Gaussian(BMF):
+    def __init__(self,R,M,K,hyperparameters={}):
+        """ Set up the class. """
+        super(BMF_Gaussian_Gaussian, self).__init__(R, M, K)
+        self.alpha = hyperparameters.get('alpha', DEFAULT_HYPERPARAMETERS['alpha'])
+        self.beta =  hyperparameters.get('beta',  DEFAULT_HYPERPARAMETERS['beta'])   
+        self.lamb =  hyperparameters.get('lamb',  DEFAULT_HYPERPARAMETERS['lamb'])     
+        
+        
+    def initialise(self,init):
+        """ Initialise the values of the random variables in this model. """
+        assert init in OPTIONS_INIT, \
+            "Unknown initialisation option: %s. Should be one of %s." % (init, OPTIONS_INIT)
+        self.U = initialise_U_gaussian(init=init, I=self.I, K=self.K, lamb=self.lamb)
+        self.V = initialise_U_gaussian(init=init, I=self.J, K=self.K, lamb=self.lamb)
+        self.tau = initialise_tau_gamma(
+            alpha=self.alpha, beta=self.beta, R=self.R, M=self.M, U=self.U, V=self.V)
+        
+        
     def run(self,iterations):
         """ Run the Gibbs sampler for the specified number of iterations. """
         self.all_U = numpy.zeros((iterations,self.I,self.K))  
@@ -36,10 +56,10 @@ class BMF_Gaussian_Gaussian_univariate(BMF_Gaussian_Gaussian):
         time_start = time.time()
         for it in range(iterations):
             # Update the random variables
-            self.U = update_U_gaussian_gaussian_univariate(
-                lamb=self.lamb, R=self.R, M=self.M, U=self.U, V=self.V, tau=self.tau) 
-            self.V = update_V_gaussian_gaussian_univariate(
-                lamb=self.lamb, R=self.R, M=self.M, U=self.U, V=self.V, tau=self.tau)
+            self.U = update_U_gaussian_gaussian_multivariate(
+                lamb=self.lamb, R=self.R, M=self.M, V=self.V, tau=self.tau) 
+            self.V = update_V_gaussian_gaussian_multivariate(
+                lamb=self.lamb, R=self.R, M=self.M, U=self.U, tau=self.tau)
             self.tau = update_tau_gaussian(
                 alpha=self.alpha, beta=self.beta, R=self.R, M=self.M, U=self.U, V=self.V)
             

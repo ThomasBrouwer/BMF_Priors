@@ -124,7 +124,7 @@ def adjugate_matrix(matrix):
     """ adj(matrix) = det(matrix) matrix^-1 """
     return numpy.linalg.det(matrix) * numpy.linalg.inv(matrix)
 
-def gaussian_gaussian_vp_mu_sigma(i, k, gamma, Ri, Mi, U, V, tau):
+def gaussian_gaussian_volumeprior_mu_sigma(i, k, gamma, Ri, Mi, U, V, tau):
     """ muUik and tauUik for Uik with Volume Prior, exp{-gamma det(U.T U)}. """
     I, K, J = U.shape[0], U.shape[1], Ri.shape[0]
     assert Mi.shape == (J,) and V.shape == (J, K)
