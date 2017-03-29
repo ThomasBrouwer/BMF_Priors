@@ -236,7 +236,7 @@ def poisson_gamma_hierarchical_a_b(a, hUi, Mi, Vk, Zik):
 
 def gamma_hierarchical_hUi_a_b(ap, bp, a, Ui):
     """ a_s and b_s for h^U_i with Gamma(ap,ap/bp) prior, and Uik ~ Gamma(a,h_i^U). """
-    K = Ui.shape
+    K = Ui.shape[0]
     a_s = ap + K * a
     b_s = bp + Ui.sum()
     return (a_s, b_s)

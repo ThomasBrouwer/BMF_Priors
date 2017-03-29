@@ -122,6 +122,20 @@ def initialise_U_gamma(init, I, K, a, b):
         U[i,k] = initialise(alpha=a, beta=b)
     return U
 
+def initialise_U_gamma_hierarchical(init, I, K, a, hU):
+    initialise = gamma_draw if init == 'random' else gamma_mean
+    U = numpy.zeros((I,K))
+    for i,k in itertools.product(range(I),range(K)):
+        U[i,k] = initialise(alpha=a, beta=hU[i])
+    return U
+    
+def initialise_hU_gamma_hierarchical(init, I, ap, bp):
+    initialise = gamma_draw if init == 'random' else gamma_mean
+    hU = numpy.zeros(I)
+    for i in range(I):
+        hU[i] = initialise(alpha=ap, beta=ap/bp)
+    return hU
+
 def initialise_U_dirichlet(init, I, K, alpha):
     initialise = dirichlet_draw if init == 'random' else dirichlet_mean
     assert alpha.shape == (K,)

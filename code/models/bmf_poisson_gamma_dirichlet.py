@@ -56,7 +56,6 @@ class BMF_Poisson_Gamma_Dirichlet(BMF):
         self.all_U = numpy.zeros((iterations,self.I,self.K))  
         self.all_V = numpy.zeros((iterations,self.J,self.K))
         #self.all_Z = numpy.zeros((iterations,self.I,self.J,self.K))
-        self.all_tau = numpy.zeros(iterations) 
         self.all_times = []
         self.all_performances = { metric: [] for metric in METRICS } 
         
