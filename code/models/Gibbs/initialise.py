@@ -96,6 +96,11 @@ def initialise_U_volumeprior(init, I, K, gamma):
         We cannot sample from this prior, so we initialise U_ik ~ N(0,1). """
     return initialise_U_gaussian(init=init, I=I, K=K, lamb=1.)
     
+def initialise_U_volumeprior_nonnegative(init, I, K, gamma):
+    """ Initialise U, with prior U ~ VP_nn(gamma).
+        We cannot sample from this prior, so we initialise U_ik ~ TN(0,1). """
+    return initialise_U_truncatednormal(init=init, I=I, K=K, mu=0., tau=1.)
+    
 def initialise_Z_multinomial():
     #TODO:
     pass
