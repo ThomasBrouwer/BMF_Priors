@@ -158,8 +158,12 @@ def gaussian_exponential_mu_tau(k, lamb, R, M, U, V, tau):
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
     assert U.shape[1] == V.shape[1]
     tauUk = tau * ( M * V[:,k]**2 ).sum(axis=1)
-    muUk = 1. / tauUk * ( -lamb + tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
-    assert tauUk.shape == muUk.shape    
+    #muUk = 1. / tauUk * ( -lamb + tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
+    V_ktilde = numpy.append(V[:,:k],V[:,k+1:],axis=1)
+    U_ktilde = numpy.append(U[:,:k],U[:,k+1:],axis=1)
+    muUk = 1. / tauUk * ( -lamb + tau * (
+        numpy.dot(M*R, V[:,k]) - numpy.dot(M*numpy.dot(U_ktilde, V_ktilde.T), V[:,k])) )
+    assert tauUk.shape == muUk.shape
     return (muUk, tauUk)
 
 
@@ -184,7 +188,11 @@ def gaussian_tn_mu_tau(k, muU, tauU, R, M, U, V, tau):
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
     assert U.shape[1] == V.shape[1]
     tauUk = tauU + tau * ( M * V[:,k]**2 ).sum(axis=1)
-    muUk = 1. / tauUk * ( muU * tauU + tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
+    #muUk = 1. / tauUk * ( muU * tauU + tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
+    V_ktilde = numpy.append(V[:,:k],V[:,k+1:],axis=1)
+    U_ktilde = numpy.append(U[:,:k],U[:,k+1:],axis=1)
+    muUk = 1. / tauUk * ( muU * tauU + tau * (
+        numpy.dot(M*R, V[:,k]) - numpy.dot(M*numpy.dot(U_ktilde, V_ktilde.T), V[:,k])) )
     assert tauUk.shape == muUk.shape    
     return (muUk, tauUk)
 
@@ -220,8 +228,12 @@ def gaussian_hn_mu_tau(k, sigma, R, M, U, V, tau):
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
     assert U.shape[1] == V.shape[1]
     tauUk = 1. / sigma**2 + tau * ( M * V[:,k]**2 ).sum(axis=1)
-    muUk = 1. / tauUk * ( tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
-    assert tauUk.shape == muUk.shape    
+    #muUk = 1. / tauUk * ( tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
+    V_ktilde = numpy.append(V[:,:k],V[:,k+1:],axis=1)
+    U_ktilde = numpy.append(U[:,:k],U[:,k+1:],axis=1)
+    muUk = 1. / tauUk * ( tau * (
+        numpy.dot(M*R, V[:,k]) - numpy.dot(M*numpy.dot(U_ktilde, V_ktilde.T), V[:,k])) )
+    assert tauUk.shape == muUk.shape   
     return (muUk, tauUk)
 
 
