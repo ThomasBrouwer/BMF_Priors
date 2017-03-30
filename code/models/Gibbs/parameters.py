@@ -139,8 +139,13 @@ def gaussian_gaussian_volumeprior_mu_sigma(i, k, gamma, Ri, Mi, U, V, tau):
     A_ktilde_ktilde = adjugate_matrix(cov_U_ktilde)
     assert cov_U_ktilde.shape == (K-1,K-1) and A_ktilde_ktilde.shape == (K-1,K-1)
     tauUik = tau*(Mi*V[:,k]**2).sum() + gamma * (D_ktilde_ktilde - numpy.dot(numpy.dot(U_i_ktilde,A_ktilde_ktilde),U_i_ktilde))
+    #muUik = 1./tauUik * (
+    #    tau * (Mi *((Ri-numpy.dot(U[i,:],V.T)+U[i,k]*V[:,k])*V[:,k])).sum() + 
+    #    gamma * numpy.dot(numpy.dot(U_i_ktilde,A_ktilde_ktilde), numpy.dot(U_itilde_ktilde.T,U_itilde_k))
+    #)
+    V_ktilde = numpy.append(V[:,:k],V[:,k+1:],axis=1)
     muUik = 1./tauUik * (
-        tau * (Mi *((Ri-numpy.dot(U[i,:],V.T)+U[i,k]*V[:,k])*V[:,k])).sum() + 
+        tau * (numpy.dot(Mi*Ri, V[:,k]) - numpy.dot(numpy.dot(U_i_ktilde, V_ktilde.T), Mi*V[:,k])) + 
         gamma * numpy.dot(numpy.dot(U_i_ktilde,A_ktilde_ktilde), numpy.dot(U_itilde_ktilde.T,U_itilde_k))
     )
     return (muUik, tauUik)
