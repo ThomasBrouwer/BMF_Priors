@@ -85,17 +85,16 @@ def gaussian_gaussian_wishart_mu_sigma(muU, sigmaU_inv, Ri, Mi, V, tau):
     assert mu.shape[0] == V.shape[1] and sigma.shape == (V.shape[1], V.shape[1])
     return (mu, sigma)
 
-def gaussian_wishart_beta0_v0_mu0_W0(beta0, v0, mu0, W0_inv, U):
+def gaussian_wishart_beta0_v0_mu0_W0(beta0, v0, mu0, W0, U):
     """ beta0_s, v0_s, mu0_s, W0_s for muU, sigmaU with NIW(beta0,v0,mu0,W0) prior. """
     I, K = U.shape
-    assert mu0.shape == (K,) and W0_inv.shape == (K, K)
+    assert mu0.shape == (K,) and W0.shape == (K, K)
     beta0_s = beta0 + I
     v0_s = v0 + I
     U_bar = U.sum(axis=0) / float(I) # vector giving average per column of U
     S_bar = numpy.dot(U.T, U) / float(I) # matrix giving covariance of columns of U
     mu0_s = ( beta0 * mu0 + I * U_bar) / ( beta0 + I )
-    W0_s_inv = W0_inv + I * S_bar + (beta0*I)/(beta0+I) * numpy.outer(mu0-U_bar, mu0-U_bar)
-    W0_s = numpy.linalg.inv(W0_s_inv)
+    W0_s = W0 + I * S_bar + (beta0*I)/float(beta0+I) * numpy.outer(mu0-U_bar, mu0-U_bar)
     assert mu0_s.shape == (K,) and W0_s.shape == (K, K)
     return (beta0_s, v0_s, mu0_s, W0_s)
 

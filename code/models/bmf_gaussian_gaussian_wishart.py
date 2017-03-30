@@ -51,7 +51,6 @@ class BMF_Gaussian_Gaussian_Wishart(BMF):
                    else self.mu0 * numpy.ones(K)
         self.W0 =  self.W0 if isinstance(self.W0, numpy.ndarray) \
                    else self.W0 * numpy.eye(K)
-        self.W0_inv = numpy.linalg.inv(self.W0)
         assert self.mu0.shape == (K,), "mu0 should be shape (%s,), not %s." % (
             self.K, self.mu0.shape)
         assert self.W0.shape == (K,K), "W0 should be shape (%s,%s), not %s." % (
@@ -89,12 +88,12 @@ class BMF_Gaussian_Gaussian_Wishart(BMF):
         for it in range(iterations):
             # Update the random variables
             self.muU, self.sigmaU = update_muU_sigmaU_gaussian_gaussian_wishart(
-                mu0=self.mu0, beta0=self.beta0, v0=self.v0, W0_inv=self.W0_inv, U=self.U)
+                mu0=self.mu0, beta0=self.beta0, v0=self.v0, W0=self.W0, U=self.U)
             self.U = update_U_gaussian_gaussian_wishart(
                 muU=self.muU, sigmaU=self.sigmaU, R=self.R, M=self.M, V=self.V, tau=self.tau)
             
             self.muV, self.sigmaV = update_muV_sigmaV_gaussian_gaussian_wishart(
-                mu0=self.mu0, beta0=self.beta0, v0=self.v0, W0_inv=self.W0_inv, V=self.V)
+                mu0=self.mu0, beta0=self.beta0, v0=self.v0, W0=self.W0, V=self.V)
             self.V = update_V_gaussian_gaussian_wishart(
                 muV=self.muV, sigmaV=self.sigmaV, R=self.R, M=self.M, U=self.U, tau=self.tau)
                  

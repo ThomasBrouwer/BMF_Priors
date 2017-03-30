@@ -133,17 +133,17 @@ def update_V_gaussian_gaussian_wishart(muV, sigmaV, R, M, U, tau):
     return update_U_gaussian_gaussian_wishart(
         muU=muV, sigmaU=sigmaV, R=R.T, M=M.T, V=U, tau=tau)
 
-def update_muU_sigmaU_gaussian_gaussian_wishart(mu0, beta0, v0, W0_inv, U):
+def update_muU_sigmaU_gaussian_gaussian_wishart(mu0, beta0, v0, W0, U):
     """ Update muU and sigmaU for All Gaussian + Wishart model. """
     beta0_s, v0_s, mu0_s, W0_s = gaussian_wishart_beta0_v0_mu0_W0(
-        beta0=beta0, v0=v0, mu0=mu0, W0_inv=W0_inv, U=U)
+        beta0=beta0, v0=v0, mu0=mu0, W0=W0, U=U)
     new_muU, new_sigmaU = normal_inverse_wishart_draw(mu0=mu0_s,beta0=beta0_s,v0=v0_s,W0=W0_s)
     return (new_muU, new_sigmaU)
 
-def update_muV_sigmaV_gaussian_gaussian_wishart(mu0, beta0, v0, W0_inv, V):
+def update_muV_sigmaV_gaussian_gaussian_wishart(mu0, beta0, v0, W0, V):
     """ Update muV and sigmaV for All Gaussian + Wishart model. """
     return update_muU_sigmaU_gaussian_gaussian_wishart(
-        mu0=mu0, beta0=beta0, v0=v0, W0_inv=W0_inv, U=V)
+        mu0=mu0, beta0=beta0, v0=v0, W0=W0, U=V)
     
 
 ''' (Gausian) Gaussian + Automatic Relevance Determination '''
