@@ -25,17 +25,20 @@ settings = {
     'init': 'random', 
     'iterations': 200,
 }
-
-times, performances = measure_convergence_time(model_class, settings)
+fout_performances = './results/performances_poisson_gamma_gamma.txt'
+fout_times = './results/times_poisson_gamma_gamma.txt'
+repeats = 10
+performances, times = measure_convergence_time(
+    repeats, model_class, settings, fout_performances, fout_times)
 
 
 ''' Plot the times, and performance vs iterations. '''
 plt.figure()
 plt.title("Performance against average time")
-plt.plot(times, performances['MSE'])
+plt.plot(times, performances)
 plt.ylim(0,2000)
 
 plt.figure()
 plt.title("Performance against iteration")
-plt.plot(performances['MSE'])
+plt.plot(performances)
 plt.ylim(0,2000)
