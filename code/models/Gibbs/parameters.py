@@ -216,8 +216,9 @@ def tn_hierarchical_tau_a_b(a, b, U, muU):
     """ a_s and b_s for tau^U_ik with hierarchical prior (hyperparams a, b).
         We compute the values for all i,k; so U, muU should both be a matrix. """
     assert U.shape == muU.shape
-    a_s = a * numpy.ones(U.shape)
-    b_s = b + ( U * muU )**2
+    a_s = a * numpy.ones(U.shape) + 0.5
+    b_s = b + ( U - muU )**2 / 2.
+    #print a_s, b_s, U, muU, a, b
     return (a_s, b_s)
 
 
