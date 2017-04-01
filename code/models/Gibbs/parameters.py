@@ -52,9 +52,13 @@ def gaussian_gaussian_mu_tau(k, lamb, R, M, U, V, tau):
     """ muUk and tauUk (vectors) for Uk with N(0,I/lamb) prior (I=identity matrix). """
     I, J, K = R.shape[0], R.shape[1], U.shape[1]
     assert R.shape == M.shape and V.shape == (J,K) and U.shape[0] == I
-    tauUk = lamb + tau * ( M * V[:,k]**2 ).sum(axis=1)
-    muUk = tau * ( M * ( ( R - numpy.dot(U,V.T) + numpy.outer(U[:,k],V[:,k])) * V[:,k] ) ).sum(axis=1)
-    muUk /= tauUk   
+    tauUk = lamb + tau * ( M * V[:,k]**2 ).sum(axis=1)   
+    #muUk = 1. / tauUk * ( tau * ( 
+    #    M * ( ( R - numpy.dot(U,V.T) + numpy.outer(U[:,k],V[:,k])) * V[:,k] ) ).sum(axis=1) )
+    V_ktilde = numpy.append(V[:,:k],V[:,k+1:],axis=1)
+    U_ktilde = numpy.append(U[:,:k],U[:,k+1:],axis=1)
+    muUk = 1. / tauUk * ( tau * (
+        numpy.dot(M*R, V[:,k]) - numpy.dot(M*numpy.dot(U_ktilde, V_ktilde.T), V[:,k])) )
     assert muUk.shape == (I,) and tauUk.shape == (I,)
     return (muUk, tauUk)
 
