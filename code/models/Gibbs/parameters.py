@@ -207,12 +207,12 @@ def gaussian_tn_hierarchical_mu_tau(k, muUk, tauUk, R, M, U, V, tau):
         for muUik, tauUik. We do updates per column of U (so Uk). """
     return gaussian_tn_mu_tau(k=k, muU=muUk, tauU=tauUk, R=R, M=M, U=U, V=V, tau=tau)
 
-def tn_hierarchical_mu_m_t(mu_mu, tau_mu, U, muU, tauU):
+def tn_hierarchical_mu_m_t(mu_mu, tau_mu, U, tauU):
     """ m and t for mu^U_ik with hierarchical prior (hyperparams mu_mu, tau_mu).
-        We compute the values for all i,k; so U, muU, tauU should all be a matrix. """
-    assert U.shape == muU.shape and U.shape == tauU.shape
+        We compute the values for all i,k; so U, tauU should all be a matrix. """
+    assert U.shape == tauU.shape
     t = tau_mu + tauU
-    m = 1. / t * ( tauU * U + muU * tau_mu )
+    m = 1. / t * ( tauU * U + mu_mu * tau_mu )
     assert m.shape == U.shape and t.shape == U.shape
     return (m, t)
 
@@ -222,7 +222,6 @@ def tn_hierarchical_tau_a_b(a, b, U, muU):
     assert U.shape == muU.shape
     a_s = a * numpy.ones(U.shape) + 0.5
     b_s = b + ( U - muU )**2 / 2.
-    #print a_s, b_s, U, muU, a, b
     return (a_s, b_s)
 
 
@@ -259,7 +258,7 @@ def gamma_hierarchical_hUi_a_b(ap, bp, a, Ui):
     """ a_s and b_s for h^U_i with Gamma(ap,ap/bp) prior, and Uik ~ Gamma(a,h_i^U). """
     K = Ui.shape[0]
     a_s = ap + K * a
-    b_s = bp + Ui.sum()
+    b_s = ap / float(bp) + Ui.sum()
     return (a_s, b_s)
 
 

@@ -80,14 +80,14 @@ class BMF_Gaussian_TruncatedNormal_Hierarchical(BMF):
         for it in range(iterations):
             # Update the random variables
             self.muU = update_muU_gaussian_truncatednormal_hierarchical(
-                mu_mu=self.mu_mu, tau_mu=self.tau_mu, U=self.U, muU=self.muU, tauU=self.tauU)
+                mu_mu=self.mu_mu, tau_mu=self.tau_mu, U=self.U, tauU=self.tauU)
             self.tauU = update_tauU_gaussian_truncatednormal_hierarchical(
                 a=self.a, b=self.b, U=self.U, muU=self.muU)
             self.U = update_U_gaussian_truncatednormal_hierarchical(
                 muU=self.muU, tauU=self.tauU, R=self.R, M=self.M, U=self.U, V=self.V, tau=self.tau) 
             
             self.muV = update_muV_gaussian_truncatednormal_hierarchical(
-                mu_mu=self.mu_mu, tau_mu=self.tau_mu, V=self.V, muV=self.muV, tauV=self.tauV)
+                mu_mu=self.mu_mu, tau_mu=self.tau_mu, V=self.V, tauV=self.tauV)
             self.tauV = update_tauV_gaussian_truncatednormal_hierarchical(
                 a=self.a, b=self.b, V=self.V, muV=self.muV)
             self.V = update_V_gaussian_truncatednormal_hierarchical(

@@ -279,20 +279,20 @@ def update_V_gaussian_truncatednormal_hierarchical(muV, tauV, R, M, U, V, tau):
     return update_U_gaussian_truncatednormal_hierarchical(
         muU=muV, tauU=tauV, R=R.T, M=M.T, U=V, V=U, tau=tau)
     
-def update_muU_gaussian_truncatednormal_hierarchical(mu_mu, tau_mu, U, muU, tauU):
+def update_muU_gaussian_truncatednormal_hierarchical(mu_mu, tau_mu, U, tauU):
     """ Update muU (matrix) for Gaussian + Truncated Normal + hierarchical model. """
     I, K = U.shape
-    assert U.shape == muU.shape and U.shape == tauU.shape
-    (m_mu, t_mu) = tn_hierarchical_mu_m_t(mu_mu=mu_mu, tau_mu=tau_mu, U=U, muU=muU, tauU=tauU)
+    assert U.shape == tauU.shape
+    (m_mu, t_mu) = tn_hierarchical_mu_m_t(mu_mu=mu_mu, tau_mu=tau_mu, U=U, tauU=tauU)
     new_muU = numpy.zeros((I,K))
     for i,k in itertools.product(range(I),range(K)):
         new_muU[i,k] = normal_draw(mu=m_mu[i,k], tau=t_mu[i,k])
     return new_muU
 
-def update_muV_gaussian_truncatednormal_hierarchical(mu_mu, tau_mu, V, muV, tauV):
+def update_muV_gaussian_truncatednormal_hierarchical(mu_mu, tau_mu, V, tauV):
     """ Update muV (matrix) for Gaussian + Truncated Normal + hierarchical model. """
     return update_muU_gaussian_truncatednormal_hierarchical(
-        mu_mu=mu_mu, tau_mu=tau_mu, U=V, muU=muV, tauU=tauV)
+        mu_mu=mu_mu, tau_mu=tau_mu, U=V, tauU=tauV)
     
 def update_tauU_gaussian_truncatednormal_hierarchical(a, b, U, muU):
     """ Update tauU (matrix) for Gaussian + Truncated Normal + hierarchical model. """
