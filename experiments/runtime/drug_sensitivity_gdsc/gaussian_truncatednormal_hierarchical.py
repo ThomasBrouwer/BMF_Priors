@@ -21,7 +21,7 @@ settings = {
     'M': M, 
     'hyperparameters': { 'alpha':1., 'beta':1., 'mu_mu':0.1, 'tau_mu':0.1, 'a':1., 'b':1. }, 
     'init': 'random', 
-    'iterations': 100,
+    'iterations': 10,
 }
 fout = './results/times_gaussian_truncatednormal_hierarchical.txt'
 
