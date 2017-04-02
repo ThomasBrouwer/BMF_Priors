@@ -10,10 +10,12 @@ https://en.wikipedia.org/wiki/Normal-inverse-Wishart_distribution#Generating_nor
 """
 from scipy.stats import invwishart
 from multivariate_normal import multivariate_normal_draw
+import numpy
 
 # Draw a value for mu, Sigma ~ NIW(mu0,beta0,v0,W0)
 def normal_inverse_wishart_draw(mu0,beta0,v0,W0):
     sigma = invwishart.rvs(df=v0, scale=W0)
+    sigma = sigma if sigma.shape != () else numpy.array([[sigma]])
     mu = multivariate_normal_draw(mu=mu0,sigma=sigma/beta0)
     return (mu,sigma)
     
