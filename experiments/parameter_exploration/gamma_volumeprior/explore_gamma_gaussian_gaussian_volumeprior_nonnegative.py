@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 R, M = load_gdsc_ic50_integer()
 model_class = BMF_Gaussian_Gaussian_VolumePrior_nonnegative
 n_folds = 5
-values_gamma = [10**-25, 10**-20, 10**-15, 10**-10, 10**-5, 10**0] # [10**-60, 10**-55, 10**-50, 10**-45, 10**-40, 10**-35, 10**-30]
+values_gamma = [10**-60, 10**-55, 10**-50, 10**-45, 10**-40, 10**-35, 10**-30] # [10**-25, 10**-20, 10**-15, 10**-10, 10**-5, 10**0] 
 values_K = [5]
 values_gamma_K = list(itertools.product(values_gamma, values_K))
 settings = {

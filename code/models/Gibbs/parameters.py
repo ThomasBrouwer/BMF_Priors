@@ -143,20 +143,23 @@ def gaussian_gaussian_volumeprior_mu_sigma(i, k, gamma, Ri, Mi, U, V, tau):
     
     # If K=1, the VP prior bit has no effect
     tauUik = tau*(Mi*V[:,k]**2).sum()
-    muUik = 1./tauUik * ( 
-        tau * (numpy.dot(Mi*Ri, V[:,k]) - numpy.dot(numpy.dot(U_i_ktilde, V_ktilde.T), Mi*V[:,k])) ) 
-    #muUik = 1./tauUik * (
-    #    tau * (Mi *((Ri-numpy.dot(U[i,:],V.T)+U[i,k]*V[:,k])*V[:,k])).sum() )
     if K > 1: 
         D_ktilde_ktilde = numpy.linalg.det(cov_U_ktilde)
         A_ktilde_ktilde = adjugate_matrix(cov_U_ktilde)
         assert cov_U_ktilde.shape == (K-1,K-1) and A_ktilde_ktilde.shape == (K-1,K-1)
         tauUik += gamma * (D_ktilde_ktilde - numpy.dot(numpy.dot(U_i_ktilde,A_ktilde_ktilde),U_i_ktilde))
-        muUik += 1./tauUik * (
+        muUik = 1./tauUik * (
+            tau * (numpy.dot(Mi*Ri, V[:,k]) - numpy.dot(numpy.dot(U_i_ktilde, V_ktilde.T), Mi*V[:,k])) +
             gamma * numpy.dot(numpy.dot(U_i_ktilde,A_ktilde_ktilde), numpy.dot(U_itilde_ktilde.T,U_itilde_k))
         )
         #muUik += 1./tauUik * (
+        #    tau * (Mi *((Ri-numpy.dot(U[i,:],V.T)+U[i,k]*V[:,k])*V[:,k])).sum() +
         #    gamma * numpy.dot(numpy.dot(U_i_ktilde,A_ktilde_ktilde), numpy.dot(U_itilde_ktilde.T,U_itilde_k)) )
+    else:
+        muUik = 1./tauUik * ( 
+            tau * (numpy.dot(Mi*Ri, V[:,k]) - numpy.dot(numpy.dot(U_i_ktilde, V_ktilde.T), Mi*V[:,k])) ) 
+        #muUik = 1./tauUik * (
+        #    tau * (Mi *((Ri-numpy.dot(U[i,:],V.T)+U[i,k]*V[:,k])*V[:,k])).sum() )
     return (muUik, tauUik)
 
 
