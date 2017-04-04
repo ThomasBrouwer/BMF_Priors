@@ -21,7 +21,7 @@ settings = {
     'M': M, 
     'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**-50 }, 
     'init': 'random', 
-    'iterations': 100,
+    'iterations': 10,
 }
 fout = './results/times_gaussian_gaussian_volumeprior_nonnegative.txt'
 

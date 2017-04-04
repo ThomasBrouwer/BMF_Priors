@@ -22,11 +22,11 @@ values_K = [1,2,3,4,6,8,10,15,20,30]
 settings = {
     'R': R, 
     'M': M, 
-    'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**-50 }, 
+    'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**-30 }, 
     'init': 'random', 
     'iterations': 100,
-    'burn_in': 80,
-    'thinning': 2,
+    'burn_in': 90,
+    'thinning': 1,
 }
 fout = './results/performances_gaussian_gaussian_volumeprior.txt'
 average_performances, all_performances = measure_model_selection(
