@@ -17,18 +17,18 @@ method = BMF_Gaussian_Gaussian_VolumePrior_nonnegative
 R, M = load_gdsc_ic50_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**-30 }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 100,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
-    'thinning' : 2,
+    'burn_in' : 90,
+    'thinning' : 1,
 }
 
 
 ''' Settings nested cross-validation. '''
-K_range = [5,6,7,8,9]
-no_folds = 10
+K_range = [10,11,12]
+no_folds = 5
 no_threads = 5
 parallel = False
 folder_results = './results/gaussian_gaussian_volumeprior_nonnegative/'

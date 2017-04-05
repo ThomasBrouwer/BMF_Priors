@@ -65,7 +65,7 @@ def generate_M(I,J,fraction,M=None):
         M_train[i,j] = 1
     for i,j in indices[index_last_observed:]:
         M_test[i,j] = 1
-    assert numpy.array_equal(M,M_train+M_test), "Tried splitting M into M_test and M_train but something went wrong."
+    assert numpy.array_equal(M, M_train+M_test), "Tried splitting M into M_test and M_train but something went wrong."    
     return M_train, M_test
     
     

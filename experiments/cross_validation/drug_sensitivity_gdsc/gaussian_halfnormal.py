@@ -27,8 +27,8 @@ predict_config = {
 
 
 ''' Settings nested cross-validation. '''
-K_range = [5,6,7,8,9]
-no_folds = 10
+K_range = [5,6,7,8,9,10]
+no_folds = 5
 no_threads = 5
 parallel = False
 folder_results = './results/gaussian_halfnormal/'

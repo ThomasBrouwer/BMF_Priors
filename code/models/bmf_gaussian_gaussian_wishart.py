@@ -33,7 +33,7 @@ DEFAULT_HYPERPARAMETERS = {
     'beta': 1.,
     'mu0': 0.,
     'beta0': 1.,
-    'v0': 1.,
+    #'v0': 1., Default is K
     'W0': 1.,
 }
 
@@ -45,7 +45,7 @@ class BMF_Gaussian_Gaussian_Wishart(BMF):
         self.beta =  hyperparameters.get('beta',  DEFAULT_HYPERPARAMETERS['beta'])   
         self.mu0 =   hyperparameters.get('mu0',   DEFAULT_HYPERPARAMETERS['mu0'])
         self.beta0 = hyperparameters.get('beta0', DEFAULT_HYPERPARAMETERS['beta0'])
-        self.v0 =    hyperparameters.get('v0',    DEFAULT_HYPERPARAMETERS['v0'])
+        self.v0 =    hyperparameters.get('v0',    K)#DEFAULT_HYPERPARAMETERS['v0'])
         self.W0 =    hyperparameters.get('W0',    DEFAULT_HYPERPARAMETERS['W0'])
         self.mu0 = self.mu0 if isinstance(self.mu0, numpy.ndarray)  \
                    else self.mu0 * numpy.ones(K)

@@ -29,7 +29,7 @@ def measure_model_selection(n_folds, values_K, model_class, settings, fout=None)
         - values_K -- range of values for K we should try
         - model_class -- the BMF class we should use.
         - settings -- dictionary {'R', 'M', 'hyperparameters', 'init', 'iterations', 'burn_in', 'thinning'}.
-        - fout_performances, fout_times -- strings giving location of output files.
+        - fout -- string giving location of output file.
     '''
     # Extract the settings
     R, M, hyperparameters = settings['R'], settings['M'], settings['hyperparameters']
