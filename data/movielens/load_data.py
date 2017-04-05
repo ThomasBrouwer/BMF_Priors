@@ -23,6 +23,8 @@ fin_1M = folder_1M+'ratings.dat'
 DELIM_100K = '\t'
 DELIM_1M = '::'
 
+MIN_NO_ENTRIES = 2
+
 def construct_dataset_from_raw(fin, delim):
     ''' Return (R, M), which we construct from a file with one rating per line,
         of the form: user_id<delim>movie_id<delim>rating<delim>timestamp\n '''
@@ -42,7 +44,21 @@ def construct_dataset_from_raw(fin, delim):
         if c % 10000 == 0:
             print "Constructing dataset... Done %s lines." % c
     print "Constructing dataset... Finished!"
+    
+    # Filter out any rows or columns with less than MIN_NO_ENTRIES    
+    R, M = filter_rows(R, M, MIN_NO_ENTRIES)
+    
     return (R, M)
+
+def filter_rows(R, M, min_no_entries):
+    I, J = R.shape
+    entries_per_row = M.sum(axis=1)
+    indices_enough_entries = [i for i in range(I) if entries_per_row[i] >= min_no_entries]
+    return R[indices_enough_entries,:], M[indices_enough_entries,:]
+
+def filter_columns(R, M, min_no_entries):
+    R_new, M_new = filter_rows(R.T, M.T, min_no_entries)
+    return R_new.T, M_new.T
 
 def load_movielens_100K():
     ''' Process and store files for MovieLens 100K. '''
