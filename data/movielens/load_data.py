@@ -23,7 +23,7 @@ fin_1M = folder_1M+'ratings.dat'
 DELIM_100K = '\t'
 DELIM_1M = '::'
 
-MIN_NO_ENTRIES = 2
+MIN_NO_ENTRIES = 3
 
 def construct_dataset_from_raw(fin, delim):
     ''' Return (R, M), which we construct from a file with one rating per line,
@@ -45,9 +45,14 @@ def construct_dataset_from_raw(fin, delim):
             print "Constructing dataset... Done %s lines." % c
     print "Constructing dataset... Finished!"
     
-    # Filter out any rows or columns with less than MIN_NO_ENTRIES    
-    R, M = filter_rows(R, M, MIN_NO_ENTRIES)
-    
+    # Filter out any rows or columns with less than MIN_NO_ENTRIES  
+    print "Before filtering, shape is (%s, %s)." % (R.shape)
+    R, M = filter_rows(R, M, MIN_NO_ENTRIES) 
+    print "After row filtering, shape is (%s, %s)." % (R.shape)
+    R, M = filter_columns(R, M, MIN_NO_ENTRIES)
+    print "After column filtering, shape is (%s, %s)." % (R.shape)
+    R, M = filter_rows(R, M, MIN_NO_ENTRIES) 
+    print "After second row filtering, shape is (%s, %s)." % (R.shape)
     return (R, M)
 
 def filter_rows(R, M, min_no_entries):
