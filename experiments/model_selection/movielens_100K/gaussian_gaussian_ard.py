@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 R, M = load_movielens_100K()
 model_class = BMF_Gaussian_Gaussian_ARD
 n_folds = 10
-values_K = [1,2,3,4,6,8,10,15,20,30]
+values_K = [1,2,3,4,6,8,10,15]
 settings = {
     'R': R, 
     'M': M, 
@@ -26,7 +26,7 @@ settings = {
     'init': 'random', 
     'iterations': 200,
     'burn_in': 180,
-    'thinning': 2,
+    'thinning': 1,
 }
 fout = './results/performances_gaussian_gaussian_ard.txt'
 average_performances, all_performances = measure_model_selection(
@@ -37,4 +37,4 @@ average_performances, all_performances = measure_model_selection(
 plt.figure()
 plt.title("Model selection performances")
 plt.plot(values_K, average_performances['MSE'])
-plt.ylim(0,1000)
+plt.ylim(0,2)

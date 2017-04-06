@@ -30,7 +30,7 @@ OPTIONS_INIT = ['random', 'exp']
 DEFAULT_HYPERPARAMETERS = {
     'alpha': 1.,
     'beta': 1.,
-    'mu_mu': 0.1,
+    'mu_mu': 0.,
     'tau_mu': 0.1,
     'a': 1.,
     'b': 1.,

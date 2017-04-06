@@ -18,14 +18,14 @@ import matplotlib.pyplot as plt
 R, M = load_movielens_100K()
 model_class = BMF_Gaussian_Gaussian_VolumePrior_nonnegative
 n_folds = 10
-values_K = [1,2,3,4,6,8,10,15,20,30]
+values_K = [1,2,3,4,6,8,10,15]
 settings = {
     'R': R, 
     'M': M, 
     'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**-30 }, 
     'init': 'random', 
     'iterations': 100,
-    'burn_in': 90,
+    'burn_in': 80,
     'thinning': 1,
 }
 fout = './results/performances_gaussian_gaussian_volumeprior_nonnegative.txt'
@@ -37,4 +37,4 @@ average_performances, all_performances = measure_model_selection(
 plt.figure()
 plt.title("Model selection performances")
 plt.plot(values_K, average_performances['MSE'])
-plt.ylim(0,1000)
+plt.ylim(0,2)

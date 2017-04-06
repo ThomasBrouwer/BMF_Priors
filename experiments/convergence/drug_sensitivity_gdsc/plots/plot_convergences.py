@@ -1,19 +1,17 @@
 """
-Plot the model selection experiment outcomes
+Plot the convergence of the many different BMF algorithms on the GDSC data.
 """
 
 import matplotlib.pyplot as plt
-import numpy
 
 
 ''' Plot settings. '''
-MSE_min, MSE_max = 650, 950
-values_K = [1,2,3,4,6,8,10,15,20,30]
+MSE_min, MSE_max = 400, 800
+iterations = range(1,200+1)
 
 folder_plots = "./"
 folder_results = "./../results/"
-plot_file = folder_plots+"model_selection_gdsc.png"
-legend_file = folder_plots+'legend.png'
+plot_file = folder_plots+"convergences_gdsc.png"
 
 
 ''' Load in the performances. '''
@@ -32,49 +30,40 @@ ghh = eval(open(folder_results+'performances_gaussian_halfnormal.txt','r').read(
 pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
+
+''' Assemble the average performances and method names. '''
 performances_names_colours_linestyles_markers = [
-    (ggg,  'GGG',  'r', '-', 'o'),
-    (gggu, 'GGGU', 'r', '-', 's'),
-    (gggw, 'GGGW', 'r', '-', 'x'),
-    (ggga, 'GGGA', 'r', '-', 'd'),
-    (gvg,  'GVG',  'r', '-', '*'),
-    (geg,  'GEG',  'g', '-', 'o'),
-    (gvng, 'GVnG', 'g', '-', '*'),
-    (gee,  'GEE',  'b', '-', 'o'),
-    (geea, 'GEEA', 'b', '-', 'd'),
-    (gtt,  'GTT',  'b', '-', 's'),
-    (gttn, 'GTTN', 'b', '-', 'x'),
-    (ghh,  'GHH',  'b', '-', '*'),
-    (pgg,  'PGG',  'y', '-', 'o'),
-    (pggg, 'PGGG', 'y', '-', 's'),
+    (ggg,  'GGG',  'r', '-', ''),
+    (gggu, 'GGGU', 'r', '-', ''),
+    (gggw, 'GGGW', 'r', ':', ''),
+    (ggga, 'GGGA', 'r', '-', ''),
+    (gvg,  'GVG',  'r', '--', ''),
+    (geg,  'GEG',  'g', '-', ''),
+    (gvng, 'GVnG', 'g', '--', ''),
+    (gee,  'GEE',  'b', '-', ''),
+    (geea, 'GEEA', 'b', '-', ''),
+    (gtt,  'GTT',  'b', '-', ''),
+    (gttn, 'GTTN', 'b', '-', ''),
+    (ghh,  'GHH',  'b', '-', ''),
+    (pgg,  'PGG',  'y', '-', ''),
+    (pggg, 'PGGG', 'y', '-', ''),
 ]
 
 
 ''' Plot the performances. '''
 fig = plt.figure(figsize=(4,3))
-fig.subplots_adjust(left=0.09, right=0.98, bottom=0.09, top=0.98)
-plt.xlabel("K", fontsize=8, labelpad=1)
-plt.ylabel("MSE", fontsize=8, labelpad=1)
-
-x = values_K
-for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
-    y = numpy.mean(performances["MSE"],axis=1)
-    plt.plot(x, y, label=name, linestyle=linestyle, marker=marker, c=colour, markersize=3)
-
+fig.subplots_adjust(left=0.09, right=0.98, bottom=0.08, top=0.98)
+plt.xlabel("Iterations", fontsize=8, labelpad=0)
+plt.ylabel("MSE", fontsize=8, labelpad=0)
 plt.xticks(fontsize=6)
+
+x = iterations
+for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
+    y = performances
+    plt.plot(x, y, label=name, linestyle=linestyle, marker=marker, c=colour, markersize=3)
+ 
 plt.yticks(range(0,MSE_max+1,100),fontsize=6)
 plt.ylim(MSE_min,MSE_max)
-plt.xlim(0,values_K[-1]+1)
-
-plt.savefig(plot_file, dpi=600)
-
-
-''' Set up the legend outside. '''
-font_size_legend, number_of_columns, legend_box_line_width, legend_line_width = 12, 5, 1, 1
-ax = fig.add_subplot(111)
-legend_fig = plt.figure(figsize=(6.4,0.9))
-legend = legend_fig.legend(*ax.get_legend_handles_labels(), loc='center', prop={'size':font_size_legend}, ncol=number_of_columns)
-legend.get_frame().set_linewidth(legend_box_line_width)
-plt.setp(legend.get_lines(),linewidth=legend_line_width)
     
-plt.savefig(legend_file, dpi=600)
+plt.savefig(plot_file, dpi=600)
+    
