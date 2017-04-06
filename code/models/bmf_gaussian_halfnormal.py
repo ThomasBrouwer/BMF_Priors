@@ -1,4 +1,6 @@
 """
+NOTE: This model is equivalent to GTT, when mu_U = 0 and tau_U = 1./sigma^2.
+
 Bayesian Matrix Factorisation with Gaussian likelihood and Half Normal priors.
 
 Rij ~ N(Ui*Vj,tau^-1), tau ~ Gamma(alpha,beta), Uik ~ HN(sigma), Vjk ~ HN(sigma)

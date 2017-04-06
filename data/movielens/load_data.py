@@ -5,9 +5,17 @@ slightly faster (for MovieLens 1M, 1 minute vs 1:40 minutes).
 
 Rows are users, columns are movies. Ratings are 0-5 (0 means no rating).
 
+Before filtering:
+
 SUMMARY: n_users, n_movies, n_entries, fraction_obs
 100K:    943      1682      100000     0.063046693642245313
 1M:      6040     3706      1000209    0.044683625622312845
+
+After filtering:
+
+SUMMARY: n_users, n_movies, n_entries, fraction_obs
+100K:    943      1473      99723      0.07179280063410746
+1M:      6040     3503      999917     0.047259255548224514
 '''
 
 import numpy

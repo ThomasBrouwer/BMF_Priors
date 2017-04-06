@@ -44,7 +44,7 @@ performances_names_colours_linestyles_markers = [
     (geea, 'GEEA', 'b', '-', 'd'),
     (gtt,  'GTT',  'b', '-', 's'),
     (gttn, 'GTTN', 'b', '-', 'x'),
-    (ghh,  'GHH',  'b', '-', '*'),
+#    (ghh,  'GHH',  'b', '-', '*'),
     (pgg,  'PGG',  'y', '-', 'o'),
     (pggg, 'PGGG', 'y', '-', 's'),
 ]
@@ -52,9 +52,9 @@ performances_names_colours_linestyles_markers = [
 
 ''' Plot the performances. '''
 fig = plt.figure(figsize=(4,3))
-fig.subplots_adjust(left=0.08, right=0.98, bottom=0.08, top=0.98)
-plt.xlabel("K", fontsize=8, labelpad=0)
-plt.ylabel("Time (s)", fontsize=8, labelpad=0)
+fig.subplots_adjust(left=0.09, right=0.98, bottom=0.095, top=0.98)
+plt.xlabel("K", fontsize=12, labelpad=0)
+plt.ylabel("Time (s)", fontsize=12, labelpad=0)
 plt.yticks(fontsize=6)
 plt.xticks(fontsize=6)
 

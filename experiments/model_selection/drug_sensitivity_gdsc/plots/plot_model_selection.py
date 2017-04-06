@@ -44,7 +44,7 @@ performances_names_colours_linestyles_markers = [
     (geea, 'GEEA', 'b', '-', 'd'),
     (gtt,  'GTT',  'b', '-', 's'),
     (gttn, 'GTTN', 'b', '-', 'x'),
-    (ghh,  'GHH',  'b', '-', '*'),
+#    (ghh,  'GHH',  'b', '-', '*'),
     (pgg,  'PGG',  'y', '-', 'o'),
     (pggg, 'PGGG', 'y', '-', 's'),
 ]
@@ -52,9 +52,9 @@ performances_names_colours_linestyles_markers = [
 
 ''' Plot the performances. '''
 fig = plt.figure(figsize=(4,3))
-fig.subplots_adjust(left=0.09, right=0.98, bottom=0.09, top=0.98)
-plt.xlabel("K", fontsize=8, labelpad=1)
-plt.ylabel("MSE", fontsize=8, labelpad=1)
+fig.subplots_adjust(left=0.10, right=0.98, bottom=0.095, top=0.98)
+plt.xlabel("K", fontsize=12, labelpad=1)
+plt.ylabel("MSE", fontsize=12, labelpad=1)
 
 x = values_K
 for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
@@ -70,9 +70,9 @@ plt.savefig(plot_file, dpi=600)
 
 
 ''' Set up the legend outside. '''
-font_size_legend, number_of_columns, legend_box_line_width, legend_line_width = 12, 5, 1, 1
+font_size_legend, number_of_columns, legend_box_line_width, legend_line_width = 12, 7, 1, 1
 ax = fig.add_subplot(111)
-legend_fig = plt.figure(figsize=(6.4,0.9))
+legend_fig = plt.figure(figsize=(8.8,0.6))
 legend = legend_fig.legend(*ax.get_legend_handles_labels(), loc='center', prop={'size':font_size_legend}, ncol=number_of_columns)
 legend.get_frame().set_linewidth(legend_box_line_width)
 plt.setp(legend.get_lines(),linewidth=legend_line_width)

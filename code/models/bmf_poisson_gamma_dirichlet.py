@@ -1,4 +1,6 @@
 """
+NOTE: This model's posteriors for the Dirichlet part are not conjugate and hence do not work.
+
 Bayesian Matrix Factorisation with Poisson likelihood, Dirichlet prior over U,
 and Gamma prior over V.
 
