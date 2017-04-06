@@ -22,7 +22,7 @@ values_K = [1,2,3,4,6,8,10,15]
 settings = {
     'R': R, 
     'M': M, 
-    'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**-30 }, 
+    'hyperparameters': { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**0 }, 
     'init': 'random', 
     'iterations': 100,
     'burn_in': 80,

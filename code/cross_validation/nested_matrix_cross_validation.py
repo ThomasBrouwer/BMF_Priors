@@ -78,9 +78,9 @@ class MatrixNestedCrossValidation:
         self.average_performances = {}  # Average performances across folds - dictionary from evaluation criteria to average performance
         
         
-    def run(self, parallel=True):
+    def run(self, parallel=True, stratify_rows=False):
         ''' Run the cross-validation. '''
-        folds_method = compute_folds_stratify_rows_attempts if self.I < self.J else compute_folds_stratify_columns_attempts
+        folds_method = compute_folds_stratify_rows_attempts if stratify_rows else compute_folds_stratify_columns_attempts
         folds_training, folds_test = folds_method(I=self.I, J=self.J, no_folds=self.K, attempts=attempts_generate_M, M=self.M)
                 
         for i,(train,test) in enumerate(zip(folds_training,folds_test)):

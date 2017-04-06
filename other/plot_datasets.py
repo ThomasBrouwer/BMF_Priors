@@ -22,12 +22,12 @@ def extract_values(R, M):
     I, J = R.shape
     return [R[i,j] for i,j in itertools.product(range(I),range(J)) if M[i,j]]
     
-#R_gdsc,    M_gdsc =    load_gdsc_ic50_integer()
-#R_ctrp,    M_ctrp =    load_ctrp_ec50_integer()
-#R_ccle_ic, M_ccle_ic = load_ccle_ic50_integer()
-#R_ccle_ec, M_ccle_ec = load_ccle_ec50_integer()
-#R_100K,    M_100K =    load_movielens_100K()
-#R_1M,      M_1M =      load_movielens_1M()
+R_gdsc,    M_gdsc =    load_gdsc_ic50_integer()
+R_ctrp,    M_ctrp =    load_ctrp_ec50_integer()
+R_ccle_ic, M_ccle_ic = load_ccle_ic50_integer()
+R_ccle_ec, M_ccle_ec = load_ccle_ec50_integer()
+R_100K,    M_100K =    load_movielens_100K()
+R_1M,      M_1M =      load_movielens_1M()
 
 values_plotnames_bins = [
     (extract_values(R_gdsc, M_gdsc), 'plot_gdsc.png', [v-0.5 for v in range(0,100+10,5)]),

@@ -8,7 +8,7 @@ import sys
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian_volumeprior import BMF_Gaussian_Gaussian_VolumePrior
-from BMF_Priors.data.movielens.load_data import load_movielens_100K
+from BMF_Priors.data.movielens.load_data import load_movielens_1M
 from BMF_Priors.experiments.parameter_exploration.gamma_volumeprior.drug_sensitivity_gdsc.explore_gamma_gaussian_gaussian_volumeprior import explore_gamma
 
 import itertools
@@ -16,11 +16,11 @@ import matplotlib.pyplot as plt
 
 
 ''' Run the experiment for the Gaussian + Gaussian + VP model. '''
-R, M = load_movielens_100K()
+R, M = load_movielens_1M()
 model_class = BMF_Gaussian_Gaussian_VolumePrior
 n_folds = 5
-values_gamma = [10**-50, 10**-40, 10**-30, 10**-20, 10**-10, 10**0, 10**10, 10**20, 10**30] 
-values_K = [2, 5]
+values_gamma = [10**-40, 10**-30, 10**-20, 10**-10, 10**0, 10**10, 10**20] 
+values_K = [2]
 values_gamma_K = list(itertools.product(values_gamma, values_K))
 settings = {
     'R': R, 
