@@ -1,0 +1,4 @@
+Tried parameters {'hyperparameters': {'alpha': 1.0, 'beta': 1.0, 'alpha0': 1.0, 'beta0': 1.0}, 'K': 5} but got exception: Failed to generate folds for training and test data, 1000 attempts.. 
+Tried parameters {'hyperparameters': {'alpha': 1.0, 'beta': 1.0, 'alpha0': 1.0, 'beta0': 1.0}, 'K': 6} but got exception: Failed to generate folds for training and test data, 1000 attempts.. 
+Tried parameters {'hyperparameters': {'alpha': 1.0, 'beta': 1.0, 'alpha0': 1.0, 'beta0': 1.0}, 'K': 7} but got exception: Failed to generate folds for training and test data, 1000 attempts.. 
+Tried parameters {'hyperparameters': {'alpha': 1.0, 'beta': 1.0, 'alpha0': 1.0, 'beta0': 1.0}, 'K': 8} but got exception: Failed to generate folds for training and test data, 1000 attempts.. 
