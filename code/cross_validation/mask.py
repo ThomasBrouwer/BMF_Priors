@@ -6,7 +6,6 @@ Provide methods for single mask matrices, and cross-validation folds.
 
 import numpy
 import random
-import itertools
 from sklearn.cross_validation import StratifiedKFold
 
 
