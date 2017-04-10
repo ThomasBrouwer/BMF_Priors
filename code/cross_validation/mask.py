@@ -11,18 +11,18 @@ from sklearn.cross_validation import StratifiedKFold
 
 
 ''' Helpers. '''
-def compute_Ms(folds_M):
-    ''' Take in the ten fold M's, and construct the masks M for the other nine folds. '''
-    no_folds = len(folds_M)
-    folds_M = [numpy.array(fold_M) for fold_M in folds_M]
-    return [sum(folds_M[:fold]+folds_M[fold+1:]) for fold in range(0,no_folds)]
+#def compute_Ms(folds_M):
+#    ''' Take in the ten fold M's, and construct the masks M for the other nine folds. '''
+#    no_folds = len(folds_M)
+#    folds_M = [numpy.array(fold_M) for fold_M in folds_M]
+#    return [sum(folds_M[:fold]+folds_M[fold+1:]) for fold in range(0,no_folds)]
 
 
 def nonzero_indices(M):
     ''' Return a list of indices of all nonzero indices in M. '''
-    (I,J) = numpy.array(M).shape
-    return [(i,j) for i,j in itertools.product(range(I),range(J)) if M[i,j]]
-
+    indices_row, indices_column = numpy.nonzero(M)
+    return zip(indices_row, indices_column)
+    
 
 def check_empty_rows_columns(M):
     ''' Return True if all rows and columns have at least one observation. '''
@@ -38,12 +38,7 @@ def check_empty_rows_columns(M):
             return False
     return True
     
-def calc_inverse_M(M, M_combined=None):
-    ''' Return the inverse of M. If M_combined is defined, make sure the 
-        original plus inverse add up to be M_combined.'''
-    return (M_combined if M_combined is not None else numpy.ones(M.shape)) - M
     
-
 ''' Generating methods. '''
 def generate_M(I,J,fraction,M=None):
     ''' Generate a mask matrix M_train with :fraction missing entries. 
@@ -75,7 +70,7 @@ def try_generate_M(I,J,fraction,attempts,M=None):
     for i in range(attempts):
         M_train,M_test = generate_M(I=I,J=J,fraction=fraction,M=M)
         if check_empty_rows_columns(M_train):
-            return M_train,M_test
+            return M_train, M_test
     assert False, "Failed to generate folds for training and test data, %s attempts, fraction %s." % (attempts,fraction)
 
 
@@ -106,7 +101,7 @@ def compute_folds(I,J,no_folds,M=None):
     
 
 def compute_folds_attempts(I,J,no_folds,attempts,M=None):
-    ''' Try generate_M() :attempts times, making sure each row and column of
+    ''' Try compute_folds() :attempts times, making sure each row and column of
         M_train has at least one observed entry. '''
     for i in range(attempts):
         Ms_train, Ms_test = compute_folds(I=I,J=J,no_folds=no_folds,M=M)
@@ -119,8 +114,10 @@ def compute_folds_attempts(I,J,no_folds,attempts,M=None):
     assert False, "Failed to generate folds for training and test data, %s attempts." % attempts
     
     
+''' Methods for computing stratified folds - ensuring that each fold has the
+    same number of entries from each row (or column). '''
 def compute_folds_stratify_rows(I,J,no_folds,M=None):
-    ''' Run compute_folds() but make sure each fold has the same number of 
+    ''' Like compute_folds() but make sure each fold has the same number of 
         entries of each row - i.e. we stratify the folds based on rows. 
         This could still create an empty column though. '''
     if M is None:
@@ -141,7 +138,7 @@ def compute_folds_stratify_rows(I,J,no_folds,M=None):
     return Ms_train, Ms_test
     
 
-def compute_folds_stratify_rows_attempts(I,J,no_folds,attempts,M=None):     
+def compute_folds_stratify_rows_attempts(I,J,no_folds,attempts,M=None):
     ''' Try compute_folds_stratify_rows() :attempts times, making sure each row 
         and column of M_train has at least one observed entry. '''
     for i in range(attempts):
@@ -162,7 +159,7 @@ def compute_folds_stratify_columns(I,J,no_folds,M=None):
     return (Ms_train, Ms_test)
     
     
-def compute_folds_stratify_columns_attempts(I,J,no_folds,attempts,M=None):     
+def compute_folds_stratify_columns_attempts(I,J,no_folds,attempts,M=None):
     ''' Try compute_folds_stratify_columns() :attempts times, making sure each row 
         and column of M_train has at least one observed entry. '''
     for i in range(attempts):
@@ -176,3 +173,34 @@ def compute_folds_stratify_columns_attempts(I,J,no_folds,attempts,M=None):
     assert False, "Failed to generate folds for training and test data, %s attempts." % attempts
 
 
+''' Methods for computing stratified folds, that also check whether a nested 
+    fold generation is possible. '''
+def compute_folds_stratify_rows_nested(I, J, no_folds, attempts, attempts_nested, M=None):
+    ''' Run compute_folds_stratify_rows(), but ensure that we can also 
+        generate nested folds (after at most :attempts_nested attempts). '''
+    for i in range(attempts_nested):
+        Ms_train, Ms_test = compute_folds_stratify_rows_attempts(
+            I=I, J=J, no_folds=no_folds, attempts=attempts, M=M)
+        success = True
+        for M_train in Ms_train:
+            if not check_empty_rows_columns(M_train):
+                success = False
+        if success:
+            return Ms_train, Ms_test
+    assert False, "Failed to generate folds for training and test data, %s attempts." % attempts
+    
+def compute_folds_stratify_columns_nested(I, J, no_folds, attempts, attempts_nested, M=None):
+    ''' Run compute_folds_stratify_columns_attempts(), but ensure that we can also 
+        generate nested folds (after at most :attempts_nested attempts). '''
+    for i in range(attempts_nested):
+        Ms_train, Ms_test = compute_folds_stratify_columns_attempts(
+            I=I, J=J, no_folds=no_folds, attempts=attempts, M=M)
+        success = True
+        for M_train in Ms_train:
+            if not check_empty_rows_columns(M_train):
+                success = False
+        if success:
+            return Ms_train, Ms_test
+    assert False, "Failed to generate folds for training and test data, %s attempts." % attempts
+    
+    

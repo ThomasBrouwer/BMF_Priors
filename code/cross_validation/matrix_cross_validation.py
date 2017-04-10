@@ -32,8 +32,7 @@ dataset :R into :K folds (considering only 1 entries in :M), and thus form
 our :K training and test sets. Then for each we train the model using the 
 parameters and training configuration :train_config. The performances are 
 stored in :file_performance.
-We use the row or column numbers to stratify the splitting of the entries into
-masks. If we have more rows, we use column numbers; and vice versa.
+We stratify the folds using the row (if stratify_folds) or column indices.
 
 Methods:
 - Constructor - simply takes in the arguments requires
@@ -50,7 +49,7 @@ from mask import compute_folds_stratify_columns_attempts
 import numpy
 import json
 
-attempts_generate_M = 1000
+attempts_generate_M = 100
 
 class MatrixCrossValidation:
     def __init__(self,method,R,M,K,parameter_search,train_config,predict_config,file_performance):
@@ -71,13 +70,13 @@ class MatrixCrossValidation:
         self.performances = {}          # Average performances per criterion - mapping evaluation criterion to a list of average performances (same size as parameter_search)
         
         
-    def run(self):
+    def run(self, stratify_rows=False):
         ''' Run the cross-validation. '''
         for parameters in self.parameter_search:
             print "Trying parameters %s." % (parameters)
             
             try:
-                folds_method = compute_folds_stratify_rows_attempts if self.I < self.J else compute_folds_stratify_columns_attempts
+                folds_method = compute_folds_stratify_rows_attempts if stratify_rows else compute_folds_stratify_columns_attempts
                 folds_training, folds_test = folds_method(I=self.I, J=self.J, no_folds=self.K, attempts=attempts_generate_M, M=self.M)
                 
                 # We need to put the parameter dict into json to hash it

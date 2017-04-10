@@ -37,7 +37,8 @@ The performances are stored in :file_performance.
 We use the row or column numbers to stratify the splitting of the entries into
 masks. If we have more rows, we use column numbers; and vice versa.
 
-We use the parallel matrix cross-validation module.
+We use the parallel matrix cross-validation module if parallel is True.
+We stratify the folds using the row (if stratify_folds) or column indices.
 
 Methods:
 - Constructor - simply takes in the arguments requires
@@ -53,6 +54,8 @@ from matrix_cross_validation import MatrixCrossValidation
 from parallel_matrix_cross_validation import ParallelMatrixCrossValidation
 from mask import compute_folds_stratify_rows_attempts
 from mask import compute_folds_stratify_columns_attempts
+from mask import compute_folds_stratify_rows_nested
+from mask import compute_folds_stratify_columns_nested
 
 import numpy
 
@@ -80,9 +83,13 @@ class MatrixNestedCrossValidation:
         
     def run(self, parallel=True, stratify_rows=False):
         ''' Run the cross-validation. '''
-        folds_method = compute_folds_stratify_rows_attempts if stratify_rows else compute_folds_stratify_columns_attempts
-        folds_training, folds_test = folds_method(I=self.I, J=self.J, no_folds=self.K, attempts=attempts_generate_M, M=self.M)
-                
+        #folds_method = compute_folds_stratify_rows_attempts if stratify_rows else compute_folds_stratify_columns_attempts
+        #folds_training, folds_test = folds_method(I=self.I, J=self.J, no_folds=self.K, attempts=attempts_generate_M, M=self.M)
+        folds_method = compute_folds_stratify_rows_nested if stratify_rows else compute_folds_stratify_columns_nested
+        folds_training, folds_test = folds_method(
+            I=self.I, J=self.J, no_folds=self.K, M=self.M, 
+            attempts=attempts_generate_M, attempts_nested=attempts_generate_M)
+               
         for i,(train,test) in enumerate(zip(folds_training,folds_test)):
             print "Fold %s of nested cross-validation." % (i+1)            
             
@@ -107,7 +114,7 @@ class MatrixNestedCrossValidation:
                 predict_config=self.predict_config,
                 file_performance=self.files_nested_performances[i],
             )
-            crossval.run()
+            crossval.run(stratify_rows=stratify_rows)
             
             try:
                 (best_parameters,_) = crossval.find_best_parameters(evaluation_criterion='MSE',low_better=True)

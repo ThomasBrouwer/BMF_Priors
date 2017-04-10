@@ -3,6 +3,7 @@ Parallel version of the MatrixCrossValidation class, where we parallelize
 the K-fold cross-validation for each parameter.
 We now have an extra parameter P for the initialisation, defining the number
 of parallel threads we should run.
+We stratify the folds using the row (if stratify_folds) or column indices.
 """
 
 from matrix_cross_validation import MatrixCrossValidation
@@ -12,7 +13,7 @@ from mask import compute_folds_stratify_columns_attempts
 from multiprocessing import Pool
 import numpy
 
-attempts_generate_M = 1000
+attempts_generate_M = 100
 
 
 # We try the parameters in parallel. This function either raises an Exception,
@@ -38,12 +39,12 @@ class ParallelMatrixCrossValidation(MatrixCrossValidation):
         self.P = P        
         
     # Run the cross-validation
-    def run(self):
+    def run(self, stratify_rows=False):
         for parameters in self.parameter_search:
             print "Trying parameters %s." % (parameters)
             
             try:
-                folds_method = compute_folds_stratify_rows_attempts if self.I < self.J else compute_folds_stratify_columns_attempts
+                folds_method = compute_folds_stratify_rows_attempts if stratify_rows else compute_folds_stratify_columns_attempts
                 folds_training, folds_test = folds_method(I=self.I, J=self.J, no_folds=self.K, attempts=attempts_generate_M, M=self.M)
                 
                 # We need to put the parameter dict into json to hash it
