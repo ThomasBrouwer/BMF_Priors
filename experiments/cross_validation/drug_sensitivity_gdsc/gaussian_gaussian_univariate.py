@@ -22,7 +22,7 @@ train_config = {
 }
 predict_config = {
     'burn_in' : 180,
-    'thinning' : 2,
+    'thinning' : 1,
 }
 
 

@@ -10,13 +10,6 @@ from sklearn.cross_validation import StratifiedKFold
 
 
 ''' Helpers. '''
-#def compute_Ms(folds_M):
-#    ''' Take in the ten fold M's, and construct the masks M for the other nine folds. '''
-#    no_folds = len(folds_M)
-#    folds_M = [numpy.array(fold_M) for fold_M in folds_M]
-#    return [sum(folds_M[:fold]+folds_M[fold+1:]) for fold in range(0,no_folds)]
-
-
 def nonzero_indices(M):
     ''' Return a list of indices of all nonzero indices in M. '''
     indices_row, indices_column = numpy.nonzero(M)
@@ -201,5 +194,69 @@ def compute_folds_stratify_columns_nested(I, J, no_folds, attempts, attempts_nes
         if success:
             return Ms_train, Ms_test
     assert False, "Failed to generate folds for training and test data, %s attempts." % attempts
+
+
+''' Methods for generating M, but making sure each row or column has at least 
+    one entry in it. '''
+def generate_M_rows(I, J, fraction, M=None):
+    ''' Generate a mask matrix M_train with :fraction missing entries, and at
+        least one entry in each row.
+        If :M is defined, use only those 1-entries. '''
+    if M is None:
+        M = numpy.ones((I,J))
+    indices = nonzero_indices(M)
+    no_elements = len(indices)
+    no_missing_total = I*J - no_elements
+    assert no_missing_total < I*J*fraction, "Specified %s fraction missing, so %s entries missing, but there are already %s missing by default!" % \
+        (fraction,I*J*fraction,no_missing_total)
+        
+    # First mark one entry of each row as observed, and take them out of indices
+    M_train, M_test = numpy.zeros((I,J)), numpy.zeros((I,J))
+    random.shuffle(indices)
+    for i in range(I):
+        # Use first (ip,j) in indices where ip=i
+        for ip,jp in indices:
+            if ip == i:
+                j = jp
+                break
+        M_train[i,j] = 1.
+        indices.remove((i,j))
+    
+    # Shuffle the observed entries, take the first (I*J)*(1-fraction) and mark those as observed
+    random.shuffle(indices)
+    index_last_observed = int(I*J*(1-fraction))
+    
+    for i,j in indices[:index_last_observed]:
+        M_train[i,j] = 1
+    for i,j in indices[index_last_observed:]:
+        M_test[i,j] = 1
+    assert numpy.array_equal(M, M_train+M_test), "Tried splitting M into M_test and M_train but something went wrong."    
+    return M_train, M_test
+    
+
+def generate_M_columns(I, J, fraction, M=None):
+    ''' Generate a mask matrix M_train with :fraction missing entries, and at
+        least one entry in each column.
+        If :M is defined, use only those 1-entries. '''
+    M_train, M_test = generate_M_rows(I=J, J=I, fraction=fraction, M=(M.T if M is not None else None))
+    return M_train.T, M_test.T
     
     
+def try_generate_M_rows(I,J,fraction,attempts,M=None):
+    ''' Try generate_M_rows() :attempts times, making sure each row and column has 
+        at least one observed entry. '''
+    for i in range(attempts):
+        M_train,M_test = generate_M_rows(I=I,J=J,fraction=fraction,M=M)
+        if check_empty_rows_columns(M_train):
+            return M_train, M_test
+    assert False, "Failed to generate folds for training and test data, %s attempts, fraction %s." % (attempts,fraction)
+
+
+def try_generate_M_columns(I,J,fraction,attempts,M=None):
+    ''' Try generate_M_columns() :attempts times, making sure each row and column has 
+        at least one observed entry. '''
+    for i in range(attempts):
+        M_train,M_test = generate_M_columns(I=I,J=J,fraction=fraction,M=M)
+        if check_empty_rows_columns(M_train):
+            return M_train, M_test
+    assert False, "Failed to generate folds for training and test data, %s attempts, fraction %s." % (attempts,fraction)

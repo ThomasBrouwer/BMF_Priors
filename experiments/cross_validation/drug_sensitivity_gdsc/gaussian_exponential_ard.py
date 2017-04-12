@@ -22,12 +22,12 @@ train_config = {
 }
 predict_config = {
     'burn_in' : 180,
-    'thinning' : 2,
+    'thinning' : 1,
 }
 
 
 ''' Settings nested cross-validation. '''
-K_range = [9,10,11,12]
+K_range = [8,9,10,11,12]
 no_folds = 5
 no_threads = 5
 parallel = False

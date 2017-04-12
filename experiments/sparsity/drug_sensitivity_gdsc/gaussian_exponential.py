@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 R, M = load_gdsc_ic50_integer()
 model_class = BMF_Gaussian_Exponential
 n_repeats = 10
+stratify_rows = False
 fractions_unknown = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 settings = {
     'R': R, 
@@ -31,7 +32,8 @@ settings = {
 }
 fout = './results/performances_gaussian_exponential.txt'
 average_performances, all_performances = sparsity_experiment(
-    n_repeats=n_repeats, fractions_unknown=fractions_unknown, model_class=model_class, settings=settings, fout=fout)
+    n_repeats=n_repeats, fractions_unknown=fractions_unknown, stratify_rows=stratify_rows,
+    model_class=model_class, settings=settings, fout=fout)
 
 
 ''' Plot the performance. '''

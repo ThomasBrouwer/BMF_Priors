@@ -21,13 +21,13 @@ train_config = {
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 90,
+    'burn_in' : 80,
     'thinning' : 1,
 }
 
 
 ''' Settings nested cross-validation. '''
-K_range = [10,11,12]
+K_range = [9,10,11]
 no_folds = 5
 no_threads = 5
 parallel = False

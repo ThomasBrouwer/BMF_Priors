@@ -21,7 +21,7 @@ train_config = {
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 90,
+    'burn_in' : 80,
     'thinning' : 1,
 }
 

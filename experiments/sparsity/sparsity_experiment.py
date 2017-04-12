@@ -6,18 +6,21 @@ project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
-from BMF_Priors.code.cross_validation.mask import try_generate_M
+from BMF_Priors.code.cross_validation.mask import try_generate_M_rows
+from BMF_Priors.code.cross_validation.mask import try_generate_M_columns
 
 import numpy
 
-ATTEMPTS_GENERATE_FOLDS = 1000
+ATTEMPTS_GENERATE_FOLDS = 100
 METRICS = ['MSE', 'R^2', 'Rp']
 
-def sparsity_experiment(n_repeats, fractions_unknown, model_class, settings, fout=None):
+def sparsity_experiment(n_repeats, fractions_unknown, stratify_rows, model_class, settings, fout=None):
     ''' Run the sparsity experiment.
         For each fraction in :fractions_unknown, run the sparsity test :n_repeats
         times. We split the data randomly into :fractions_unknown missing values
         and 1-:fractions_unknown observed, and predict the missing ones.
+        If stratify_rows = True, make sure each row (column if False) has at 
+        least one entry.
         
         Return (average_performances, all_performances), both a dictionary 
         ('MSE', 'R^2, 'Rp'). The former gives the average performances for each
@@ -28,6 +31,7 @@ def sparsity_experiment(n_repeats, fractions_unknown, model_class, settings, fou
         Arguments: 
         - n_repeats -- number of times to run sparsity experiment for each fraction.
         - fractions_unknown -- list of fractions to try.
+        - stratify_rows -- whether to ensure one entry per row or column.
         - model_class -- the BMF class we should use.
         - settings -- dictionary {'R', 'M', 'K', 'hyperparameters', 'init', 'iterations', 'burn_in', 'thinning'}.
         - fout -- string giving location of output file.
@@ -38,10 +42,11 @@ def sparsity_experiment(n_repeats, fractions_unknown, model_class, settings, fou
     burn_in, thinning = settings['burn_in'], settings['thinning']
         
     # Generate the folds
+    generate_M = try_generate_M_rows if stratify_rows else try_generate_M_columns
     I, J = M.shape
     all_Ms_training_and_test = [
         [
-            try_generate_M(I=I, J=J, fraction=fraction, attempts=ATTEMPTS_GENERATE_FOLDS, M=M)
+            generate_M(I=I, J=J, fraction=fraction, attempts=ATTEMPTS_GENERATE_FOLDS, M=M)
             for r in range(n_repeats)
         ]
         for fraction in fractions_unknown
