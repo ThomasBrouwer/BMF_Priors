@@ -7,7 +7,7 @@ import numpy
 
 
 ''' Plot settings. '''
-MSE_min, MSE_max = 0, 2
+MSE_min, MSE_max = 0.775, 1.1
 fractions_unknown = [0.93, 0.94, 0.95, 0.96, 0.97, 0.98]
 
 folder_plots = "./"
@@ -49,7 +49,7 @@ performances_names_colours_linestyles_markers = [
 
 ''' Plot the performances. '''
 fig = plt.figure(figsize=(3,2))
-fig.subplots_adjust(left=0.135, right=0.99, bottom=0.14, top=0.975)
+fig.subplots_adjust(left=0.115, right=0.99, bottom=0.14, top=0.975)
 plt.xlabel("Fraction missing", fontsize=9, labelpad=1)
 plt.ylabel("MSE", fontsize=9, labelpad=1)
 
@@ -60,7 +60,7 @@ for performances, name, colour, linestyle, marker in performances_names_colours_
              markersize=3, linewidth=0.8)
 
 plt.xticks(fontsize=6)
-plt.yticks(numpy.arange(0,MSE_max+1,100),fontsize=6)
+plt.yticks(numpy.arange(0,MSE_max+1,0.1),fontsize=6)
 plt.ylim(MSE_min, MSE_max)
 plt.xlim(fractions_unknown[0]-0.005, fractions_unknown[-1]+0.005)
 
