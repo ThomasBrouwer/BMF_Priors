@@ -7,7 +7,7 @@ import numpy
 
 
 ''' Plot settings. '''
-MSE_min, MSE_max = 650, 1400
+MSE_min, MSE_max = 650, 1350
 fractions_unknown = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
 folder_plots = "./"
@@ -31,36 +31,37 @@ pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
 performances_names_colours_linestyles_markers = [
-    (ggg,  'GGG',  'r', '-', 'o'),
-    (gggu, 'GGGU', 'r', '-', 's'),
-    (gggw, 'GGGW', 'r', '-', 'x'),
-    (ggga, 'GGGA', 'r', '-', 'd'),
-    (gvg,  'GVG',  'r', '-', '*'),
-    (geg,  'GEG',  'g', '-', 'o'),
-    (gvng, 'GVnG', 'g', '-', '*'),
-    (gee,  'GEE',  'b', '-', 'o'),
-    (geea, 'GEEA', 'b', '-', 'd'),
-    (gtt,  'GTT',  'b', '-', 's'),
-    (gttn, 'GTTN', 'b', '-', 'x'),
-    (pgg,  'PGG',  'y', '-', 'o'),
-    (pggg, 'PGGG', 'y', '-', 's'),
+    (ggg,  'GGG',  'r', '-', '1'),
+    (gggu, 'GGGU', 'r', '-', '2'),
+    (gggw, 'GGGW', 'r', '-', '3'),
+    (ggga, 'GGGA', 'r', '-', '4'),
+    (gvg,  'GVG',  'r', '-', '5'),
+    (geg,  'GEG',  'g', '-', '1'),
+    (gvng, 'GVnG', 'g', '-', '2'),
+    (gee,  'GEE',  'b', '-', '1'),
+    (geea, 'GEEA', 'b', '-', '2'),
+    (gtt,  'GTT',  'b', '-', '3'),
+    (gttn, 'GTTN', 'b', '-', '4'),
+    (pgg,  'PGG',  'y', '-', '1'),
+    (pggg, 'PGGG', 'y', '-', '2'),
 ]
 
 
 ''' Plot the performances. '''
-fig = plt.figure(figsize=(4,3))
-fig.subplots_adjust(left=0.11, right=0.98, bottom=0.105, top=0.98)
-plt.xlabel("Fraction missing", fontsize=12, labelpad=1)
-plt.ylabel("MSE", fontsize=12, labelpad=1)
+fig = plt.figure(figsize=(3,2))
+fig.subplots_adjust(left=0.135, right=0.99, bottom=0.14, top=0.975)
+plt.xlabel("Fraction missing", fontsize=9, labelpad=1)
+plt.ylabel("MSE", fontsize=9, labelpad=1)
 
 x = fractions_unknown
 for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
     y = numpy.mean(performances["MSE"],axis=1)
-    plt.plot(x, y, label=name, linestyle=linestyle, marker=marker, c=colour, markersize=3)
+    plt.plot(x, y, label=name, linestyle=linestyle, marker=('$%s$' % marker), c=colour, 
+             markersize=3, linewidth=0.8)
 
 plt.xticks(fontsize=6)
 plt.yticks(numpy.arange(0,MSE_max+1,100),fontsize=6)
 plt.ylim(MSE_min, MSE_max)
-plt.xlim(fractions_unknown[0]-0.1, fractions_unknown[-1]+0.1)
+plt.xlim(fractions_unknown[0]-0.05, fractions_unknown[-1]+0.05)
 
 plt.savefig(plot_file, dpi=600)
