@@ -7,7 +7,7 @@ import numpy
 
 
 ''' Plot settings. '''
-MSE_min, MSE_max = 0.775, 1.275
+MSE_min, MSE_max = 0.775, 1.2
 values_K = [1,2,3,4,6,8,10,15]
 
 folder_plots = "./"
@@ -32,35 +32,36 @@ pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
 performances_names_colours_linestyles_markers = [
-    (ggg,  'GGG',  'r', '-', 'o'),
-    (gggu, 'GGGU', 'r', '-', 's'),
-    (gggw, 'GGGW', 'r', '-', 'x'),
-    (ggga, 'GGGA', 'r', '-', 'd'),
-    (gvg,  'GVG',  'r', '-', '*'),
-    (geg,  'GEG',  'g', '-', 'o'),
-    (gvng, 'GVnG', 'g', '-', '*'),
-    (gee,  'GEE',  'b', '-', 'o'),
-    (geea, 'GEEA', 'b', '-', 'd'),
-    (gtt,  'GTT',  'b', '-', 's'),
-    (gttn, 'GTTN', 'b', '-', 'x'),
-    (pgg,  'PGG',  'y', '-', 'o'),
-    (pggg, 'PGGG', 'y', '-', 's'),
+    (ggg,  'GGG',  'r', '-', '1'),
+    (gggu, 'GGGU', 'r', '-', '2'),
+    (gggw, 'GGGW', 'r', '-', '3'),
+    (ggga, 'GGGA', 'r', '-', '4'),
+    (gvg,  'GVG',  'r', '-', '5'),
+    (geg,  'GEG',  'g', '-', '1'),
+    (gvng, 'GVnG', 'g', '-', '2'),
+    (gee,  'GEE',  'b', '-', '1'),
+    (geea, 'GEEA', 'b', '-', '2'),
+    (gtt,  'GTT',  'b', '-', '3'),
+    (gttn, 'GTTN', 'b', '-', '4'),
+    (pgg,  'PGG',  'y', '-', '1'),
+    (pggg, 'PGGG', 'y', '-', '2'),
 ]
 
 
 ''' Plot the performances. '''
-fig = plt.figure(figsize=(4,3))
-fig.subplots_adjust(left=0.10, right=0.98, bottom=0.095, top=0.98)
-plt.xlabel("K", fontsize=12, labelpad=1)
-plt.ylabel("MSE", fontsize=12, labelpad=1)
+fig = plt.figure(figsize=(3,2))
+fig.subplots_adjust(left=0.11, right=0.98, bottom=0.125, top=0.98)
+plt.xlabel("K", fontsize=9, labelpad=1)
+plt.ylabel("MSE", fontsize=9, labelpad=1)
 
 x = values_K[:-1]
 for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
     y = numpy.mean(performances["MSE"],axis=1)[:-1]
-    plt.plot(x, y, label=name, linestyle=linestyle, marker=marker, c=colour, markersize=3)
+    plt.plot(x, y, label=name, linestyle=linestyle, marker=('$%s$' % marker), c=colour,
+             markersize=4, linewidth=1.5)
 
 plt.xticks(fontsize=6)
-plt.yticks(numpy.arange(0,MSE_max+1,0.2),fontsize=6)
+plt.yticks(numpy.arange(0,MSE_max+1,0.1),fontsize=6)
 plt.ylim(MSE_min,MSE_max)
 plt.xlim(0,values_K[-2]+1)
 

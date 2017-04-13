@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 ''' Plot settings. '''
-MSE_min, MSE_max = 0.4, 1.2
+MSE_min, MSE_max = 0.45, 1.2
 iterations = range(1,200+1)
 
 folder_plots = "./"
@@ -35,11 +35,11 @@ pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read
 performances_names_colours_linestyles_markers = [
     (ggg,  'GGG',  'r', '-', ''),
     (gggu, 'GGGU', 'r', '-', ''),
-    (gggw, 'GGGW', 'r', ':', ''),
+    (gggw, 'GGGW', 'r', '-', ''),
     (ggga, 'GGGA', 'r', '-', ''),
-    (gvg,  'GVG',  'r', '--', ''),
+    (gvg,  'GVG',  'r', '-', ''),
     (geg,  'GEG',  'g', '-', ''),
-    (gvng, 'GVnG', 'g', '--', ''),
+    (gvng, 'GVnG', 'g', '-', ''),
     (gee,  'GEE',  'b', '-', ''),
     (geea, 'GEEA', 'b', '-', ''),
     (gtt,  'GTT',  'b', '-', ''),
@@ -51,17 +51,18 @@ performances_names_colours_linestyles_markers = [
 
 
 ''' Plot the performances. '''
-fig = plt.figure(figsize=(4,3))
-fig.subplots_adjust(left=0.09, right=0.98, bottom=0.10, top=0.98)
-plt.xlabel("Iterations", fontsize=12, labelpad=0)
-plt.ylabel("MSE", fontsize=12, labelpad=0)
+fig = plt.figure(figsize=(3,2))
+fig.subplots_adjust(left=0.105, right=0.975, bottom=0.125, top=0.975)
+plt.xlabel("Iterations", fontsize=9, labelpad=0)
+plt.ylabel("MSE", fontsize=9, labelpad=0)
 plt.yticks(fontsize=6)
 plt.xticks(fontsize=6)
 
 x = iterations
 for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
     y = performances
-    plt.plot(x, y, label=name, linestyle=linestyle, marker=marker, c=colour, markersize=3)
+    plt.plot(x, y, label=name, linestyle=linestyle, marker=marker, c=colour, 
+             markersize=3, linewidth=1.2)
  
 plt.ylim(MSE_min,MSE_max)
     
