@@ -30,7 +30,7 @@ Other updates:
 
 from parameters import gaussian_tau_alpha_beta
 from parameters import gaussian_gaussian_mu_tau
-from parameters import gaussian_gaussian_mu_sigma, gaussian_gaussian_mu_sigma_2
+from parameters import gaussian_gaussian_mu_sigma
 from parameters import gaussian_gaussian_wishart_mu_sigma
 from parameters import gaussian_wishart_beta0_v0_mu0_W0
 from parameters import gaussian_gaussian_ard_mu_sigma

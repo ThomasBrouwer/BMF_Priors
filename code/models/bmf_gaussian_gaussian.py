@@ -56,17 +56,12 @@ class BMF_Gaussian_Gaussian(BMF):
         time_start = time.time()
         for it in range(iterations):
             # Update the random variables
-            time0 = time.time()
             self.U = update_U_gaussian_gaussian_multivariate(
                 lamb=self.lamb, R=self.R, M=self.M, V=self.V, tau=self.tau) 
-            time1 = time.time()
             self.V = update_V_gaussian_gaussian_multivariate(
                 lamb=self.lamb, R=self.R, M=self.M, U=self.U, tau=self.tau)
-            time2 = time.time()
             self.tau = update_tau_gaussian(
                 alpha=self.alpha, beta=self.beta, R=self.R, M=self.M, U=self.U, V=self.V)
-            time3 = time.time()
-            print time1-time0, time2-time1, time3-time2
             
             # Store the draws
             self.all_U[it], self.all_V[it] = numpy.copy(self.U), numpy.copy(self.V)
