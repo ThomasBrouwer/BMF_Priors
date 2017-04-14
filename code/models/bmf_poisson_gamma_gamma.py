@@ -37,7 +37,10 @@ class BMF_Poisson_Gamma_Gamma(BMF):
         super(BMF_Poisson_Gamma_Gamma, self).__init__(R, M, K)
         self.a =  hyperparameters.get('a',  DEFAULT_HYPERPARAMETERS['a'])
         self.ap = hyperparameters.get('ap', DEFAULT_HYPERPARAMETERS['ap'])     
-        self.bp = hyperparameters.get('bp', DEFAULT_HYPERPARAMETERS['bp'])    
+        self.bp = hyperparameters.get('bp', DEFAULT_HYPERPARAMETERS['bp'])   
+        
+        indices_row, indices_column = numpy.nonzero(M)
+        self.Omega = zip(indices_row, indices_column)  
         
         
     def initialise(self,init):
@@ -69,7 +72,7 @@ class BMF_Poisson_Gamma_Gamma(BMF):
         for it in range(iterations):
             # Update the random variables
             self.Z = update_Z_poisson(
-                R=self.R, M=self.M, U=self.U, V=self.V)
+                R=self.R, M=self.M, Omega=self.Omega, Z=self.Z, U=self.U, V=self.V)
                 
             self.hU = update_hU_poisson_gamma_hierarchical(
                 ap=self.ap, bp=self.bp, a=self.a, U=self.U)

@@ -29,7 +29,10 @@ class BMF_Poisson_Gamma(BMF):
         """ Set up the class. """
         super(BMF_Poisson_Gamma, self).__init__(R, M, K)
         self.a = hyperparameters.get('a', DEFAULT_HYPERPARAMETERS['a'])
-        self.b = hyperparameters.get('b', DEFAULT_HYPERPARAMETERS['b'])     
+        self.b = hyperparameters.get('b', DEFAULT_HYPERPARAMETERS['b'])  
+        
+        indices_row, indices_column = numpy.nonzero(M)
+        self.Omega = zip(indices_row, indices_column)
         
         
     def initialise(self,init):
@@ -52,12 +55,17 @@ class BMF_Poisson_Gamma(BMF):
         time_start = time.time()
         for it in range(iterations):
             # Update the random variables
+            time0 = time.time()
             self.Z = update_Z_poisson(
-                R=self.R, M=self.M, U=self.U, V=self.V)
+                R=self.R, M=self.M, Omega=self.Omega, Z=self.Z, U=self.U, V=self.V)
+            time1 = time.time()
             self.U = update_U_poisson_gamma(
                 a=self.a, b=self.b, M=self.M, V=self.V, Z=self.Z)
+            time2 = time.time()
             self.V = update_V_poisson_gamma(
                 a=self.a, b=self.b, M=self.M, U=self.U, Z=self.Z)
+            time3 = time.time()
+            print time1-time0, time2-time1, time3-time2
             
             # Store the draws
             self.all_U[it], self.all_V[it] = numpy.copy(self.U), numpy.copy(self.V)

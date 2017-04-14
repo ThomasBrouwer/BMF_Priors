@@ -46,6 +46,28 @@ def poisson_Zij_n_p(Rij, Ui, Vj):
     p /= p.sum()
     return (n, p)
 
+#def poisson_Z_n_p(R, U, V):
+#    """ n (IxJ) and p (IxJxK) for all Zij with Mult(Rij,(Ui0Vj0,..,UiKVjK)) prior. """
+#    I, J, K = R.shape[0], R.shape[1], U.shape[1]
+#    n = R
+#    U_extended = numpy.repeat(U[:,numpy.newaxis,:], J, axis=1)
+#    V_extended = numpy.repeat(V[numpy.newaxis,:,:], I, axis=0)
+#    p = U_extended * V_extended
+#    p_sum = numpy.repeat(p.sum(axis=2)[:,:,numpy.newaxis], K, axis=2)
+#    p /= p_sum
+#    return (n, p)
+    
+def poisson_Z_n_p(R, U, V, Omega):
+    """ n (|Omega|) and p (|Omega|xK) for all Zij with Mult(Rij,(Ui0Vj0,..,UiKVjK)) prior. """
+    K = U.shape[1]
+    indices_i, indices_j = zip(*Omega)
+    U_list, V_list = U[indices_i,:], V[indices_j,:]
+    n_list = R[indices_i, indices_j]
+    p_list = U_list * V_list
+    p_sum = numpy.repeat(p_list.sum(axis=1)[:,numpy.newaxis], K, axis=1)
+    p_list /= p_sum
+    return (n_list, p_list)
+
 
 ''' (Gausian) Gaussian (univariate posterior). '''
 def gaussian_gaussian_mu_tau(k, lamb, R, M, U, V, tau):

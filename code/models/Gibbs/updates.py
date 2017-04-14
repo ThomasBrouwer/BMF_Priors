@@ -44,7 +44,7 @@ from parameters import gaussian_tn_hierarchical_mu_tau
 from parameters import tn_hierarchical_mu_m_t
 from parameters import tn_hierarchical_tau_a_b
 from parameters import gaussian_hn_mu_tau
-from parameters import poisson_Zij_n_p
+from parameters import poisson_Z_n_p
 from parameters import poisson_gamma_a_b
 from parameters import poisson_gamma_hierarchical_a_b
 from parameters import gamma_hierarchical_hUi_a_b
@@ -70,16 +70,21 @@ def update_tau_gaussian(alpha, beta, R, M, U, V):
     new_tau = gamma_draw(alpha=alpha_s, beta=beta_s)
     return new_tau
 
-def update_Z_poisson(R, M, U, V):
+#def update_Z_poisson(R, M, Omega, Z, U, V):
+#    """ Update Z in Poisson models. """
+#    assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
+#    n, p = poisson_Z_n_p(R=R, U=U, V=V)
+#    for i,j in Omega:
+#        Z[i,j,:] = multinomial_draw(n=n[i,j], p=p[i,j])
+#    return Z
+    
+def update_Z_poisson(R, M, Omega, Z, U, V):
     """ Update Z in Poisson models. """
-    I, J, K = M.shape[0], M.shape[1], U.shape[1]
     assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
-    new_Z = numpy.zeros((I, J, K))
-    for i,j in itertools.product(range(I),range(J)):
-        if M[i,j]:
-            n_ij, p_ij = poisson_Zij_n_p(Rij=R[i,j], Ui=U[i,:], Vj=V[j,:])
-            new_Z[i,j,:] = multinomial_draw(n=n_ij, p=p_ij)
-    return new_Z
+    n_list, p_list = poisson_Z_n_p(R=R, U=U, V=V, Omega=Omega)
+    for index,(i,j) in enumerate(Omega):
+        Z[i,j,:] = multinomial_draw(n=n_list[index], p=p_list[index])
+    return Z    
     
     
 ''' (Gausian) Gaussian (univariate posterior) '''
