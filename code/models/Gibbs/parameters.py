@@ -274,9 +274,18 @@ def gaussian_hn_mu_tau(k, sigma, R, M, U, V, tau):
 ''' (Poisson) Gamma '''
 def poisson_gamma_a_b(a, b, Mi, Vk, Zik):
     """ a_s and b_s for Uik with Gamma(a,b) prior. """
-    a_s = a + (Mi * Zik).sum()
-    b_s = b + (Mi * Vk).sum()
+    a_s = a + numpy.dot(Mi, Zik) #(Mi * Zik).sum() #
+    b_s = b + numpy.dot(Mi, Vk) #(Mi * Vk).sum() #
     return (a_s, b_s)
+    
+#def poisson_gamma_a_b(a, b, M, V, Z):
+#    """ a_s (IxK) and b_s (IxK) for all Uik with Gamma(a,b) prior. """
+#    I, J, K = Z.shape
+#    M_repeat_K = numpy.repeat(M[:,:,numpy.newaxis], K, axis=2)
+#    V_repeat_I = numpy.repeat(V[numpy.newaxis,:,:], I, axis=0)
+#    a_s = a + (M_repeat_K * Z).sum(axis=1)
+#    b_s = b + (M_repeat_K * V_repeat_I).sum(axis=1)
+#    return (a_s, b_s)
     
     
 ''' (Poisson) Gamma + hierarchical '''

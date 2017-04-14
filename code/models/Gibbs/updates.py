@@ -342,6 +342,16 @@ def update_U_poisson_gamma(a, b, M, V, Z):
         U[i,k] = gamma_draw(alpha=a_s, beta=b_s)
     return U
     
+#def update_U_poisson_gamma(a, b, M, V, Z):
+#    """ Update U for Poisson + Gamma model. """
+#    I, J, K = Z.shape
+#    assert V.shape == (J,K) and M.shape == (I,J)
+#    U = numpy.zeros((I,K))
+#    a_s, b_s = poisson_gamma_a_b(a=a, b=b, M=M, V=V, Z=Z) 
+#    for i,k in itertools.product(range(I),range(K)):
+#        U[i,k] = gamma_draw(alpha=a_s[i,k], beta=b_s[i,k])
+#    return U
+    
 def update_V_poisson_gamma(a, b, M, U, Z):
     """ Update V for Poisson + Gamma model. """
     return update_U_poisson_gamma(a=a, b=b, M=M.T, V=U, Z=Z.transpose(1,0,2))
