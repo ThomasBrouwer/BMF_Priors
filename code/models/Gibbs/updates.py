@@ -30,7 +30,7 @@ Other updates:
 
 from parameters import gaussian_tau_alpha_beta
 from parameters import gaussian_gaussian_mu_tau
-from parameters import gaussian_gaussian_mu_sigma
+from parameters import gaussian_gaussian_mu_sigma, gaussian_gaussian_mu_sigma_2
 from parameters import gaussian_gaussian_wishart_mu_sigma
 from parameters import gaussian_wishart_beta0_v0_mu0_W0
 from parameters import gaussian_gaussian_ard_mu_sigma
@@ -113,6 +113,18 @@ def update_U_gaussian_gaussian_multivariate(lamb, R, M, V, tau):
         muUi, sigmaUi = gaussian_gaussian_mu_sigma(lamb=lamb, Ri=R[i], Mi=M[i], V=V, tau=tau)
         U[i,:] = multivariate_normal_draw(mu=muUi, sigma=sigmaUi)
     return U
+    
+#def update_U_gaussian_gaussian_multivariate(lamb, R, M, V, tau):
+#    """ Update U for All Gaussian model (multivariate posterior). """
+#    I, K = R.shape[0], V.shape[1]
+#    assert R.shape == M.shape and R.shape[1] == V.shape[0]
+#    U = numpy.zeros((I,K))
+#    muU, sigmaU = gaussian_gaussian_mu_sigma(lamb=lamb, R=R, M=M, V=V, tau=tau)
+#    for i in range(I):
+#        muUi, sigmaUi = gaussian_gaussian_mu_sigma_2(lamb, Ri=R[i], Mi=M[i], V=V, tau=tau)
+#        assert numpy.array_equal(muU[i], muUi) and numpy.array_equal(sigmaU[i], sigmaUi)
+#        U[i,:] = multivariate_normal_draw(mu=muU[i], sigma=sigmaU[i])
+#    return U
 
 def update_V_gaussian_gaussian_multivariate(lamb, R, M, U, tau):  
     """ Update V for All Gaussian model (multivariate posterior). """

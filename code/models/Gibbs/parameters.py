@@ -97,6 +97,21 @@ def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
     mu = numpy.dot(sigma, tau * numpy.dot(Ri_masked, V))
     assert mu.shape[0] == V.shape[1] and sigma.shape == (V.shape[1], V.shape[1])
     return (mu, sigma)
+    
+#def gaussian_gaussian_mu_sigma(lamb, R, M, V, tau):
+#    """ mu (IxKxK) and sigma (IxKxK) for all Ui with N(0,I/lamb) prior (I=identity matrix). """
+#    assert R.shape == M.shape and R.shape[1] == V.shape[0]
+#    I, K = R.shape[0], V.shape[1]   
+#    V_expanded = numpy.repeat(V[numpy.newaxis,:,:], I, axis=0)
+#    M_expanded = numpy.repeat(M[:,:,numpy.newaxis], K, axis=2)
+#    V_masked = (M_expanded * V_expanded)
+#    precision = lamb * numpy.repeat(numpy.eye(K)[numpy.newaxis,:,:], I, axis=0) + \
+#                tau * numpy.repeat(((V_masked * V_masked).sum(axis=1))[:,:,numpy.newaxis], K, axis=2)
+#    sigma = numpy.array([numpy.linalg.inv(prec) for prec in precision])
+#    R_masked = M * R # zero entries when j not in Mi
+#    mu = (sigma * tau * numpy.repeat((numpy.dot(R_masked, V))[:,:,numpy.newaxis], K, axis=2)).sum(axis=2)
+#    assert mu.shape == (I,K) and sigma.shape == (I,K,K)
+#    return (mu, sigma)
 
 
 ''' (Gausian) Gaussian + Wishart '''
