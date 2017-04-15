@@ -17,17 +17,17 @@ method = BMF_Poisson_Gamma
 R, M = load_ccle_ic50_integer()
 hyperparameters = { 'a':1., 'b':1. }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 500,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
+    'burn_in' : 400,
     'thinning' : 1,
 }
 
 
 ''' Settings nested cross-validation. '''
-K_range = [4,5,6,7,8]
+K_range = [9,10,11,12,13,14]
 no_folds = 5
 no_threads = 5
 stratify_rows = False

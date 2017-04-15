@@ -17,11 +17,11 @@ method = BMF_Poisson_Gamma_Gamma
 R, M = load_ccle_ec50_integer()
 hyperparameters = { 'a':1., 'ap':1., 'bp':1. }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 250,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
+    'burn_in' : 200,
     'thinning' : 1,
 }
 

@@ -21,7 +21,7 @@ settings = {
     'M': M, 
     'hyperparameters': { 'a':1., 'ap':1., 'bp':1. }, 
     'init': 'random', 
-    'iterations': 10,
+    'iterations': 100,
 }
 fout = './results/times_poisson_gamma_gamma.txt'
 

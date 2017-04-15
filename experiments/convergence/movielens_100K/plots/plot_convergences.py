@@ -60,7 +60,7 @@ plt.xticks(fontsize=6)
 
 x = iterations
 for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
-    y = performances
+    y = performances[:iterations[-1]]
     plt.plot(x, y, label=name, linestyle=linestyle, marker=marker, c=colour, 
              markersize=3, linewidth=1.2)
  

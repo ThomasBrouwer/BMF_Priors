@@ -17,11 +17,11 @@ method = BMF_Gaussian_Gaussian_Exponential
 R, M = load_ccle_ec50_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1 }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 250,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
+    'burn_in' : 200,
     'thinning' : 1,
 }
 

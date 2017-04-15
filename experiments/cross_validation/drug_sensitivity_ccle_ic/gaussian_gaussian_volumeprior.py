@@ -17,17 +17,17 @@ method = BMF_Gaussian_Gaussian_VolumePrior
 R, M = load_ccle_ic50_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**-10 }
 train_config = {
-    'iterations' : 100,
+    'iterations' : 150,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 80,
+    'burn_in' : 100,
     'thinning' : 1,
 }
 
 
 ''' Settings nested cross-validation. '''
-K_range = [1,2,3,4,5,6]
+K_range = [4,5,6,7]
 no_folds = 5
 no_threads = 5
 stratify_rows = False

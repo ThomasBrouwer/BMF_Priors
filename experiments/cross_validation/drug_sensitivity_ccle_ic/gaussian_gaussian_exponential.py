@@ -17,17 +17,17 @@ method = BMF_Gaussian_Gaussian_Exponential
 R, M = load_ccle_ic50_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1 }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 250,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
+    'burn_in' : 200,
     'thinning' : 1,
 }
 
 
 ''' Settings nested cross-validation. '''
-K_range = [1,2,3,4,5,6]
+K_range = [3,4,5,6,7]
 no_folds = 5
 no_threads = 5
 stratify_rows = False
