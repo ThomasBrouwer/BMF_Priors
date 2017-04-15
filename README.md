@@ -3,7 +3,7 @@ Submitted to ECML 2017.
 
 Authors: **Thomas Brouwer**, **Pietro Lio'**. Contact: tab43@cam.ac.uk.
 
-This project contains implementations of the thirteen Bayesian matrix factorisation models studied in the paper **Fast Bayesian nonnegative matrix factorisation and tri-factorisation**. We furthermore provide all datasets used (including the preprocessing scripts), and Python scripts for experiments.
+This project contains implementations of the thirteen Bayesian matrix factorisation models studied in the paper **Effects of Priors in Bayesian Matrix Factorisation**. We furthermore provide all datasets used (including the preprocessing scripts), and Python scripts for experiments.
 
 More details on the datasets (where to download the raw data, and the preprocessing) can be found in **/data/drug_sensitivity/description.md** and **/data/movielens/description.md**.
 
