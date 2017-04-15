@@ -51,7 +51,7 @@ Folder containing the datasets used.
 - **/drug_sensitivity/** - Data and code for loading the drug sensitivity data. Methods for loading the data are provided in **load_data.py**; more details are available in **description.md**. The datasets are available in raw and post-processing format (**/raw/**, **/processed_all/**), together with the processing scripts (**process_raw_gdsc.py**, **process_raw_ctrp.py**, **process_raw_ccle.py**).
 - We also provide the Jester joke rating dataset (**/jester/**), and two cancer methylation datasets (**/methylation/**), although we did not use them.
 
-#### /experiments/
+### /experiments/
 Scripts for the experiments, along with the results and plots thereof.
 - **/convergence/** - Measure convergence rate of the methods (against iterations and time) on the GDSC and MovieLens 100K datasets.
 - **/runtime/** - Measure the time taken per iteration for different values of K, on the GDSC and MovieLens 100K datasets.
@@ -61,5 +61,5 @@ Scripts for the experiments, along with the results and plots thereof.
 - **/factor_analysis/** - Scripts for storing the factor values on the GDSC and MovieLens datasets, as well as scripts for plotting those factor values.
 - **/parameter_exploration/** - Scripts for trying different values of K for the volume prior models, on each of the datasets.
 
-#### /other/
+### /other/
 Miscellaneous scripts for plotting the datasets, plot legends, and priors.
