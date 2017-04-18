@@ -57,7 +57,7 @@ x = fractions_unknown
 for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
     y = numpy.mean(performances["MSE"],axis=1)
     plt.plot(x, y, label=name, linestyle=linestyle, marker=('$%s$' % marker), c=colour, 
-             markersize=3, linewidth=0.8)
+             markersize=5, linewidth=1)
 
 plt.xticks(fontsize=6)
 plt.yticks(numpy.arange(0,MSE_max+1,0.1),fontsize=6)

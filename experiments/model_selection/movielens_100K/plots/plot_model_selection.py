@@ -58,7 +58,7 @@ x = values_K[:-1]
 for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
     y = numpy.mean(performances["MSE"],axis=1)[:-1]
     plt.plot(x, y, label=name, linestyle=linestyle, marker=('$%s$' % marker), c=colour,
-             markersize=4, linewidth=1.5)
+             markersize=5, linewidth=1.5)
 
 plt.xticks(fontsize=6)
 plt.yticks(numpy.arange(0,MSE_max+1,0.1),fontsize=6)
