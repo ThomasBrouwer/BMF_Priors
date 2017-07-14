@@ -28,7 +28,7 @@ Other parameters for:
 '''
 
 
-import numpy
+import minpy.numpy as numpy # import numpy
 
 
 ''' General Gaussian and Poisson models '''

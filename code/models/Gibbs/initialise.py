@@ -15,7 +15,7 @@ from distributions.multinomial import multinomial_draw, multinomial_mean
 from distributions.dirichlet import dirichlet_draw, dirichlet_mean
 
 import itertools
-import numpy
+import minpy.numpy as numpy # import numpy
 
 def initialise_tau_gamma(alpha, beta, R, M, U, V):
     """ Initialise tau using the model updates. """
