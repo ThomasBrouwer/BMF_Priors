@@ -2,7 +2,7 @@
 Measure the time taken with, and without, the minpy library.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/home/tab43/Documents/Projects/libraries" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
@@ -30,7 +30,7 @@ time_numpy = time1_numpy - time0_numpy
 
                       
 ''' Run with minpy. '''
-#import minpy.numpy as numpy
+import minpy.numpy as numpy
 time0_minpy = time.time()
 BMF = BMF_Gaussian_Gaussian(R,M,K,hyperparameters) 
 BMF.initialise(init)
