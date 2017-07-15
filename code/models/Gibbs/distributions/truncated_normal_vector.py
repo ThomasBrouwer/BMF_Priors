@@ -35,7 +35,7 @@ import rtnorm
 
 # Truncated normal draws, vector
 def truncated_normal_vector_draw(mus,taus):
-    sigmas = numpy.float64(1.0) / numpy.sqrt(taus)
+    sigmas = [1./math.sqrt(v) for v in taus]
     draws = []
     for (mu,sigma,tau) in zip(mus,sigmas,taus):
         if tau == 0.:
