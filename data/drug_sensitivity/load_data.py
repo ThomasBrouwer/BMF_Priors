@@ -16,7 +16,7 @@ CCLE EC: 502,  24,      7622,      0.6326361221779548
 import numpy
 import itertools
 
-folder_data = "/home/tab43/Documents/Projects/libraries/BMF_Priors/data/drug_sensitivity/" # '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/drug_sensitivity/' # '/home/tab43/Documents/Projects/libraries/BNMTF_ARD/data/drug_sensitivity/' # 
+folder_data = '/home/tab43/Documents/Projects/libraries/BNMTF_ARD/data/drug_sensitivity/' # '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/drug_sensitivity/' # 
 
 folder_gdsc_ic50 = folder_data+'GDSC/processed_all/'
 file_gdsc_ic50 = folder_gdsc_ic50+'ic50.txt'

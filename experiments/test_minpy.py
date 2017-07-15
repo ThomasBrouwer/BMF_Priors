@@ -1,8 +1,13 @@
 '''
-Measure the time taken with, and without, the minpy library.
+Measure the time taken with (or without) the minpy library.
+
+In parameters.py, use either:
+    import minpy.numpy as minpy (with minpy)
+or
+    import numpy as minpy (without minpy)
 '''
 
-project_location = "/home/tab43/Documents/Projects/libraries" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/home/tab43/Documents/Projects/libraries" # "/Users/thomasbrouwer/Documents/Projects/libraries/" # 
 import sys
 sys.path.append(project_location)
 
@@ -21,23 +26,13 @@ init = 'random'
 
 
 ''' Run without minpy (so numpy). '''
-time0_numpy = time.time()
+time0 = time.time()
 BMF = BMF_Gaussian_Gaussian(R,M,K,hyperparameters) 
 BMF.initialise(init)
 BMF.run(iterations)
-time1_numpy = time.time()
-time_numpy = time1_numpy - time0_numpy
-
-                      
-''' Run with minpy. '''
-import minpy.numpy as numpy
-time0_minpy = time.time()
-BMF = BMF_Gaussian_Gaussian(R,M,K,hyperparameters) 
-BMF.initialise(init)
-BMF.run(iterations)
-time1_minpy = time.time()
-time_minpy = time1_minpy - time0_minpy
+time1 = time.time()
+time = time1 - time0
 
 
 ''' Print performances. '''
-print "Time taken by numpy: %s. \nTime taken by minpy: %s." % (time_numpy, time_minpy)
+print "Time taken: %s." % time

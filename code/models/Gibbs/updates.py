@@ -60,7 +60,7 @@ from distributions.multinomial import multinomial_draw
 from distributions.dirichlet import dirichlet_draw
 
 import itertools
-import minpy.numpy as numpy # import numpy
+import numpy
 
 
 ''' General Gaussian and Poisson models '''
