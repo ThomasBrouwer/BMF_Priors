@@ -111,7 +111,7 @@ def initialise_Z_multinomial(init, R, U, V):
     Z = numpy.zeros((I,J,K))
     for i,j in itertools.product(range(I),range(J)):
         p = U[i,:] * V[j,:]
-        p /= numpy.sum(p)
+        p /= p.sum()
         Z[i,j,:] = initialise(n=R[i,j], p=p)
     return Z
 

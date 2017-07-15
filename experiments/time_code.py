@@ -1,17 +1,12 @@
 '''
-Measure the time taken with (or without) the minpy library.
-
-In parameters.py, use either:
-    import minpy.numpy as minpy (with minpy)
-or
-    import numpy as minpy (without minpy)
+Measure the time taken for a couple of iterations.
 '''
 
 project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/" # "/home/tab43/Documents/Projects/libraries" # 
 import sys
 sys.path.append(project_location)
 
-from BMF_Priors.code.models.bmf_gaussian_exponential import BMF_Gaussian_Exponential
+from BMF_Priors.code.models.bmf_gaussian_gaussian import BMF_Gaussian_Gaussian
 from BMF_Priors.data.drug_sensitivity.load_data import load_gdsc_ic50_integer
 
 import time
@@ -27,7 +22,7 @@ init = 'random'
 
 ''' Run without minpy (so numpy). '''
 time0 = time.time()
-BMF = BMF_Gaussian_Exponential(R,M,K,hyperparameters) 
+BMF = BMF_Gaussian_Gaussian(R,M,K,hyperparameters) 
 BMF.initialise(init)
 BMF.run(iterations)
 time1 = time.time()
