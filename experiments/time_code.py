@@ -1,5 +1,20 @@
 '''
 Measure the time taken for a couple of iterations.
+
+On my laptop:
+    MovieLens 100K:
+        Time taken loading data: 2.32535505295.
+        Time taken running model: 8.51722407341.
+    MovieLens 1M:
+        Time taken loading data: 102.270441055.
+        Time taken running model: 81.7574019432.
+On kiiara:
+    MovieLens 100K:
+        Time taken loading data: 3.51910114288.
+        Time taken running model: 18.8004209995.
+    MovieLens 1M:
+        Time taken loading data: 101.879905939.
+        Time taken running model: 119.432013988.
 '''
 
 project_location = "/home/tab43/Documents/Projects/libraries" # "/Users/thomasbrouwer/Documents/Projects/libraries/" # 
