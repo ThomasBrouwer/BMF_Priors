@@ -19,14 +19,20 @@ SUMMARY: n_users, n_movies, n_entries, fraction_obs
 '''
 
 import numpy
+import tables
 
-folder_data = '/home/tab43/Documents/Projects/libraries/BMF_Priors/data/movielens/' # '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/movielens/' # 
+folder_data = '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/movielens/' # '/home/tab43/Documents/Projects/libraries/BMF_Priors/data/movielens/' # 
 
 folder_100K = folder_data+'100K/'
 fin_100K = folder_100K+'u.data'
 
 folder_1M = folder_data+'1M/'
 fin_1M = folder_1M+'ratings.dat'
+
+file_binary_R_100K = folder_data+'binary_R_100K.h5'
+file_binary_M_100K = folder_data+'binary_M_100K.h5'
+file_binary_R_1M = folder_data+'binary_R_1M.h5'
+file_binary_M_1M = folder_data+'binary_M_1M.h5'
 
 DELIM_100K = '\t'
 DELIM_1M = '::'
@@ -83,8 +89,43 @@ def load_movielens_1M():
     R, M = construct_dataset_from_raw(fin=fin_1M, delim=DELIM_1M)  
     return (R, M)
 
+def store_processed_movielens():
+    ''' Construct the datasets, and efficiently store them as binary HDF5 PyTables. '''
+    R_100K, M_100K = load_movielens_100K()
+    R_1M, M_1M = load_movielens_1M()
+    
+    def store_pytable(filename, dataset):
+        # Method for storing each file as a binary HDF5 file
+        f = tables.open_file(filename, 'w')
+        atom = tables.Atom.from_dtype(dataset.dtype)
+        filters = tables.Filters(complib='blosc', complevel=5)
+        ds = f.create_carray(f.root, 'all_data', atom, dataset.shape, filters=filters)
+        ds[:] = dataset
+        f.close()
 
-'''
-R_100K, M_100K = load_movielens_100K()
-R_1M, M_1M = load_movielens_1M()
-'''
+    store_pytable(file_binary_R_100K, R_100K)
+    store_pytable(file_binary_M_100K, M_100K)
+    store_pytable(file_binary_R_1M, R_1M)
+    store_pytable(file_binary_M_1M, M_1M)
+
+def load_processed_movielens_100K():
+    ''' Load the MovieLens 100K datasets, from the HDF5 PyTables binary files. '''
+    hdf5_R_100K = tables.open_file(file_binary_R_100K)
+    hdf5_M_100K = tables.open_file(file_binary_M_100K)
+    R_100K, M_100K = hdf5_R_100K.root.all_data[:], hdf5_M_100K.root.all_data[:]
+    return (R_100K, M_100K)
+
+def load_processed_movielens_1M():
+    ''' Load the MovieLens 1M datasets, from the HDF5 PyTables binary files. '''
+    hdf5_R_1M = tables.open_file(file_binary_R_1M)
+    hdf5_M_1M = tables.open_file(file_binary_M_1M)
+    R_1M, M_1M = hdf5_R_1M.root.all_data[:], hdf5_M_1M.root.all_data[:]
+    return (R_1M, M_1M)
+
+
+#R_100K, M_100K = load_movielens_100K()
+#R_1M, M_1M = load_movielens_1M()
+
+#store_processed_movielens()
+#R_100K, M_100K = load_processed_movielens_100K()
+#R_1M, M_1M = load_processed_movielens_1M()
