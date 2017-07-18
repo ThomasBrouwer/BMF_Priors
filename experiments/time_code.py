@@ -34,8 +34,7 @@ On Darwin cluster:
         Time taken running model: 69.9377059937.
     
 '''
-
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/" # "/home/tab43/Documents/Projects/libraries" # 
+project_location = "/home/tab43/libraries" # "/Users/thomasbrouwer/Documents/Projects/libraries/" # 
 import sys
 sys.path.append(project_location)
 
