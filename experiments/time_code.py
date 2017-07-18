@@ -17,12 +17,13 @@ On kiiara:
         Time taken running model: 119.432013988.
 '''
 
-project_location = "/home/tab43/Documents/Projects/libraries" # "/Users/thomasbrouwer/Documents/Projects/libraries/" # 
+project_location = "/home/tab43/libraries" # "/Users/thomasbrouwer/Documents/Projects/libraries/" # 
 import sys
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian import BMF_Gaussian_Gaussian
-from BMF_Priors.data.movielens.load_data import load_movielens_1M
+from BMF_Priors.data.movielens.load_data import load_processed_movielens_1M
+from BMF_Priors.data.movielens.load_data import load_processed_movielens_100K
 
 import time
 
@@ -34,7 +35,7 @@ iterations = 10
 init = 'random'
 
 time0 = time.time()
-R, M = load_movielens_1M()
+R, M = load_processed_movielens_1M() # load_processed_movielens_100K() # 
 time1 = time.time()
 time_data = time1 - time0
 
