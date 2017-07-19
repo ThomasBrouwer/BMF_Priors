@@ -3,25 +3,25 @@ Run nested cross-validation experiment on the MovieLens 1M dataset, with
 the All Gaussian model (multivariate posterior) and Wishart prior.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/home/tab43/Documents/Projects/libraries/" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian_wishart import BMF_Gaussian_Gaussian_Wishart
 from BMF_Priors.code.cross_validation.nested_matrix_cross_validation import MatrixNestedCrossValidation
-from BMF_Priors.data.movielens.load_data import load_movielens_1M
+from BMF_Priors.data.movielens.load_data import load_processed_movielens_1M
 
 
 ''' Settings BMF model. '''
 method = BMF_Gaussian_Gaussian_Wishart
-R, M = load_movielens_1M()
+R, M = load_processed_movielens_1M()
 hyperparameters = { 'alpha':1., 'beta':1., 'mu0':0., 'beta0':1., 'W0':1. }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 120,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
+    'burn_in' : 100,
     'thinning' : 1,
 }
 

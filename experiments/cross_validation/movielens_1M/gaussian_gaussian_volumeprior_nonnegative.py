@@ -3,18 +3,18 @@ Run nested cross-validation experiment on the MovieLens 1M dataset, with
 the Gaussian + Gaussian + Volume Prior (nonnegative) model.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/home/tab43/Documents/Projects/libraries/" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian_volumeprior_nonnegative import BMF_Gaussian_Gaussian_VolumePrior_nonnegative
 from BMF_Priors.code.cross_validation.nested_matrix_cross_validation import MatrixNestedCrossValidation
-from BMF_Priors.data.movielens.load_data import load_movielens_1M
+from BMF_Priors.data.movielens.load_data import load_processed_movielens_1M
 
 
 ''' Settings BMF model. '''
 method = BMF_Gaussian_Gaussian_VolumePrior_nonnegative
-R, M = load_movielens_1M()
+R, M = load_processed_movielens_1M()
 hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**0 }
 train_config = {
     'iterations' : 100,

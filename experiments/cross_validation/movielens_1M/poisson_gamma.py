@@ -3,25 +3,25 @@ Run nested cross-validation experiment on the MovieLens 1M dataset, with
 the Poisson + Gamma model.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/home/tab43/Documents/Projects/libraries/" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_poisson_gamma import BMF_Poisson_Gamma
 from BMF_Priors.code.cross_validation.nested_matrix_cross_validation import MatrixNestedCrossValidation
-from BMF_Priors.data.movielens.load_data import load_movielens_1M
+from BMF_Priors.data.movielens.load_data import load_processed_movielens_1M
 
 
 ''' Settings BMF model. '''
 method = BMF_Poisson_Gamma
-R, M = load_movielens_1M()
+R, M = load_processed_movielens_1M()
 hyperparameters = { 'a':1., 'b':1. }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 120,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
+    'burn_in' : 100,
     'thinning' : 1,
 }
 
