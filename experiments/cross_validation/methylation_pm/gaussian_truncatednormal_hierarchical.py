@@ -17,11 +17,11 @@ method = BMF_Gaussian_TruncatedNormal_Hierarchical
 R, M = load_promoter_methylation_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'mu_mu':0., 'tau_mu':0.1, 'a':1., 'b':1. }
 train_config = {
-    'iterations' : 120,
+    'iterations' : 220,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 100,
+    'burn_in' : 200,
     'thinning' : 1,
 }
 
