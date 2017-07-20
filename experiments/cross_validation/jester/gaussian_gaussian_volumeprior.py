@@ -9,19 +9,19 @@ sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian_volumeprior import BMF_Gaussian_Gaussian_VolumePrior
 from BMF_Priors.code.cross_validation.nested_matrix_cross_validation import MatrixNestedCrossValidation
-from BMF_Priors.data.jester.load_data import load_jester_data_integer
+from BMF_Priors.data.jester.load_data import load_processed_jester_data_integer
 
 
 ''' Settings BMF model. '''
 method = BMF_Gaussian_Gaussian_VolumePrior
-R, M = load_jester_data_integer()
+R, M = load_processed_jester_data_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**0 }
 train_config = {
-    'iterations' : 100,
+    'iterations' : 70,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 80,
+    'burn_in' : 50,
     'thinning' : 1,
 }
 

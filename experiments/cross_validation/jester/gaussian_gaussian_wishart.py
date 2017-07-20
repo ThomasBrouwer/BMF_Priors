@@ -9,19 +9,19 @@ sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian_wishart import BMF_Gaussian_Gaussian_Wishart
 from BMF_Priors.code.cross_validation.nested_matrix_cross_validation import MatrixNestedCrossValidation
-from BMF_Priors.data.jester.load_data import load_jester_data_integer
+from BMF_Priors.data.jester.load_data import load_processed_jester_data_integer
 
 
 ''' Settings BMF model. '''
 method = BMF_Gaussian_Gaussian_Wishart
-R, M = load_jester_data_integer()
+R, M = load_processed_jester_data_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'mu0':0., 'beta0':1., 'W0':1. }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 120,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
+    'burn_in' : 100,
     'thinning' : 1,
 }
 

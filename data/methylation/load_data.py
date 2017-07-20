@@ -51,9 +51,9 @@ def load_promoter_methylation():
         filename_data=file_promoter_methylation, filename_genes=file_driver_genes)
 
 def load_promoter_methylation_integer():
-    ''' Return (R_pm, M_pm), with all values multiplied by 10 and cast to int. '''
+    ''' Return (R_pm, M_pm), with all values multiplied by 20 and cast to int. '''
     R, M = load_promoter_methylation()
-    R = numpy.array(10*R, dtype=int)
+    R = numpy.array(20*R, dtype=int)
     return (R, M)
     
 def load_gene_body_methylation():
@@ -62,9 +62,9 @@ def load_gene_body_methylation():
         filename_data=file_gene_body_methylation, filename_genes=file_driver_genes)
 
 def load_gene_body_methylation_integer():
-    ''' Return (R_gm, M_gm), with all values multiplied by 10 and cast to int. '''
+    ''' Return (R_gm, M_gm), with all values multiplied by 20 and cast to int. '''
     R, M = load_gene_body_methylation()
-    R = numpy.array(10*R, dtype=int)
+    R = numpy.array(20*R, dtype=int)
     return (R, M)
 
 

@@ -9,25 +9,25 @@ sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_truncatednormal_hierarchical import BMF_Gaussian_TruncatedNormal_Hierarchical
 from BMF_Priors.code.cross_validation.nested_matrix_cross_validation import MatrixNestedCrossValidation
-from BMF_Priors.data.jester.load_data import load_jester_data_integer
+from BMF_Priors.data.jester.load_data import load_processed_jester_data_integer
 
 
 ''' Settings BMF model. '''
 method = BMF_Gaussian_TruncatedNormal_Hierarchical
-R, M = load_jester_data_integer()
+R, M = load_processed_jester_data_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'mu_mu':0., 'tau_mu':0.1, 'a':1., 'b':1. }
 train_config = {
-    'iterations' : 200,
+    'iterations' : 120,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 180,
+    'burn_in' : 100,
     'thinning' : 1,
 }
 
 
 ''' Settings nested cross-validation. '''
-K_range = [1,2,3]
+K_range = [1,2,3,4,5,6,7]
 no_folds = 5
 no_threads = 5
 parallel = False
