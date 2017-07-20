@@ -21,7 +21,7 @@ SUMMARY: n_users, n_movies, n_entries, fraction_obs
 import numpy
 import tables
 
-folder_data = '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/movielens/' # '/home/tab43/Documents/Projects/libraries/BMF_Priors/data/movielens/' # 
+folder_data = '/home/tab43/Documents/Projects/libraries/BMF_Priors/data/movielens/' # '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/movielens/' # 
 
 folder_100K = folder_data+'100K/'
 fin_100K = folder_100K+'u.data'

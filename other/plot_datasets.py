@@ -2,7 +2,7 @@
 Plot the distributions of the drug sensitivity, MovieLens, Jester, and methylation datasets.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/home/tab43/Documents/Projects/libraries/" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 

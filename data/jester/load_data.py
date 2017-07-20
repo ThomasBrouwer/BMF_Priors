@@ -11,7 +11,7 @@ import numpy
 import itertools
 import tables
 
-folder_data = '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/jester/' # '/home/tab43/Documents/Projects/libraries/BNMTF_ARD/data/methylation/' # 
+folder_data = '/home/tab43/Documents/Projects/libraries/BMF_Priors/data/jester/' # '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/jester/' # 
 file_jester_1 = folder_data+'jester-data-1.csv'
 file_jester_2 = folder_data+'jester-data-2.csv'
 file_jester_3 = folder_data+'jester-data-3.csv'

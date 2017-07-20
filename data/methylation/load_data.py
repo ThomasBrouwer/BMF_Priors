@@ -13,7 +13,7 @@ GM:      160,     254,       40640,     1.0
 '''
 import numpy
 
-folder_data = '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/methylation/' # '/home/tab43/Documents/Projects/libraries/BNMTF_ARD/data/methylation/' # 
+folder_data = '/home/tab43/Documents/Projects/libraries/BMF_Priors/data/methylation/' # '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/methylation/' # 
 file_promoter_methylation = folder_data+'matched_methylation_genePromoter'
 file_gene_body_methylation = folder_data+'matched_methylation_geneBody'
 file_driver_genes = folder_data+'intogen-BRCA-drivers-data.geneid'
