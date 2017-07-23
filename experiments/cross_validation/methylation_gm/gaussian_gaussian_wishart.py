@@ -17,11 +17,11 @@ method = BMF_Gaussian_Gaussian_Wishart
 R, M = load_gene_body_methylation_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'mu0':0., 'beta0':1., 'W0':1. }
 train_config = {
-    'iterations' : 120,
+    'iterations' : 220,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 100,
+    'burn_in' : 200,
     'thinning' : 1,
 }
 

@@ -17,11 +17,11 @@ method = BMF_Poisson_Gamma_Gamma
 R, M = load_promoter_methylation_integer()
 hyperparameters = { 'a':1., 'ap':1., 'bp':1. }
 train_config = {
-    'iterations' : 120,
+    'iterations' : 220,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 100,
+    'burn_in' : 200,
     'thinning' : 1,
 }
 

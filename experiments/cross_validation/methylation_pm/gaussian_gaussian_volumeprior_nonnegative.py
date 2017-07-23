@@ -17,11 +17,11 @@ method = BMF_Gaussian_Gaussian_VolumePrior_nonnegative
 R, M = load_promoter_methylation_integer()
 hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**0 }
 train_config = {
-    'iterations' : 100,
+    'iterations' : 120,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 80,
+    'burn_in' : 100,
     'thinning' : 1,
 }
 
