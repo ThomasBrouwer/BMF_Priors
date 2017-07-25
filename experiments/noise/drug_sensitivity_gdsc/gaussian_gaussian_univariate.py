@@ -8,8 +8,8 @@ import sys
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian_univariate import BMF_Gaussian_Gaussian_univariate
-from BMF_Priors.experiments.noise.noise_experiment import noise_experiment
 from BMF_Priors.experiments.noise.drug_sensitivity_gdsc.data.create_load_noise_datasets import load_noise_datasets
+from BMF_Priors.experiments.noise.noise_experiment import noise_experiment
 
 import matplotlib.pyplot as plt
 
