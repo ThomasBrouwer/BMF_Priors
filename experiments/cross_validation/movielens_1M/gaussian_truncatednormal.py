@@ -27,7 +27,7 @@ predict_config = {
 
 
 ''' Settings nested cross-validation. '''
-K_range = [1,2,3]
+K_range = [7,8,9,10,11]
 no_folds = 5
 no_threads = 5
 parallel = False
