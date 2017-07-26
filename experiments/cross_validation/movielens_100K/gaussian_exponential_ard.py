@@ -9,12 +9,12 @@ sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_exponential_ard import BMF_Gaussian_Exponential_ARD
 from BMF_Priors.code.cross_validation.nested_matrix_cross_validation import MatrixNestedCrossValidation
-from BMF_Priors.data.movielens.load_data import load_movielens_100K
+from BMF_Priors.data.movielens.load_data import load_processed_movielens_100K
 
 
 ''' Settings BMF model. '''
 method = BMF_Gaussian_Exponential_ARD
-R, M = load_movielens_100K()
+R, M = load_processed_movielens_100K()
 hyperparameters = { 'alpha':1., 'beta':1., 'alpha0':1., 'beta0':1. }
 train_config = {
     'iterations' : 200,

@@ -57,6 +57,8 @@ pgg_U = eval(open(folder_results+'poisson_gamma_U.txt','r').read())
 pgg_V = eval(open(folder_results+'poisson_gamma_V.txt','r').read())
 pggg_U = eval(open(folder_results+'poisson_gamma_gamma_U.txt','r').read())
 pggg_V = eval(open(folder_results+'poisson_gamma_gamma_V.txt','r').read())
+nmf_np_U = eval(open(folder_results+'baseline_mf_nonprobabilistic_U.txt','r').read())
+nmf_np_V = eval(open(folder_results+'baseline_mf_nonprobabilistic_V.txt','r').read())
 
 
 ''' Do the analysis. '''
@@ -75,6 +77,7 @@ name_meanU_stdU_meanV_stdV = [
     ('GEEA', average_mean_std(geea_U, geea_V, sort_by_std, use_absolute)),
     ('GTT',  average_mean_std(gtt_U,  gtt_V,  sort_by_std, use_absolute)),
     ('GTTN', average_mean_std(gttn_U, gttn_V, sort_by_std, use_absolute)),
+    ('NMF-NP', average_mean_std(nmf_np_U, nmf_np_V, sort_by_std, use_absolute)),
 ]
 
 
@@ -97,6 +100,6 @@ for i, (name, (avr_mean_U, avr_std_U, avr_mean_V, avr_std_V)) in enumerate(name_
     axes[i/2][i%2].set_ylim(y_min, y_max), axes[i/2][i%2].set_xlim(x_min, x_max)
 
 # Turn off bottom right plot
-axes[6][1].axis('off')
+#axes[6][1].axis('off')
 
 plt.savefig(plot_file, dpi=600)

@@ -30,6 +30,8 @@ ghh = eval(open(folder_results+'times_gaussian_halfnormal.txt','r').read())
 pgg = eval(open(folder_results+'times_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'times_poisson_gamma_gamma.txt','r').read())
 
+nmf_np = eval(open(folder_results+'times_baseline_mf_nonprobabilistic.txt').read())
+
 
 ''' Assemble the average performances and method names. '''
 performances_names_colours_linestyles_markers = [
@@ -47,6 +49,7 @@ performances_names_colours_linestyles_markers = [
 #    (ghh,  'GHH',  'b', '-', '*'),
     (pgg,  'PGG',  'y', '-', '1'),
     (pggg, 'PGGG', 'y', '-', '2'),
+    (nmf_np, 'Row', 'grey', '-', '1'),
 ]
 
 

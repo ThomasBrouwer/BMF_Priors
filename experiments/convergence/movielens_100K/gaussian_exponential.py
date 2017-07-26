@@ -13,6 +13,7 @@ from BMF_Priors.experiments.convergence.convergence_experiment import measure_co
 
 import matplotlib.pyplot as plt
 
+
 ''' Run the experiment. '''
 R, M = load_movielens_100K()
 model_class = BMF_Gaussian_Exponential

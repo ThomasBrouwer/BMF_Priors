@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 ''' Run the experiment for the Gaussian + Gaussian + VP model. '''
 R, M = load_processed_jester_data_integer()
 model_class = BMF_Gaussian_Gaussian_VolumePrior
-n_folds = 5
+n_folds = 3
 values_gamma = [10**-30, 10**-20, 10**-10, 10**0, 10**10] 
 values_K = [2]
 values_gamma_K = list(itertools.product(values_gamma, values_K))

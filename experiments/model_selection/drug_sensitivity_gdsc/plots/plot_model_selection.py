@@ -32,6 +32,8 @@ ghh = eval(open(folder_results+'performances_gaussian_halfnormal.txt','r').read(
 pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
+nmf_np = eval(open(folder_results+'performances_baseline_mf_nonprobabilistic.txt').read())
+
 performances_names_colours_linestyles_markers = [
     (ggg,  'GGG',  'r', '-', '1'),
     (gggu, 'GGGU', 'r', '-', '2'),
@@ -47,6 +49,7 @@ performances_names_colours_linestyles_markers = [
 #    (ghh,  'GHH',  'b', '-', '*'),
     (pgg,  'PGG',  'y', '-', '1'),
     (pggg, 'PGGG', 'y', '-', '2'),
+    (nmf_np, 'Row', 'grey', '-', '1'),
 ]
 
 

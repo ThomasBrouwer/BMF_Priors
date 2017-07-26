@@ -24,8 +24,8 @@ def sparsity_experiment(n_repeats, fractions_unknown, stratify_rows, model_class
         
         Return (average_performances, all_performances), both a dictionary 
         ('MSE', 'R^2, 'Rp'). The former gives the average performances for each
-        value of K, and the latter gives all performances for each fold (list 
-        of lists).
+        fraction, and the latter gives all performances for each fold (list of
+        lists).
         Also store all_performances if :fout is not None.
         
         Arguments: 
@@ -53,7 +53,7 @@ def sparsity_experiment(n_repeats, fractions_unknown, stratify_rows, model_class
     ]
     all_performances = { metric:[] for metric in METRICS }
     for fraction, Ms_train_and_test in zip(fractions_unknown, all_Ms_training_and_test):
-        # For each value of K, run the model on each fold and measure performances
+        # For each fraction, run the model on each fold and measure performances
         print "Sparsity experiment. Fraction=%s." % (fraction)
         performances = { metric:[] for metric in METRICS }
     
