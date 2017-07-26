@@ -15,7 +15,7 @@ import numpy
 
 ''' Plot settings. '''
 figsize = (8,10)
-nrows, ncols = 13, 1
+nrows, ncols = 14, 1
 left, right, bottom, top = 0.04, 0.995, 0.005, 0.995
 fontsize = 14
 
@@ -56,6 +56,8 @@ pgg_U = eval(open(folder_results+'poisson_gamma_U.txt','r').read())
 pgg_V = eval(open(folder_results+'poisson_gamma_V.txt','r').read())
 pggg_U = eval(open(folder_results+'poisson_gamma_gamma_U.txt','r').read())
 pggg_V = eval(open(folder_results+'poisson_gamma_gamma_V.txt','r').read())
+nmf_np_U = eval(open(folder_results+'baseline_mf_nonprobabilistic_U.txt','r').read())
+nmf_np_V = eval(open(folder_results+'baseline_mf_nonprobabilistic_V.txt','r').read())
 
 
 ''' Do the analysis. '''
@@ -74,6 +76,7 @@ name_meanU_stdU_meanV_stdV = [
     ('GEG',  average_mean_std(geg_U,  geg_V,  sort_by_std, use_absolute)),
     ('PGG',  average_mean_std(pgg_U,  pgg_V,  sort_by_std, use_absolute)),
     ('PGGG', average_mean_std(pggg_U, pggg_V, sort_by_std, use_absolute)),
+    ('NMF-NP', average_mean_std(nmf_np_U, nmf_np_V, sort_by_std, use_absolute)),
 ]
 
 

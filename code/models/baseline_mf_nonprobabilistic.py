@@ -35,21 +35,27 @@ import numpy
 import time
 
 METRICS = ['MSE', 'R^2', 'Rp']
-OPTIONS_INIT = ['ones', 'random', 'exp']
+OPTIONS_INIT = ['ones', 'random', 'exponential']
 DEFAULT_HYPERPARAMETERS = {
     'exponential_prior': 1.
 }
+MINIMUM_R = 0.0001
 
 class MF_Nonprobabilistic(BMF):
     def __init__(self,R,M,K,hyperparameters={}):
         """ Set up the class. """
         super(MF_Nonprobabilistic, self).__init__(R, M, K)
         self.exponential_prior = hyperparameters.get('exponential_prior',  DEFAULT_HYPERPARAMETERS['exponential_prior'])
+                   
+        # Add a tiny amount of each R value, to prevent NaN to come up if an  
+        # entire row/column in R is just 0.'s
+        self.R += MINIMUM_R
         
         # For computing the I-div it is easier if unknown values are 1's, not 0's, to avoid numerical issues
         self.R_excl_unknown = numpy.empty((self.I,self.J))
         for i,j in itertools.product(range(0,self.I),range(0,self.J)):
             self.R_excl_unknown[i,j] = self.R[i,j] if self.M[i,j] else 1.
+                    
                 
                       
     def initialise(self,init):
@@ -71,7 +77,7 @@ class MF_Nonprobabilistic(BMF):
             for j,k in itertools.product(range(self.J),range(self.K)):
                 self.V[j,k] = exponential_draw(self.exponential_prior)
     
-        
+    
     def run(self,iterations):
         """ Run the Gibbs sampler for the specified number of iterations. """
         assert hasattr(self,'U') and hasattr(self,'V'), "U and V have not been initialised - please run initialise() first."        
@@ -81,7 +87,7 @@ class MF_Nonprobabilistic(BMF):
         self.all_performances = { metric: [] for metric in METRICS } 
             
         time_start = time.time()
-        for it in range(1,iterations+1):
+        for it in range(iterations):
             # Update the matrices U, V
             for k in range(self.K):
                 self.update_U(k)
@@ -110,11 +116,17 @@ class MF_Nonprobabilistic(BMF):
         self.V[:,k] = self.V[:,k] * ( (self.U[:,k] * ( self.R / numpy.dot(self.U,self.V.T) ).T ).T * self.M ).sum(axis=0) / (self.U[:,k] * self.M.T).T.sum(axis=0)
         
         
-    """ Override the predict() method to simply use U and V directly. """
+    ''' Override the predict() method to simply use U and V directly. '''
     def predict(self,M_pred,burn_in,thinning):
-        """ Use U and V to predict missing values. """
+        ''' Use U and V to predict missing values. '''
         R_pred = numpy.dot(self.U, self.V.T)
         MSE = self.compute_MSE(M_pred,self.R,R_pred)
         R2 = self.compute_R2(M_pred,self.R,R_pred)    
         Rp = self.compute_Rp(M_pred,self.R,R_pred)        
         return {'MSE':MSE,'R^2':R2,'Rp':Rp}
+    
+    
+    ''' Override the approx_expectation_UV() method to simply return the final U, V. '''
+    def approx_expectation_UV(self,burn_in,thinning):
+        ''' Simply return U, V. ''' 
+        return (self.U, self.V)

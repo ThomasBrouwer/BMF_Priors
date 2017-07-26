@@ -1,0 +1,43 @@
+'''
+Measure convergence on the GDSC drug sensitivity dataset, with the non-probabilistic MF baseline.
+'''
+
+project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+import sys
+sys.path.append(project_location)
+
+from BMF_Priors.code.models.baseline_mf_nonprobabilistic import MF_Nonprobabilistic
+from BMF_Priors.data.drug_sensitivity.load_data import load_gdsc_ic50_integer
+from BMF_Priors.experiments.convergence.convergence_experiment import measure_convergence_time
+
+import matplotlib.pyplot as plt
+
+
+''' Run the experiment. '''
+R, M = load_gdsc_ic50_integer()
+model_class = MF_Nonprobabilistic
+settings = {
+    'R': R, 
+    'M': M, 
+    'K': 20, 
+    'hyperparameters': { 'exponential_prior': 0.1 }, 
+    'init': 'exponential', 
+    'iterations': 200,
+}
+fout_performances = './results/performances_baseline_mf_nonprobabilistic.txt'
+fout_times = './results/times_baseline_mf_nonprobabilistic.txt'
+repeats = 10
+performances, times = measure_convergence_time(
+    repeats, model_class, settings, fout_performances, fout_times)
+
+
+''' Plot the times, and performance vs iterations. '''
+plt.figure()
+plt.title("Performance against average time")
+plt.plot(times, performances)
+plt.ylim(0,2000)
+
+plt.figure()
+plt.title("Performance against iteration")
+plt.plot(performances)
+plt.ylim(0,2000)

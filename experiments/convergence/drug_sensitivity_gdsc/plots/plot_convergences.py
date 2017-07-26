@@ -30,6 +30,10 @@ ghh = eval(open(folder_results+'performances_gaussian_halfnormal.txt','r').read(
 pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
+nmf_np = eval(open(folder_results+'performances_baseline_mf_nonprobabilistic.txt').read())
+row = eval(open(folder_results+'performances_baseline_average_row.txt','r').read())
+column = eval(open(folder_results+'performances_baseline_average_column.txt','r').read())
+
 
 ''' Assemble the average performances and method names. '''
 performances_names_colours_linestyles_markers = [
@@ -47,6 +51,9 @@ performances_names_colours_linestyles_markers = [
 #    (ghh,  'GHH',  'b', '-', ''),
     (pgg,  'PGG',  'y', '-', ''),
     (pggg, 'PGGG', 'y', '-', ''),
+    (nmf_np, 'Row',    'grey', '-', ''),
+    (column, 'NMF-NP', 'grey', '-', ''),
+    (row,    'Col',    'grey', '-', ''),
 ]
 
 

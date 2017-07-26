@@ -21,7 +21,7 @@ variances = [R.var() for R in Rs_noise]
 
 ''' Plot settings. '''
 y_min, y_max = 0.5, 3.
-bar_width = 0.06
+bar_width = 0.055
 xtick_offset = 0.4 # to make xticks center of bars
 
 folder_plots = "./"
@@ -44,6 +44,10 @@ gttn = eval(open(folder_results+'performances_gaussian_truncatednormal_hierarchi
 pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
+nmf_np = eval(open(folder_results+'performances_baseline_mf_nonprobabilistic.txt','r').read())
+row = eval(open(folder_results+'performances_baseline_average_row.txt','r').read())
+column = eval(open(folder_results+'performances_baseline_average_column.txt','r').read())
+
 performances_names_colours_linestyles_markers = [
     (ggg,  'GGG',  'r', '-', '.'),#'1'),
     (gggu, 'GGGU', 'r', '-', '.'),#'2'),
@@ -58,6 +62,9 @@ performances_names_colours_linestyles_markers = [
     (gttn, 'GTTN', 'b', '-', '.'),#'4'),
     (pgg,  'PGG',  'y', '-', '.'),#'1'),
     (pggg, 'PGGG', 'y', '-', '.'),#'2'),
+    (nmf_np, 'Row',    'grey', '-', '.'),#'1'),
+    (column, 'NMF-NP', 'grey', '-', '.'),#'2'),
+    (row,    'Col',    'grey', '-', '.'),#'3'),
 ]
 
 
