@@ -3,6 +3,8 @@ Methods for doing the analysis.
 """
 
 import numpy
+import math
+from scipy.stats import spearmanr
 
 
 ''' Compute the std or mean per column in U, V. '''
@@ -61,3 +63,43 @@ def average_mean_std(all_U, all_V, sort_by_std=False, use_absolute=False):
     average_mean_V, average_std_V = numpy.array(all_mean_V).mean(axis=0), numpy.array(all_std_V).mean(axis=0)
     return (average_mean_U, average_std_U, average_mean_V, average_std_V)
     
+
+''' Construct a Gaussian similarity kernel between the rows of a matrix U. 
+    For sigma^2 we use the number of columns. '''
+def construct_gaussian_kernel(U):
+    def gaussian(a1,a2,sigma_2):
+        distance = numpy.power(a1-a2, 2).sum()
+        return math.exp( -distance / (2.*sigma_2) )
+    
+    U = numpy.array(U)
+    I, K = U.shape
+    sigma_2 = K
+    kernel = numpy.zeros((I,I))
+    for i in range(0,I):
+        for j in range(i,I):
+            Ui, Uj = U[i,:], U[j,:]
+            similarity = gaussian(a1=Ui, a2=Uj, sigma_2=sigma_2)
+            kernel[i,j] = similarity
+            kernel[j,i] = similarity
+    assert numpy.array_equal(kernel, kernel.T), "Kernel not symmetrical!"
+    assert numpy.min(kernel) >= 0.0 and numpy.max(kernel) <= 1.0, "Kernel values are outside [0,1]!"
+    print "Constructed kernel."
+    return kernel
+
+
+''' Construct a correlation (R^2) similarity kernel between the rows of a matrix U. '''
+def construct_correlation_kernel(U):
+    U = numpy.array(U)
+    I, K = U.shape
+    kernel = numpy.zeros((I,I))
+    for i in range(0,I):
+        print "Row %s/%s." % (i, I)
+        for j in range(i,I):
+            Ui, Uj = U[i,:], U[j,:]
+            similarity = spearmanr(Ui,Uj).correlation
+            kernel[i,j] = similarity
+            kernel[j,i] = similarity
+    assert numpy.array_equal(kernel, kernel.T), "Kernel not symmetrical!"
+    assert numpy.min(kernel) >= -1.0 and numpy.max(kernel) <= 1.0, "Kernel values are outside [-1,1]!"
+    print "Constructed kernel."
+    return kernel
