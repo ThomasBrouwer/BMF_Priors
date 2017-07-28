@@ -38,7 +38,7 @@ average_performances = explore_gamma(
 
 ''' Plot the performances. '''
 plt.figure()
-plt.ylim(0,20)
+plt.ylim(0,40)
 plt.title("gamma exploration performances")
 for K in values_K:
     performances = [perf for perf,(gamma,Kp) in zip(average_performances['MSE'],values_gamma_K) if Kp == K]
