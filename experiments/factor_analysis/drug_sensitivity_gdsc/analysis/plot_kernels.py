@@ -25,7 +25,7 @@ fontsize = 14
 
 
 ''' Load in the kernels. '''
-kernel_type = 'rp_correlation' # 'gaussian' # 'rs_correlation' # 
+kernel_type = 'rs_correlation' # 'rp_correlation' # 'gaussian' # 
 average_or_single = 'average' # 'single' # 
 folder_kernels = './kernels/' if average_or_single == 'single' else './average_kernels/'
 
