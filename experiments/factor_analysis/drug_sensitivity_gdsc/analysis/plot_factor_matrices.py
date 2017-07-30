@@ -66,8 +66,8 @@ plot = True
 reorder_rows_columns = True 
 if reorder_rows_columns:
     R, M = load_gdsc_ic50()
-    indices_rows = range(R.shape[0])#compute_dendrogram(R)
-    indices_columns = range(R.shape[1])#compute_dendrogram(R.T)
+    indices_rows = compute_dendrogram(R)
+    indices_columns = compute_dendrogram(R.T)
 
 if plot:
     for name, plotname, U, V in name_plotname_U_V:

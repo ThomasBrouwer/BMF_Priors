@@ -5,6 +5,7 @@ Methods for doing the analysis.
 import numpy
 import math
 from scipy.stats import spearmanr
+from scipy.stats import pearsonr
 
 
 ''' Compute the std or mean per column in U, V. '''
@@ -64,9 +65,9 @@ def average_mean_std(all_U, all_V, sort_by_std=False, use_absolute=False):
     return (average_mean_U, average_std_U, average_mean_V, average_std_V)
     
 
-''' Construct a Gaussian similarity kernel between the rows of a matrix U. 
-    For sigma^2 we use the number of columns. '''
 def construct_gaussian_kernel(U):
+    ''' Construct a Gaussian similarity kernel between the rows of a matrix U. 
+        For sigma^2 we use the number of columns. '''
     def gaussian(a1,a2,sigma_2):
         distance = numpy.power(a1-a2, 2).sum()
         return math.exp( -distance / (2.*sigma_2) )
@@ -87,8 +88,9 @@ def construct_gaussian_kernel(U):
     return kernel
 
 
-''' Construct a correlation (R^2) similarity kernel between the rows of a matrix U. '''
-def construct_correlation_kernel(U):
+
+def construct_Rs_correlation_kernel(U):
+    ''' Construct a correlation (Spearman, rank) similarity kernel between the rows of a matrix U. '''
     U = numpy.array(U)
     I, K = U.shape
     kernel = numpy.zeros((I,I))
@@ -97,6 +99,24 @@ def construct_correlation_kernel(U):
         for j in range(i,I):
             Ui, Uj = U[i,:], U[j,:]
             similarity = spearmanr(Ui,Uj).correlation
+            kernel[i,j] = similarity
+            kernel[j,i] = similarity
+    assert numpy.array_equal(kernel, kernel.T), "Kernel not symmetrical!"
+    assert numpy.min(kernel) >= -1.0 and numpy.max(kernel) <= 1.0, "Kernel values are outside [-1,1]!"
+    print "Constructed kernel."
+    return kernel
+
+
+def construct_Rp_correlation_kernel(U):
+    ''' Construct a correlation (Pearson) similarity kernel between the rows of a matrix U. '''
+    U = numpy.array(U)
+    I, K = U.shape
+    kernel = numpy.zeros((I,I))
+    for i in range(0,I):
+        print "Row %s/%s." % (i, I)
+        for j in range(i,I):
+            Ui, Uj = U[i,:], U[j,:]
+            similarity = pearsonr(Ui,Uj)[0]
             kernel[i,j] = similarity
             kernel[j,i] = similarity
     assert numpy.array_equal(kernel, kernel.T), "Kernel not symmetrical!"

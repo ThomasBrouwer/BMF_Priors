@@ -7,6 +7,7 @@ Parameters for U, V - format (Likelihood) Prior:
 - (Gaussian) Gaussian (multivariate posterior)
 - (Gaussian) Gaussian + Wishart
 - (Gaussian) Gaussian + Automatic Relevance Determination
+- (Gaussian) Gaussian + L21 Prior
 - (Gaussian) Gaussian + Volume Prior
 - (Gaussian) Exponential
 - (Gaussian) Exponential + ARD
@@ -69,7 +70,7 @@ def poisson_Z_n_p(R, U, V, Omega):
     return (n_list, p_list)
 
 
-''' (Gausian) Gaussian (univariate posterior). '''
+''' (Gaussian) Gaussian (univariate posterior). '''
 def gaussian_gaussian_mu_tau(k, lamb, R, M, U, V, tau):
     """ muUk and tauUk (vectors) for Uk with N(0,I/lamb) prior (I=identity matrix). """
     I, J, K = R.shape[0], R.shape[1], U.shape[1]
@@ -85,7 +86,7 @@ def gaussian_gaussian_mu_tau(k, lamb, R, M, U, V, tau):
     return (muUk, tauUk)
 
 
-''' (Gausian) Gaussian (multivariate posterior). '''
+''' (Gaussian) Gaussian (multivariate posterior). '''
 def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
     """ mu and sigma for Ui with N(0,I/lamb) prior (I=identity matrix). """
     assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0]
@@ -114,7 +115,7 @@ def gaussian_gaussian_mu_sigma(lamb, Ri, Mi, V, tau):
 #    return (mu, sigma)
 
 
-''' (Gausian) Gaussian + Wishart '''
+''' (Gaussian) Gaussian + Wishart '''
 def gaussian_gaussian_wishart_mu_sigma(muU, sigmaU_inv, Ri, Mi, V, tau):
     """ mu and sigma for Ui with N(muU,sigmaU) prior. """
     assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0]
@@ -140,7 +141,7 @@ def gaussian_wishart_beta0_v0_mu0_W0(beta0, v0, mu0, W0, U):
     return (beta0_s, v0_s, mu0_s, W0_s)
 
 
-''' (Gausian) Gaussian + Automatic Relevance Determination '''
+''' (Gaussian) Gaussian + Automatic Relevance Determination '''
 def gaussian_gaussian_ard_mu_sigma(lamb, Ri, Mi, V, tau):
     """ mu and sigma for Ui with N(0,diag(1/lamb)) prior. lamb is a vector. """
     assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0] and lamb.shape[0] == V.shape[1]
@@ -160,7 +161,23 @@ def gaussian_ard_alpha_beta(alpha0, beta0, Uk, Vk):
     return (alpha_s, beta_s)
 
 
-''' (Gausian) Gaussian + Volume Prior '''
+''' (Gaussian) Gaussian + L^2_1 Prior '''
+def gaussian_l21_mu_tau(k, lamb, R, M, U, V, tau):
+    """ muUik and tauUik for Uik with L21(lamb) prior. 
+        We do updates per column of U (so Uk). """
+    assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
+    assert U.shape[1] == V.shape[1]
+    tauUk = lamb + tau * ( M * V[:,k]**2 ).sum(axis=1)
+    #muUk = 1. / tauUk * ( -lamb + tau * (M * ( (R-numpy.dot(U,V.T)+numpy.outer(U[:,k],V[:,k]))*V[:,k] )).sum(axis=1))
+    V_ktilde = numpy.append(V[:,:k],V[:,k+1:],axis=1)
+    U_ktilde = numpy.append(U[:,:k],U[:,k+1:],axis=1)
+    muUk = 1. / tauUk * ( -lamb * U_ktilde.sum(axis=1) + tau * (
+        numpy.dot(M*R, V[:,k]) - numpy.dot(M*numpy.dot(U_ktilde, V_ktilde.T), V[:,k])) )
+    assert tauUk.shape == muUk.shape
+    return (muUk, tauUk)
+
+
+''' (Gaussian) Gaussian + Volume Prior '''
 def adjugate_matrix(matrix):
     """ adj(matrix) = det(matrix) matrix^-1 """
     return numpy.linalg.det(matrix) * numpy.linalg.inv(matrix)
