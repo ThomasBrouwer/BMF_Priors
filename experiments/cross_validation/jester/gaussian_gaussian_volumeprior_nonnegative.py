@@ -3,7 +3,7 @@ Run nested cross-validation experiment on the Jester dataset, with
 the Gaussian + Gaussian + Volume Prior (nonnegative) model.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/home/tab43/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 
@@ -27,7 +27,7 @@ predict_config = {
 
 
 ''' Settings nested cross-validation. '''
-K_range = [1,2,3]
+K_range = [1,2,3,4]
 no_folds = 5
 no_threads = 5
 parallel = False

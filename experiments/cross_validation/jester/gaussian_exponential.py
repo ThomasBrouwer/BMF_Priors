@@ -3,7 +3,7 @@ Run nested cross-validation experiment on the Jester dataset, with
 the Gaussian + Exponential model.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/home/tab43/Documents/Projects/libraries/"
 import sys
 sys.path.append(project_location)
 

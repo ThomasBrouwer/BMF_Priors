@@ -93,6 +93,11 @@ def initialise_U_halfnormal(init, I, K, sigma):
         U[i,k] = initialise(sigma=sigma)
     return U
     
+def initialise_U_l21(init, I, K, lamb):
+    """ Initialise U, with prior U ~ L21(lamb).
+        We cannot sample from this prior, so we initialise U_ik ~ TN(0,lamb). """
+    return initialise_U_truncatednormal(init=init, I=I, K=K, mu=0., tau=lamb)
+    
 def initialise_U_volumeprior(init, I, K, gamma):
     """ Initialise U, with prior U ~ VP(gamma).
         We cannot sample from this prior, so we initialise U_ik ~ N(0,1). """
