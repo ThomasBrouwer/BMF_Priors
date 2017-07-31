@@ -25,11 +25,11 @@ fontsize = 14
 
 
 ''' Load in the kernels. '''
-kernel_type = 'correlation' # 'gaussian' # 
-folder_kernels = './kernels/'
+kernel_type = 'rs_correlation' # 'rp_correlation' # 'gaussian' # 
+average_or_single = 'average' # 'single' # 
+folder_kernels = './kernels/' if average_or_single == 'single' else './average_kernels/'
 
 names_filenames = [
-    ('NMF-NP', 'nmf_np'),
     ('GGG',  'ggg'),
     ('GGGU', 'gggu'),
     ('GGGW', 'gggw'),
@@ -42,7 +42,8 @@ names_filenames = [
     ('GVG',  'gvg'),
     ('GVnG', 'gvng'),
     ('PGG',  'pgg'),
-    ('PGGG', 'pggg'),   
+    ('PGGG', 'pggg'),  
+    ('NMF-NP', 'nmf_np'), 
 ]
 name_plotname_kernelU_kernelV = [
     (name, filename, numpy.loadtxt(folder_kernels+'%s_%s_U.txt' % (kernel_type, filename)), 
@@ -83,8 +84,8 @@ plot = True
 reorder_rows_columns = True 
 if reorder_rows_columns:
     R, M = load_gdsc_ic50()
-    indices_rows = range(R.shape[0])#compute_dendrogram(R)
-    indices_columns = range(R.shape[1])#compute_dendrogram(R.T)
+    indices_rows = compute_dendrogram(R)
+    indices_columns = compute_dendrogram(R.T)
 
 if plot:
     for name, plotname, kernelU, kernelV in name_plotname_kernelU_kernelV:
@@ -115,7 +116,7 @@ if plot:
         ax.set_yticklabels([], minor=False, fontsize = 4)
         
         # Store the plot
-        plot_file = folder_plots_kernels+'%s_%s_U' % (kernel_type, plotname)
+        plot_file = folder_plots_kernels+'%s_%s_%s_U' % (average_or_single, kernel_type, plotname)
         plt.savefig(plot_file, dpi=600, bbox_inches='tight')
         plt.close()
         
@@ -141,6 +142,6 @@ if plot:
         ax.set_yticklabels([], minor=False, fontsize = 4)
         
         # Store the plot
-        plot_file = folder_plots_kernels+'%s_%s_V' % (kernel_type, plotname)
+        plot_file = folder_plots_kernels+'%s_%s_%s_V' % (average_or_single, kernel_type, plotname)
         plt.savefig(plot_file, dpi=600, bbox_inches='tight')
         plt.close()

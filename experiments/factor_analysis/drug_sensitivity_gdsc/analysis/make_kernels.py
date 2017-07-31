@@ -5,7 +5,8 @@ as using Spearman correlation.
 """
 
 from helpers import construct_gaussian_kernel
-from helpers import construct_correlation_kernel
+from helpers import construct_Rp_correlation_kernel
+from helpers import construct_Rs_correlation_kernel
 
 import numpy
 
@@ -43,7 +44,6 @@ nmf_np_V = eval(open(folder_results+'baseline_mf_nonprobabilistic_V.txt','r').re
 
 
 ''' Do the analysis. '''
-construct_kernel = construct_correlation_kernel #construct_gaussian_kernel
 gaussian_name_kernelU_kernelU = [
     ('ggg',  construct_gaussian_kernel(ggg_U[0]),  construct_gaussian_kernel(ggg_V[0])),
     ('gggu', construct_gaussian_kernel(gggu_U[0]), construct_gaussian_kernel(gggu_V[0])),
@@ -60,21 +60,37 @@ gaussian_name_kernelU_kernelU = [
     ('pggg', construct_gaussian_kernel(pggg_U[0]), construct_gaussian_kernel(pggg_V[0])),
     ('nmf_np', construct_gaussian_kernel(nmf_np_U[0]), construct_gaussian_kernel(nmf_np_V[0])),
 ]
-correlation_name_kernelU_kernelU = [
-    ('ggg',  construct_correlation_kernel(ggg_U[0]),  construct_correlation_kernel(ggg_V[0])),
-    ('gggu', construct_correlation_kernel(gggu_U[0]), construct_correlation_kernel(gggu_V[0])),
-    ('gggw', construct_correlation_kernel(gggw_U[0]), construct_correlation_kernel(gggw_V[0])),
-    ('ggga', construct_correlation_kernel(ggga_U[0]), construct_correlation_kernel(ggga_V[0])),
-    ('gvg',  construct_correlation_kernel(gvg_U[0]),  construct_correlation_kernel(gvg_V[0])),
-    ('gee',  construct_correlation_kernel(gee_U[0]),  construct_correlation_kernel(gee_V[0])),
-    ('geea', construct_correlation_kernel(geea_U[0]), construct_correlation_kernel(geea_V[0])),
-    ('gtt',  construct_correlation_kernel(gtt_U[0]),  construct_correlation_kernel(gtt_V[0])),
-    ('gttn', construct_correlation_kernel(gttn_U[0]), construct_correlation_kernel(gttn_V[0])),
-    ('gvng', construct_correlation_kernel(gvng_U[0]), construct_correlation_kernel(gvng_V[0])),
-    ('geg',  construct_correlation_kernel(geg_U[0]),  construct_correlation_kernel(geg_V[0])),
-    ('pgg',  construct_correlation_kernel(pgg_U[0]),  construct_correlation_kernel(pgg_V[0])),
-    ('pggg', construct_correlation_kernel(pggg_U[0]), construct_correlation_kernel(pggg_V[0])),
-    ('nmf_np', construct_correlation_kernel(nmf_np_U[0]), construct_correlation_kernel(nmf_np_V[0])),
+Rp_correlation_name_kernelU_kernelU = [
+    ('ggg',  construct_Rp_correlation_kernel(ggg_U[0]),  construct_Rp_correlation_kernel(ggg_V[0])),
+    ('gggu', construct_Rp_correlation_kernel(gggu_U[0]), construct_Rp_correlation_kernel(gggu_V[0])),
+    ('gggw', construct_Rp_correlation_kernel(gggw_U[0]), construct_Rp_correlation_kernel(gggw_V[0])),
+    ('ggga', construct_Rp_correlation_kernel(ggga_U[0]), construct_Rp_correlation_kernel(ggga_V[0])),
+    ('gvg',  construct_Rp_correlation_kernel(gvg_U[0]),  construct_Rp_correlation_kernel(gvg_V[0])),
+    ('gee',  construct_Rp_correlation_kernel(gee_U[0]),  construct_Rp_correlation_kernel(gee_V[0])),
+    ('geea', construct_Rp_correlation_kernel(geea_U[0]), construct_Rp_correlation_kernel(geea_V[0])),
+    ('gtt',  construct_Rp_correlation_kernel(gtt_U[0]),  construct_Rp_correlation_kernel(gtt_V[0])),
+    ('gttn', construct_Rp_correlation_kernel(gttn_U[0]), construct_Rp_correlation_kernel(gttn_V[0])),
+    ('gvng', construct_Rp_correlation_kernel(gvng_U[0]), construct_Rp_correlation_kernel(gvng_V[0])),
+    ('geg',  construct_Rp_correlation_kernel(geg_U[0]),  construct_Rp_correlation_kernel(geg_V[0])),
+    ('pgg',  construct_Rp_correlation_kernel(pgg_U[0]),  construct_Rp_correlation_kernel(pgg_V[0])),
+    ('pggg', construct_Rp_correlation_kernel(pggg_U[0]), construct_Rp_correlation_kernel(pggg_V[0])),
+    ('nmf_np', construct_Rp_correlation_kernel(nmf_np_U[0]), construct_Rp_correlation_kernel(nmf_np_V[0])),
+]
+Rs_correlation_name_kernelU_kernelU = [
+    ('ggg',  construct_Rs_correlation_kernel(ggg_U[0]),  construct_Rs_correlation_kernel(ggg_V[0])),
+    ('gggu', construct_Rs_correlation_kernel(gggu_U[0]), construct_Rs_correlation_kernel(gggu_V[0])),
+    ('gggw', construct_Rs_correlation_kernel(gggw_U[0]), construct_Rs_correlation_kernel(gggw_V[0])),
+    ('ggga', construct_Rs_correlation_kernel(ggga_U[0]), construct_Rs_correlation_kernel(ggga_V[0])),
+    ('gvg',  construct_Rs_correlation_kernel(gvg_U[0]),  construct_Rs_correlation_kernel(gvg_V[0])),
+    ('gee',  construct_Rs_correlation_kernel(gee_U[0]),  construct_Rs_correlation_kernel(gee_V[0])),
+    ('geea', construct_Rs_correlation_kernel(geea_U[0]), construct_Rs_correlation_kernel(geea_V[0])),
+    ('gtt',  construct_Rs_correlation_kernel(gtt_U[0]),  construct_Rs_correlation_kernel(gtt_V[0])),
+    ('gttn', construct_Rs_correlation_kernel(gttn_U[0]), construct_Rs_correlation_kernel(gttn_V[0])),
+    ('gvng', construct_Rs_correlation_kernel(gvng_U[0]), construct_Rs_correlation_kernel(gvng_V[0])),
+    ('geg',  construct_Rs_correlation_kernel(geg_U[0]),  construct_Rs_correlation_kernel(geg_V[0])),
+    ('pgg',  construct_Rs_correlation_kernel(pgg_U[0]),  construct_Rs_correlation_kernel(pgg_V[0])),
+    ('pggg', construct_Rs_correlation_kernel(pggg_U[0]), construct_Rs_correlation_kernel(pggg_V[0])),
+    ('nmf_np', construct_Rs_correlation_kernel(nmf_np_U[0]), construct_Rs_correlation_kernel(nmf_np_V[0])),
 ]
 
 
@@ -83,6 +99,9 @@ folder_kernels = './kernels/'
 for name, kernelU, kernelV in gaussian_name_kernelU_kernelU:
     numpy.savetxt(folder_kernels+'gaussian_%s_U.txt' % name, kernelU)
     numpy.savetxt(folder_kernels+'gaussian_%s_V.txt' % name, kernelV)
-for name, kernelU, kernelV in correlation_name_kernelU_kernelU:
-    numpy.savetxt(folder_kernels+'correlation_%s_U.txt' % name, kernelU)
-    numpy.savetxt(folder_kernels+'correlation_%s_V.txt' % name, kernelV)
+for name, kernelU, kernelV in Rp_correlation_name_kernelU_kernelU:
+    numpy.savetxt(folder_kernels+'rp_correlation_%s_U.txt' % name, kernelU)
+    numpy.savetxt(folder_kernels+'rp_correlation_%s_V.txt' % name, kernelV)
+for name, kernelU, kernelV in Rs_correlation_name_kernelU_kernelU:
+    numpy.savetxt(folder_kernels+'rs_correlation_%s_U.txt' % name, kernelU)
+    numpy.savetxt(folder_kernels+'rs_correlation_%s_V.txt' % name, kernelV)

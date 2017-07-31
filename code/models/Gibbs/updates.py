@@ -7,6 +7,7 @@ Updates for U, V - format (Likelihood) Prior:
 - (Gaussian) Gaussian (multivariate posterior)
 - (Gaussian) Gaussian + Wishart
 - (Gaussian) Gaussian + Automatic Relevance Determination
+- (Gaussian) L21 Prior
 - (Gaussian) Volume Prior
 - (Gaussian) Volume Prior (nonnegative)
 - (Gaussian) Exponential
@@ -35,6 +36,7 @@ from parameters import gaussian_gaussian_wishart_mu_sigma
 from parameters import gaussian_wishart_beta0_v0_mu0_W0
 from parameters import gaussian_gaussian_ard_mu_sigma
 from parameters import gaussian_ard_alpha_beta
+from parameters import gaussian_l21_mu_tau
 from parameters import gaussian_gaussian_volumeprior_mu_sigma
 from parameters import gaussian_exponential_mu_tau
 from parameters import gaussian_exponential_ard_mu_tau
@@ -103,7 +105,7 @@ def update_V_gaussian_gaussian_univariate(lamb, R, M, U, V, tau):
     return update_U_gaussian_gaussian_univariate(lamb=lamb, R=R.T, M=M.T, U=V, V=U, tau=tau)
 
 
-''' (Gausian) Gaussian (multivariate posterior) '''
+''' (Gaussian) Gaussian (multivariate posterior) '''
 def update_U_gaussian_gaussian_multivariate(lamb, R, M, V, tau):
     """ Update U for All Gaussian model (multivariate posterior). """
     I, K = R.shape[0], V.shape[1]
@@ -131,7 +133,7 @@ def update_V_gaussian_gaussian_multivariate(lamb, R, M, U, tau):
     return update_U_gaussian_gaussian_multivariate(lamb=lamb, R=R.T, M=M.T, V=U, tau=tau)
 
 
-''' (Gausian) Gaussian + Wishart '''
+''' (Gaussian) Gaussian + Wishart '''
 def update_U_gaussian_gaussian_wishart(muU, sigmaU, R, M, V, tau):
     """ Update U for All Gaussian + Wishart model. """
     I, K = R.shape[0], V.shape[1]
@@ -163,7 +165,7 @@ def update_muV_sigmaV_gaussian_gaussian_wishart(mu0, beta0, v0, W0, V):
         mu0=mu0, beta0=beta0, v0=v0, W0=W0, U=V)
     
 
-''' (Gausian) Gaussian + Automatic Relevance Determination '''
+''' (Gaussian) Gaussian + Automatic Relevance Determination '''
 def update_U_gaussian_gaussian_multivariate_ard(lamb, R, M, V, tau):
     """ Update U for All Gaussian + ARD model. """
     I, K = R.shape[0], V.shape[1]
@@ -189,6 +191,21 @@ def update_lambda_gaussian_gaussian_ard(alpha0, beta0, U, V):
         new_lambda[k] = gamma_draw(alpha=alpha_s, beta=beta_s)
     return new_lambda
 
+
+''' (Gaussian) L^2_1 '''
+def update_U_gaussian_l21(lamb, R, M, U, V, tau):
+    """ Update U for Gaussian + L^2_1 Prior model. """
+    I, K = U.shape
+    assert R.shape == M.shape and R.shape[0] == U.shape[0] and R.shape[1] == V.shape[0]
+    for k in range(K):
+        muUk, tauUk = gaussian_l21_mu_tau(k=k, lamb=lamb, R=R, M=M, U=U, V=V, tau=tau)
+        U[:,k] = truncated_normal_vector_draw(mus=muUk, taus=tauUk)
+    return U
+    
+def update_V_gaussian_l21(lamb, R, M, U, V, tau):
+    """ Update V for Gaussian + Exponential model. """
+    return update_U_gaussian_l21(lamb=lamb, R=R.T, M=M.T, U=V, V=U, tau=tau)
+    
 
 ''' (Gausian) Volume Prior '''
 def update_U_gaussian_volumeprior(gamma, R, M, U, V, tau):
@@ -223,7 +240,7 @@ def update_V_gaussian_volumeprior_nonnegative(gamma, R, M, U, V, tau):
         gamma=gamma, R=R.T, M=M.T, U=V, V=U, tau=tau)
 
 
-''' (Gausian) Exponential '''
+''' (Gaussian) Exponential '''
 def update_U_gaussian_exponential(lamb, R, M, U, V, tau):
     """ Update U for Gaussian + Exponential model. """
     I, K = U.shape
@@ -238,7 +255,7 @@ def update_V_gaussian_exponential(lamb, R, M, U, V, tau):
     return update_U_gaussian_exponential(lamb=lamb, R=R.T, M=M.T, U=V, V=U, tau=tau)
     
 
-''' (Gausian) Exponential + Automatic Relevance Determination '''
+''' (Gaussian) Exponential + Automatic Relevance Determination '''
 def update_U_gaussian_exponential_ard(lamb, R, M, U, V, tau):
     """ Update U for Gaussian + Exponential + ARD model. """
     I, K = U.shape
@@ -263,7 +280,7 @@ def update_lambda_gaussian_exponential_ard(alpha0, beta0, U, V):
     return new_lambda
     
 
-''' (Gausian) Truncated Normal '''
+''' (Gaussian) Truncated Normal '''
 def update_U_gaussian_truncatednormal(muU, tauU, R, M, U, V, tau):
     """ Update U for Gaussian + Truncated Normal model. """
     I, K = U.shape
@@ -280,7 +297,7 @@ def update_V_gaussian_truncatednormal(muV, tauV, R, M, U, V, tau):
         muU=muV, tauU=tauV, R=R.T, M=M.T, U=V, V=U, tau=tau)
 
 
-''' (Gausian) Truncated Normal + hierarchical '''
+''' (Gaussian) Truncated Normal + hierarchical '''
 def update_U_gaussian_truncatednormal_hierarchical(muU, tauU, R, M, U, V, tau):
     """ Update U for Gaussian + Truncated Normal + hierarchical model. """
     I, K = U.shape
@@ -326,7 +343,7 @@ def update_tauV_gaussian_truncatednormal_hierarchical(a, b, V, muV):
     return update_tauU_gaussian_truncatednormal_hierarchical(a=a, b=b, U=V, muU=muV)
 
 
-''' (Gausian) Half Normal '''
+''' (Gaussian) Half Normal '''
 def update_U_gaussian_halfnormal(sigma, R, M, U, V, tau):
     """ Update U for Gaussian + Half Normal model. """
     I, K = U.shape
