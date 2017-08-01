@@ -35,6 +35,8 @@ gtt_U = eval(open(folder_results+'gaussian_truncatednormal_U.txt','r').read())
 gtt_V = eval(open(folder_results+'gaussian_truncatednormal_V.txt','r').read())
 gttn_U = eval(open(folder_results+'gaussian_truncatednormal_hierarchical_U.txt','r').read())
 gttn_V = eval(open(folder_results+'gaussian_truncatednormal_hierarchical_V.txt','r').read())
+gll_U = eval(open(folder_results+'gaussian_l21_U.txt','r').read())
+gll_V = eval(open(folder_results+'gaussian_l21_V.txt','r').read())
 pgg_U = eval(open(folder_results+'poisson_gamma_U.txt','r').read())
 pgg_V = eval(open(folder_results+'poisson_gamma_V.txt','r').read())
 pggg_U = eval(open(folder_results+'poisson_gamma_gamma_U.txt','r').read())
@@ -56,6 +58,7 @@ gaussian_name_kernelU_kernelU = [
     ('gttn', construct_gaussian_kernel(gttn_U[0]), construct_gaussian_kernel(gttn_V[0])),
     ('gvng', construct_gaussian_kernel(gvng_U[0]), construct_gaussian_kernel(gvng_V[0])),
     ('geg',  construct_gaussian_kernel(geg_U[0]),  construct_gaussian_kernel(geg_V[0])),
+    ('gll',  construct_gaussian_kernel(gll_U[0]),  construct_gaussian_kernel(gll_V[0])),
     ('pgg',  construct_gaussian_kernel(pgg_U[0]),  construct_gaussian_kernel(pgg_V[0])),
     ('pggg', construct_gaussian_kernel(pggg_U[0]), construct_gaussian_kernel(pggg_V[0])),
     ('nmf_np', construct_gaussian_kernel(nmf_np_U[0]), construct_gaussian_kernel(nmf_np_V[0])),
@@ -72,6 +75,7 @@ Rp_correlation_name_kernelU_kernelU = [
     ('gttn', construct_Rp_correlation_kernel(gttn_U[0]), construct_Rp_correlation_kernel(gttn_V[0])),
     ('gvng', construct_Rp_correlation_kernel(gvng_U[0]), construct_Rp_correlation_kernel(gvng_V[0])),
     ('geg',  construct_Rp_correlation_kernel(geg_U[0]),  construct_Rp_correlation_kernel(geg_V[0])),
+    ('gll',  construct_Rp_correlation_kernel(gll_U[0]),  construct_Rp_correlation_kernel(gll_V[0])),
     ('pgg',  construct_Rp_correlation_kernel(pgg_U[0]),  construct_Rp_correlation_kernel(pgg_V[0])),
     ('pggg', construct_Rp_correlation_kernel(pggg_U[0]), construct_Rp_correlation_kernel(pggg_V[0])),
     ('nmf_np', construct_Rp_correlation_kernel(nmf_np_U[0]), construct_Rp_correlation_kernel(nmf_np_V[0])),
@@ -88,6 +92,7 @@ Rs_correlation_name_kernelU_kernelU = [
     ('gttn', construct_Rs_correlation_kernel(gttn_U[0]), construct_Rs_correlation_kernel(gttn_V[0])),
     ('gvng', construct_Rs_correlation_kernel(gvng_U[0]), construct_Rs_correlation_kernel(gvng_V[0])),
     ('geg',  construct_Rs_correlation_kernel(geg_U[0]),  construct_Rs_correlation_kernel(geg_V[0])),
+    ('gll',  construct_Rs_correlation_kernel(gll_U[0]),  construct_Rs_correlation_kernel(gll_V[0])),
     ('pgg',  construct_Rs_correlation_kernel(pgg_U[0]),  construct_Rs_correlation_kernel(pgg_V[0])),
     ('pggg', construct_Rs_correlation_kernel(pggg_U[0]), construct_Rs_correlation_kernel(pggg_V[0])),
     ('nmf_np', construct_Rs_correlation_kernel(nmf_np_U[0]), construct_Rs_correlation_kernel(nmf_np_V[0])),

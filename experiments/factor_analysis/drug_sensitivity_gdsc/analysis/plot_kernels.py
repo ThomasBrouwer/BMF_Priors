@@ -39,6 +39,7 @@ names_filenames = [
     ('GEEA', 'geea'),
     ('GTT',  'gtt'),
     ('GTTN', 'gttn'),
+    ('GLL',  'gll'),
     ('GVG',  'gvg'),
     ('GVnG', 'gvng'),
     ('PGG',  'pgg'),

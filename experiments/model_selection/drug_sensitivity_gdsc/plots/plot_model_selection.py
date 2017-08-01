@@ -28,7 +28,8 @@ gee = eval(open(folder_results+'performances_gaussian_exponential.txt','r').read
 geea = eval(open(folder_results+'performances_gaussian_exponential_ard.txt','r').read())
 gtt = eval(open(folder_results+'performances_gaussian_truncatednormal.txt','r').read())
 gttn = eval(open(folder_results+'performances_gaussian_truncatednormal_hierarchical.txt','r').read())
-ghh = eval(open(folder_results+'performances_gaussian_halfnormal.txt','r').read())
+gll = eval(open(folder_results+'performances_gaussian_l21.txt','r').read())
+#ghh = eval(open(folder_results+'performances_gaussian_halfnormal.txt','r').read())
 pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
@@ -46,6 +47,7 @@ performances_names_colours_linestyles_markers = [
     (geea, 'GEEA', 'b', '-', '2'),
     (gtt,  'GTT',  'b', '-', '3'),
     (gttn, 'GTTN', 'b', '-', '4'),
+    (gll,  'GLL',  'b', '-', '5'),
 #    (ghh,  'GHH',  'b', '-', '*'),
     (pgg,  'PGG',  'y', '-', '1'),
     (pggg, 'PGGG', 'y', '-', '2'),
@@ -74,10 +76,10 @@ plt.savefig(plot_file, dpi=600)
 
 
 ''' Set up the legend outside. '''
-font_size_legend, number_of_columns, legend_box_line_width = 12, 7, 1
+font_size_legend, number_of_columns, legend_box_line_width = 12, 8, 1
 legend_line_width, legend_marker_size = 2, 2
 ax = fig.add_subplot(111)
-legend_fig = plt.figure(figsize=(8.8,0.63))
+legend_fig = plt.figure(figsize=(10.,0.63))
 legend = legend_fig.legend(*ax.get_legend_handles_labels(), 
                            loc='center', ncol=number_of_columns,
                            prop={'size':font_size_legend}, markerscale=legend_marker_size,

@@ -15,7 +15,7 @@ import numpy
 
 ''' Plot settings. '''
 figsize = (8,5)
-nrows, ncols = 7, 2
+nrows, ncols = 8, 2
 left, right, bottom, top = 0.04, 0.995, 0.01, 0.995
 wspace, hspace = 0.125, None#0.1, 0.1
 fontsize = 14
@@ -53,6 +53,8 @@ gtt_U = eval(open(folder_results+'gaussian_truncatednormal_U.txt','r').read())
 gtt_V = eval(open(folder_results+'gaussian_truncatednormal_V.txt','r').read())
 gttn_U = eval(open(folder_results+'gaussian_truncatednormal_hierarchical_U.txt','r').read())
 gttn_V = eval(open(folder_results+'gaussian_truncatednormal_hierarchical_V.txt','r').read())
+gll_U = eval(open(folder_results+'gaussian_l21_U.txt','r').read())
+gll_V = eval(open(folder_results+'gaussian_l21_V.txt','r').read())
 pgg_U = eval(open(folder_results+'poisson_gamma_U.txt','r').read())
 pgg_V = eval(open(folder_results+'poisson_gamma_V.txt','r').read())
 pggg_U = eval(open(folder_results+'poisson_gamma_gamma_U.txt','r').read())
@@ -77,6 +79,7 @@ name_meanU_stdU_meanV_stdV = [
     ('GEEA', average_mean_std(geea_U, geea_V, sort_by_std, use_absolute)),
     ('GTT',  average_mean_std(gtt_U,  gtt_V,  sort_by_std, use_absolute)),
     ('GTTN', average_mean_std(gttn_U, gttn_V, sort_by_std, use_absolute)),
+    ('GLL',  average_mean_std(gll_U,  gll_V,  sort_by_std, use_absolute)),
     ('NMF-NP', average_mean_std(nmf_np_U, nmf_np_V, sort_by_std, use_absolute)),
 ]
 
@@ -98,6 +101,6 @@ for i, (name, (avr_mean_U, avr_std_U, avr_mean_V, avr_std_V)) in enumerate(name_
     axes[i/2][i%2].set_ylim(y_min, y_max), axes[i/2][i%2].set_xlim(x_min, x_max)
 
 # Turn off bottom right plot
-#axes[6][1].axis('off')
+axes[7][1].axis('off')
 
 plt.savefig(plot_file, dpi=600)

@@ -26,7 +26,8 @@ gee = eval(open(folder_results+'times_gaussian_exponential.txt','r').read())
 geea = eval(open(folder_results+'times_gaussian_exponential_ard.txt','r').read())
 gtt = eval(open(folder_results+'times_gaussian_truncatednormal.txt','r').read())
 gttn = eval(open(folder_results+'times_gaussian_truncatednormal_hierarchical.txt','r').read())
-ghh = eval(open(folder_results+'times_gaussian_halfnormal.txt','r').read())
+gll = eval(open(folder_results+'times_gaussian_l21.txt','r').read())
+#ghh = eval(open(folder_results+'times_gaussian_halfnormal.txt','r').read())
 pgg = eval(open(folder_results+'times_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'times_poisson_gamma_gamma.txt','r').read())
 
@@ -46,6 +47,7 @@ performances_names_colours_linestyles_markers = [
     (geea, 'GEEA', 'b', '-', '2'),
     (gtt,  'GTT',  'b', '-', '3'),
     (gttn, 'GTTN', 'b', '-', '4'),
+    (gll,  'GLL',  'b', '-', '5'),
 #    (ghh,  'GHH',  'b', '-', '*'),
     (pgg,  'PGG',  'y', '-', '1'),
     (pggg, 'PGGG', 'y', '-', '2'),

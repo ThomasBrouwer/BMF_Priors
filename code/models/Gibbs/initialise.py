@@ -8,6 +8,8 @@ from distributions.gamma import gamma_draw, gamma_mean
 from distributions.normal import normal_draw, normal_mean
 from distributions.multivariate_normal import multivariate_normal_draw, multivariate_normal_mean
 from distributions.exponential import exponential_draw, exponential_mean
+from distributions.laplace import laplace_draw, laplace_mean
+from distributions.inverse_gaussian import inverse_gaussian_draw, inverse_gaussian_mean
 from distributions.truncated_normal import truncated_normal_draw, truncated_normal_mean
 from distributions.half_normal import half_normal_draw, half_normal_mean
 from distributions.normal_inverse_wishart import normal_inverse_wishart_draw, normal_inverse_wishart_mean
@@ -16,6 +18,7 @@ from distributions.dirichlet import dirichlet_draw, dirichlet_mean
 
 import itertools
 import numpy
+import math
 
 def initialise_tau_gamma(alpha, beta, R, M, U, V):
     """ Initialise tau using the model updates. """
@@ -53,6 +56,37 @@ def initialise_muU_sigmaU_wishart(init, mu0, beta0, v0, W0):
     initialise = normal_inverse_wishart_draw if init == 'random' else normal_inverse_wishart_mean
     muU, tauU = initialise(mu0=mu0, beta0=beta0, v0=v0, W0=W0)
     return (muU, tauU)
+
+def initialise_U_laplace(init, I, K, etaU):
+    """ Initialise U, with prior Uik ~ L(0,etaUik). """
+    initialise = laplace_draw if init == 'random' else laplace_mean
+    U = numpy.zeros((I,K))
+    etaU = etaU * numpy.ones((I,K)) if numpy.shape(etaU) == () else etaU
+    for i,k in itertools.product(range(I),range(K)):
+        U[i,k] = initialise(mu=0., lamb=etaU[i,k])
+    return U
+
+def initialise_etaU_laplace(init, I, K, a, b):
+    """ Initialise etaU, with prior etaUik ~ GeneralisedInverseGaussian(gamma, a, b).
+        In the paper they used gamma = -0.5, turning it into an InverseGaussian
+        with mu=sqrt(b/a), tau=b. So we draw values from that. 
+        https://en.wikipedia.org/wiki/Generalized_inverse_Gaussian_distribution#Special_cases
+    """
+    initialise = inverse_gaussian_draw if init == 'random' else inverse_gaussian_mean
+    etaU = numpy.zeros((I,K))
+    for i,k in itertools.product(range(I),range(K)):
+        mu, tau = math.sqrt(b/float(a)), b
+        etaU[i,k] = initialise(mu=mu, tau=tau)
+    return etaU
+
+def initialise_lambdaU_laplace(init, I, K, etaU):
+    """ Initialise lambdaU, with prior lambdaUik ~ Exp(etaUik). """
+    initialise = exponential_draw if init == 'random' else exponential_mean
+    U = numpy.zeros((I,K))
+    etaU = etaU * numpy.ones((I,K)) if numpy.shape(etaU) == () else etaU
+    for i,k in itertools.product(range(I),range(K)):
+        U[i,k] = initialise(lambdax=etaU[i,k])
+    return U
 
 def initialise_U_exponential(init, I, K, lamb):
     """ Initialise U, with prior Uik ~ Exp(lamb). """
@@ -95,8 +129,8 @@ def initialise_U_halfnormal(init, I, K, sigma):
     
 def initialise_U_l21(init, I, K, lamb):
     """ Initialise U, with prior U ~ L21(lamb).
-        We cannot sample from this prior, so we initialise U_ik ~ TN(0,lamb). """
-    return initialise_U_truncatednormal(init=init, I=I, K=K, mu=0., tau=lamb)
+        We cannot sample from this prior, so we initialise U_ik ~ TN(0,1). """
+    return initialise_U_truncatednormal(init=init, I=I, K=K, mu=0., tau=1.)
     
 def initialise_U_volumeprior(init, I, K, gamma):
     """ Initialise U, with prior U ~ VP(gamma).

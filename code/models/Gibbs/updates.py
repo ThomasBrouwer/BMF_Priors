@@ -8,6 +8,7 @@ Updates for U, V - format (Likelihood) Prior:
 - (Gaussian) Gaussian + Wishart
 - (Gaussian) Gaussian + Automatic Relevance Determination
 - (Gaussian) L21 Prior
+- (Gaussian) Laplace
 - (Gaussian) Volume Prior
 - (Gaussian) Volume Prior (nonnegative)
 - (Gaussian) Exponential
@@ -37,6 +38,9 @@ from parameters import gaussian_wishart_beta0_v0_mu0_W0
 from parameters import gaussian_gaussian_ard_mu_sigma
 from parameters import gaussian_ard_alpha_beta
 from parameters import gaussian_l21_mu_tau
+from parameters import gaussian_laplace_mu_Lambda
+from parameters import laplace_lambdaU_mu_tau
+from parameters import laplace_etaU_mu_tau
 from parameters import gaussian_gaussian_volumeprior_mu_sigma
 from parameters import gaussian_exponential_mu_tau
 from parameters import gaussian_exponential_ard_mu_tau
@@ -60,6 +64,7 @@ from distributions.truncated_normal import truncated_normal_draw
 from distributions.truncated_normal_vector import truncated_normal_vector_draw
 from distributions.multinomial import multinomial_draw
 from distributions.dirichlet import dirichlet_draw
+from distributions.inverse_gaussian import inverse_gaussian_draw
 
 import itertools
 import numpy
@@ -205,9 +210,54 @@ def update_U_gaussian_l21(lamb, R, M, U, V, tau):
 def update_V_gaussian_l21(lamb, R, M, U, V, tau):
     """ Update V for Gaussian + Exponential model. """
     return update_U_gaussian_l21(lamb=lamb, R=R.T, M=M.T, U=V, V=U, tau=tau)
-    
 
-''' (Gausian) Volume Prior '''
+
+''' (Gaussian) Laplace '''
+def update_U_gaussian_laplace(lambdaU, R, M, V, tau):
+    """ Update U for Gaussian + Laplace model. """
+    I, K = R.shape[0], V.shape[1]
+    assert R.shape == M.shape and R.shape[1] == V.shape[0]
+    U = numpy.zeros((I,K))
+    for i in range(I):
+        muUi, sigmaUi = gaussian_laplace_mu_Lambda(
+            Ri=R[i], Mi=M[i], V=V, lambdaUi=lambdaU[i,:], tau=tau)
+        U[i,:] = multivariate_normal_draw(mu=muUi, sigma=sigmaUi)
+    return U
+
+def update_V_gaussian_laplace(lambdaV, R, M, U, tau):
+    """ Update V for Gaussian + Laplace model. """
+    return update_U_gaussian_laplace(lambdaU=lambdaV, R=R.T, M=M.T, V=U, tau=tau)
+
+def update_lambdaU_gaussian_laplace(U, etaU):
+    """ Update lambdaU for Gaussian + Laplace model. """
+    I, K = U.shape
+    etaU = etaU * numpy.ones((I,K)) if numpy.shape(etaU) == () else etaU
+    lambdaU = numpy.zeros((I,K))
+    for i, k in itertools.product(range(I), range(K)):
+        mu, tau = laplace_lambdaU_mu_tau(Uik=U[i,k], etaUik=etaU[i,k])
+        inv_lambdaUik = inverse_gaussian_draw(mu=mu, tau=tau)
+        lambdaU[i,k] = 1. / inv_lambdaUik
+    return lambdaU
+
+def update_lambdaV_gaussian_laplace(V, etaV):
+    """ Update lambdaV for Gaussian + Laplace model. """
+    return update_lambdaU_gaussian_laplace(U=V, etaU=etaV)
+
+def update_etaU_gaussian_laplace(lambdaU, a, b):
+    """ Update etaU for Gaussian + Laplace model. """
+    I, K = lambdaU.shape
+    etaU = numpy.zeros((I,K))
+    for i, k in itertools.product(range(I), range(K)):
+        mu, tau = laplace_etaU_mu_tau(lambdaUik=lambdaU[i,k], a=a, b=b)
+        etaU[i,k] = inverse_gaussian_draw(mu=mu, tau=tau)
+    return etaU
+
+def update_etaV_gaussian_laplace(lambdaV, a, b):
+    """ Update etaV for Gaussian + Laplace model. """
+    return update_etaU_gaussian_laplace(lambdaU=lambdaV, a=a, b=b)
+
+
+''' (Gaussian) Volume Prior '''
 def update_U_gaussian_volumeprior(gamma, R, M, U, V, tau):
     """ Update U for Gaussian + Volume Prior model. """
     I, K = U.shape

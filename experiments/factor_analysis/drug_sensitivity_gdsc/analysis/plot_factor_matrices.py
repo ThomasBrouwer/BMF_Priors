@@ -1,7 +1,7 @@
 """
 Plot the factor analysis outcomes:
 - Use only the first repeat's factor matrices U, V.
-- Plot these factor matrices.
+- Plot these factor matrices. Divide each row by the row's max value (absolute).
 """
 
 project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
@@ -36,6 +36,7 @@ names_filenames = [
     ('GEEA',   'gaussian_exponential_ard'),
     ('GTT',    'gaussian_truncatednormal'),
     ('GTTN',   'gaussian_truncatednormal_hierarchical'),
+    ('GLL',    'gaussian_l21'),
     ('GVG',    'gaussian_gaussian_volumeprior'),
     ('GVnG',   'gaussian_gaussian_volumeprior_nonnegative'),
     ('PGG',    'poisson_gamma'),
@@ -72,6 +73,11 @@ if reorder_rows_columns:
 if plot:
     for name, plotname, U, V in name_plotname_U_V:
         U, V = numpy.array(U), numpy.array(V)
+        
+        # Renormalise each factor matrix row to have a maximum absolute value of 1
+        row_max_U, row_max_V = numpy.abs(U).max(axis=1), numpy.abs(V).max(axis=1)
+        U = numpy.array([U[i] / row_max_U[i] for i in range(U.shape[0])])
+        V = numpy.array([V[i] / row_max_V[i] for i in range(V.shape[0])])
         
         # Reorder rows and columns using hierarchical clustering of R
         if reorder_rows_columns:

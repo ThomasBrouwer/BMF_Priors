@@ -8,6 +8,7 @@ Parameters for U, V - format (Likelihood) Prior:
 - (Gaussian) Gaussian + Wishart
 - (Gaussian) Gaussian + Automatic Relevance Determination
 - (Gaussian) Gaussian + L21 Prior
+- (Gaussian) Gaussian + Laplace
 - (Gaussian) Gaussian + Volume Prior
 - (Gaussian) Exponential
 - (Gaussian) Exponential + ARD
@@ -30,6 +31,7 @@ Other parameters for:
 
 
 import numpy
+import math 
 
 
 ''' General Gaussian and Poisson models '''
@@ -159,6 +161,29 @@ def gaussian_ard_alpha_beta(alpha0, beta0, Uk, Vk):
     alpha_s = alpha0 + I / 2. + J / 2.
     beta_s = beta0 + (Uk**2).sum() / 2. + (Vk**2).sum() / 2.
     return (alpha_s, beta_s)
+
+
+''' (Gaussian) Laplace. '''
+def gaussian_laplace_mu_Lambda(Ri, Mi, V, lambdaUi, tau):
+    """ mu and sigma for Ui with L(0,lambdaUi) prior. """
+    assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0] and lambdaUi.shape[0] == V.shape[1]
+    V_masked = (Mi * V.T).T # zero rows when j not in Mi
+    Ri_masked = Mi * Ri # zero entries when j not in Mi
+    precision = numpy.diag(1./lambdaUi) + tau * ( numpy.dot(V_masked.T,V_masked) )
+    sigma = numpy.linalg.inv(precision)
+    mu = numpy.dot(sigma, tau * numpy.dot(Ri_masked, V))
+    assert mu.shape[0] == V.shape[1] and precision.shape == (V.shape[1], V.shape[1])
+    return (mu, precision)
+
+def laplace_lambdaU_mu_tau(Uik, etaUik):
+    """ mu and tau for lambdaUik with Exp(etaUik) prior. """
+    mu, tau = math.sqrt(etaUik) / abs(Uik), etaUik
+    return (mu, tau)
+
+def laplace_etaU_mu_tau(lambdaUik, a, b):
+    """ mu and tau for etaUik with Generalised Inverse Gaussian GIG(gamma=-0.5, a, b) prior. """
+    mu, tau = math.sqrt((lambdaUik+a)/b), lambdaUik + a
+    return (mu, tau)
 
 
 ''' (Gaussian) Gaussian + L^2_1 Prior '''
