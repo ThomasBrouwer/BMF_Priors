@@ -13,12 +13,9 @@ from Gibbs.updates import update_U_gaussian_laplace
 from Gibbs.updates import update_V_gaussian_laplace
 from Gibbs.updates import update_lambdaU_gaussian_laplace
 from Gibbs.updates import update_lambdaV_gaussian_laplace
-#from Gibbs.updates import update_etaU_gaussian_laplace
-#from Gibbs.updates import update_etaV_gaussian_laplace
 from Gibbs.initialise import initialise_tau_gamma
 from Gibbs.initialise import initialise_U_laplace
 from Gibbs.initialise import initialise_lambdaU_laplace
-#from Gibbs.initialise import initialise_etaU_laplace
 
 import numpy
 import time
@@ -29,8 +26,6 @@ DEFAULT_HYPERPARAMETERS = {
     'alpha': 1.,
     'beta': 1.,
     'eta': 0.1,
-    #'a': 1./K,
-    #'b': K,
 }
 
 class BMF_Gaussian_Laplace(BMF):
@@ -40,8 +35,6 @@ class BMF_Gaussian_Laplace(BMF):
         self.alpha = hyperparameters.get('alpha', DEFAULT_HYPERPARAMETERS['alpha'])
         self.beta =  hyperparameters.get('beta',  DEFAULT_HYPERPARAMETERS['beta'])   
         self.eta =   hyperparameters.get('eta',   DEFAULT_HYPERPARAMETERS['eta']) 
-        #self.a =     hyperparameters.get('a',     1. / K) 
-        #self.b =     hyperparameters.get('b',     K) 
         
         
     def initialise(self,init):

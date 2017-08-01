@@ -38,7 +38,7 @@ from parameters import gaussian_wishart_beta0_v0_mu0_W0
 from parameters import gaussian_gaussian_ard_mu_sigma
 from parameters import gaussian_ard_alpha_beta
 from parameters import gaussian_l21_mu_tau
-from parameters import gaussian_laplace_mu_Lambda
+from parameters import gaussian_laplace_mu_precision
 from parameters import laplace_lambdaU_mu_tau
 from parameters import laplace_etaU_mu_tau
 from parameters import gaussian_gaussian_volumeprior_mu_sigma
@@ -219,9 +219,9 @@ def update_U_gaussian_laplace(lambdaU, R, M, V, tau):
     assert R.shape == M.shape and R.shape[1] == V.shape[0]
     U = numpy.zeros((I,K))
     for i in range(I):
-        muUi, sigmaUi = gaussian_laplace_mu_Lambda(
+        muUi, precisionUi = gaussian_laplace_mu_precision(
             Ri=R[i], Mi=M[i], V=V, lambdaUi=lambdaU[i,:], tau=tau)
-        U[i,:] = multivariate_normal_draw(mu=muUi, sigma=sigmaUi)
+        U[i,:] = multivariate_normal_draw(mu=muUi, precision=precisionUi)
     return U
 
 def update_V_gaussian_laplace(lambdaV, R, M, U, tau):

@@ -164,8 +164,8 @@ def gaussian_ard_alpha_beta(alpha0, beta0, Uk, Vk):
 
 
 ''' (Gaussian) Laplace. '''
-def gaussian_laplace_mu_Lambda(Ri, Mi, V, lambdaUi, tau):
-    """ mu and sigma for Ui with L(0,lambdaUi) prior. """
+def gaussian_laplace_mu_precision(Ri, Mi, V, lambdaUi, tau):
+    """ mu and precision for Ui with L(0,lambdaUi) prior. """
     assert Ri.shape == Mi.shape and Ri.shape[0] == V.shape[0] and lambdaUi.shape[0] == V.shape[1]
     V_masked = (Mi * V.T).T # zero rows when j not in Mi
     Ri_masked = Mi * Ri # zero entries when j not in Mi
