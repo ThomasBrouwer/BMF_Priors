@@ -3,7 +3,7 @@ Run nested cross-validation experiment on the MovieLens 1M dataset, with
 the All Gaussian model (multivariate posterior) and Wishart prior.
 '''
 
-project_location = "/home/tab43/Documents/Projects/libraries/" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/" # "/home/tab43/Documents/Projects/libraries/" # 
 import sys
 sys.path.append(project_location)
 
