@@ -236,7 +236,7 @@ def update_lambdaU_gaussian_laplace(U, etaU):
     for i, k in itertools.product(range(I), range(K)):
         mu, tau = laplace_lambdaU_mu_tau(Uik=U[i,k], etaUik=etaU[i,k])
         inv_lambdaUik = inverse_gaussian_draw(mu=mu, tau=tau)
-        lambdaU[i,k] = 1. / inv_lambdaUik
+        lambdaU[i,k] = 1. / inv_lambdaUik if inv_lambdaUik >= 0. else 0.
     return lambdaU
 
 def update_lambdaV_gaussian_laplace(V, etaV):

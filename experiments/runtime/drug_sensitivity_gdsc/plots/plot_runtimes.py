@@ -19,6 +19,8 @@ ggg = eval(open(folder_results+'times_gaussian_gaussian.txt','r').read())
 gggu = eval(open(folder_results+'times_gaussian_gaussian_univariate.txt','r').read())
 gggw = eval(open(folder_results+'times_gaussian_gaussian_wishart.txt','r').read())
 ggga = eval(open(folder_results+'times_gaussian_gaussian_ard.txt','r').read())
+gll = eval(open(folder_results+'times_gaussian_laplace.txt','r').read())
+glli = eval(open(folder_results+'times_gaussian_laplace_ig.txt','r').read())
 gvg = eval(open(folder_results+'times_gaussian_gaussian_volumeprior.txt','r').read())
 gvng = eval(open(folder_results+'times_gaussian_gaussian_volumeprior_nonnegative.txt','r').read())
 geg = eval(open(folder_results+'times_gaussian_gaussian_exponential.txt','r').read())
@@ -40,7 +42,9 @@ performances_names_colours_linestyles_markers = [
     (gggu, 'GGGU', 'r', '-', '2'),
     (gggw, 'GGGW', 'r', '-', '3'),
     (ggga, 'GGGA', 'r', '-', '4'),
-    (gvg,  'GVG',  'r', '-', '5'),
+    (gll,  'GLL',  'r', '-', '5'),
+    (glli, 'GLLI', 'r', '-', '6'),
+    (gvg,  'GVG',  'r', '-', '7'),
     (geg,  'GEG',  'g', '-', '1'),
     (gvng, 'GVnG', 'g', '-', '2'),
     (gee,  'GEE',  'b', '-', '1'),

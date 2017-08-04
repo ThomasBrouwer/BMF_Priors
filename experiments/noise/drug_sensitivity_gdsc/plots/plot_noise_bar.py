@@ -34,6 +34,8 @@ ggg = eval(open(folder_results+'performances_gaussian_gaussian.txt','r').read())
 gggu = eval(open(folder_results+'performances_gaussian_gaussian_univariate.txt','r').read())
 gggw = eval(open(folder_results+'performances_gaussian_gaussian_wishart.txt','r').read())
 ggga = eval(open(folder_results+'performances_gaussian_gaussian_ard.txt','r').read())
+gll = eval(open(folder_results+'performances_gaussian_laplace.txt','r').read())
+glli = gll #eval(open(folder_results+'performances_gaussian_laplace_ig.txt','r').read())
 gvg = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior.txt','r').read())
 gvng = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior_nonnegative.txt','r').read())
 geg = eval(open(folder_results+'performances_gaussian_gaussian_exponential.txt','r').read())
@@ -54,6 +56,8 @@ performances_names_colours_linestyles_markers = [
     (gggu, 'GGGU', 'r', '-', '.'),#'2'),
     (gggw, 'GGGW', 'r', '-', '.'),#'3'),
     (ggga, 'GGGA', 'r', '-', '.'),#'4'),
+    (gll,  'GLL',  'r', '-', '.'),#'4'),
+    (glli, 'GLLI', 'r', '-', '.'),#'4'),
     (gvg,  'GVG',  'r', '-', '.'),#'5'),
     (geg,  'GEG',  'g', '-', '.'),#'1'),
     (gvng, 'GVnG', 'g', '-', '.'),#'2'),
@@ -64,17 +68,17 @@ performances_names_colours_linestyles_markers = [
     (gl21, 'GL21', 'b', '-', '.'),#'4'),
     (pgg,  'PGG',  'y', '-', '.'),#'1'),
     (pggg, 'PGGG', 'y', '-', '.'),#'2'),
-    (nmf_np, 'Row',    'grey', '-', '.'),#'1'),
-    (column, 'NMF-NP', 'grey', '-', '.'),#'2'),
-    (row,    'Col',    'grey', '-', '.'),#'3'),
+    (nmf_np, 'NMF-NP', 'grey', '-', '.'),#'1'),
+#    (column, 'Row',    'grey', '-', '.'),#'2'),
+#    (row,    'Col',    'grey', '-', '.'),#'3'),
 ]
 
 
 ''' Plot the performances. '''
-fig = plt.figure(figsize=(5,2))
-fig.subplots_adjust(left=0.1, right=0.99, bottom=0.17, top=0.975)
-plt.xlabel("Noise added (noise to signal ratio)", fontsize=9, labelpad=1)
-plt.ylabel("Ratio data variance to error", fontsize=8, labelpad=1)
+fig = plt.figure(figsize=(4,1.5))
+fig.subplots_adjust(left=0.1, right=0.99, bottom=0.205, top=0.975)
+plt.xlabel("Noise added (noise to signal ratio)", fontsize=8, labelpad=1)
+plt.ylabel("Ratio of data \nvariance to error", fontsize=8, labelpad=1, multialignment='center')
 
 x = range(len(noise_to_signal_ratios))
 for i, (performances, name, colour, linestyle, marker) in enumerate(performances_names_colours_linestyles_markers):
@@ -83,11 +87,12 @@ for i, (performances, name, colour, linestyle, marker) in enumerate(performances
     y = [var/v for v, var in zip(y, variances)]
     x_i = [v+i*bar_width for v in x]
     plt.bar(x_i, y, bar_width, linestyle=linestyle, color=colour)
+plt.plot([-0.05, 7.95], [1., 1.], "k--")
 
 xlabels = ['%s%%' % int(NSR*100) for NSR in noise_to_signal_ratios]
 plt.xticks(numpy.arange(len(noise_to_signal_ratios)) + xtick_offset, xlabels, fontsize=6)
 plt.yticks(numpy.arange(0,y_max+1,1),fontsize=6)
 plt.ylim(y_min, y_max)
-plt.xlim(-0.2, len(noise_to_signal_ratios)+0.2)
+plt.xlim(-0.2, len(noise_to_signal_ratios)+0.1)
 
 plt.savefig(plot_file, dpi=600)

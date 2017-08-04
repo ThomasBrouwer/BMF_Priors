@@ -2,7 +2,7 @@
 Plot the distributions of the drug sensitivity, MovieLens, Jester, and methylation datasets.
 '''
 
-project_location = "/home/tab43/Documents/Projects/libraries/" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/" # "/home/tab43/Documents/Projects/libraries/" # 
 import sys
 sys.path.append(project_location)
 
@@ -35,27 +35,28 @@ R_jester,  M_jester =  load_processed_jester_data_integer()
 R_pm,      M_pm =      load_promoter_methylation_integer()
 R_gm,      M_gm =      load_gene_body_methylation_integer()
 
-values_plotnames_bins = [
-    (extract_values(R_gdsc, M_gdsc), 'plot_gdsc.png', [v-0.5 for v in range(0,100+10,5)]),
-    (extract_values(R_ctrp, M_ctrp), 'plot_ctrp.png', [v-0.5 for v in range(0,100+10,5)]),
-    (extract_values(R_ccle_ic, M_ccle_ic), 'plot_ccle_ic.png', [v-0.5 for v in range(0,8+2)]),
-    (extract_values(R_ccle_ec, M_ccle_ec), 'plot_ccle_ec.png', [v-0.5 for v in range(0,10+2)]),
-    (extract_values(R_100K, M_100K), 'plot_movielens_100k.png', [0.5, 1.5, 2.5, 3.5, 4.5, 5.5]),
-    (extract_values(R_1M, M_1M), 'plot_movielens_1m.png', [0.5, 1.5, 2.5, 3.5, 4.5, 5.5]),
-    (extract_values(R_jester, M_jester), 'plot_jester.png', [v-0.5 for v in range(1,20+2)]),
-    (extract_values(R_pm, M_pm), 'plot_methylation_pm.png', [v-0.5 for v in range(1,20+2)]),
-    (extract_values(R_gm, M_gm), 'plot_methylation_gm.png', [v-0.5 for v in range(1,20+2)]),
+values_titles_plotnames_bins = [
+    (extract_values(R_gdsc, M_gdsc), 'GDSC IC50', 'plot_gdsc.png', [v-0.5 for v in range(0,100+10,5)]),
+    (extract_values(R_ctrp, M_ctrp), 'CTRP EC50', 'plot_ctrp.png', [v-0.5 for v in range(0,100+10,5)]),
+    (extract_values(R_ccle_ic, M_ccle_ic), 'CCLE IC50', 'plot_ccle_ic.png', [v-0.5 for v in range(0,8+2)]),
+    (extract_values(R_ccle_ec, M_ccle_ec), 'CCLE EC50', 'plot_ccle_ec.png', [v-0.5 for v in range(0,10+2)]),
+    (extract_values(R_100K, M_100K), 'MovieLens 100K', 'plot_movielens_100k.png', [0.5, 1.5, 2.5, 3.5, 4.5, 5.5]),
+    (extract_values(R_1M, M_1M), 'MovieLens 1M', 'plot_movielens_1m.png', [0.5, 1.5, 2.5, 3.5, 4.5, 5.5]),
+    (extract_values(R_jester, M_jester), 'Jester', 'plot_jester.png', [v-0.5 for v in range(1,20+2)]),
+    (extract_values(R_pm, M_pm), 'Promoter methylation', 'plot_methylation_pm.png', [v-0.5 for v in range(1,20+2)]),
+    (extract_values(R_gm, M_gm), 'Gene body methylation', 'plot_methylation_gm.png', [v-0.5 for v in range(1,20+2)]),
 ]
 
 
 ''' Make the plots. '''
-for values, plotname, bins in values_plotnames_bins:
-    fig = plt.figure(figsize=(2, 1.5))
-    fig.subplots_adjust(left=0.02, right=0.98, bottom=0.1, top=0.99)
+for values, title, plotname, bins in values_titles_plotnames_bins:
+    fig = plt.figure(figsize=(2, 1.8))
+    fig.subplots_adjust(left=0.02, right=0.98, bottom=0.11, top=0.85) # (left=0.02, right=0.98, bottom=0.1, top=0.99)
     plt.hist(values, bins=bins)
     
     plt.xticks(fontsize=8)
     plt.yticks([], fontsize=8)
     plt.xlim(bins[0], bins[-1])
+    plt.title(title)
     
     plt.savefig(plotname, dpi=600)

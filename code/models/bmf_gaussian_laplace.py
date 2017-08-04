@@ -19,13 +19,14 @@ from Gibbs.initialise import initialise_lambdaU_laplace
 
 import numpy
 import time
+import math
 
 METRICS = ['MSE', 'R^2', 'Rp']
 OPTIONS_INIT = ['random', 'exp']
 DEFAULT_HYPERPARAMETERS = {
     'alpha': 1.,
     'beta': 1.,
-    'eta': 0.1,
+    'eta': math.sqrt(10.), 
 }
 
 class BMF_Gaussian_Laplace(BMF):

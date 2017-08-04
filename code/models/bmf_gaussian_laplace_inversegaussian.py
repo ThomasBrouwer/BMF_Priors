@@ -6,6 +6,8 @@ Rij ~ N(Ui*Vj,tau^-1), tau ~ Gamma(alpha,beta),
 Uik ~ L(0, etaUik), etaUik ~ GIG(gamma=-1/2, a, b)
 Vjk ~ L(0, etaVjk), etaVjk ~ GIG(gamma=-1/2, a, b)
 
+[Note that GIG(gamma=-1/2, a, b) = IG(mu=sqrt(b/a), lambda=b)]
+
 Random variables: U, V, tau.
 Hyperparameters: alpha, beta, a, b.
 """
@@ -31,7 +33,6 @@ OPTIONS_INIT = ['random', 'exp']
 DEFAULT_HYPERPARAMETERS = {
     'alpha': 1.,
     'beta': 1.,
-    'eta': 0.1,
     #'a': 1./K,
     #'b': K,
 }
@@ -41,8 +42,7 @@ class BMF_Gaussian_Laplace_IG(BMF):
         """ Set up the class. """
         super(BMF_Gaussian_Laplace_IG, self).__init__(R, M, K)
         self.alpha = hyperparameters.get('alpha', DEFAULT_HYPERPARAMETERS['alpha'])
-        self.beta =  hyperparameters.get('beta',  DEFAULT_HYPERPARAMETERS['beta'])   
-        self.eta =   hyperparameters.get('eta',   DEFAULT_HYPERPARAMETERS['eta']) 
+        self.beta =  hyperparameters.get('beta',  DEFAULT_HYPERPARAMETERS['beta'])  
         self.a =     hyperparameters.get('a',     1. / K) 
         self.b =     hyperparameters.get('b',     K) 
         
@@ -72,11 +72,11 @@ class BMF_Gaussian_Laplace_IG(BMF):
         time_start = time.time()
         for it in range(iterations):
             # Update the random variables
-            self.lambdaU = update_lambdaU_gaussian_laplace(U=self.U, etaU=self.eta)
+            self.lambdaU = update_lambdaU_gaussian_laplace(U=self.U, etaU=self.etaU)
             self.etaU = update_etaU_gaussian_laplace(lambdaU=self.lambdaU, a=self.a, b=self.b)
             self.U = update_U_gaussian_laplace(
                 R=self.R, M=self.M, V=self.V, lambdaU=self.lambdaU, tau=self.tau) 
-            self.lambdaV = update_lambdaV_gaussian_laplace(V=self.V, etaV=self.eta)
+            self.lambdaV = update_lambdaV_gaussian_laplace(V=self.V, etaV=self.etaV)
             self.etaV = update_etaV_gaussian_laplace(lambdaV=self.lambdaV, a=self.a, b=self.b)
             self.V = update_V_gaussian_laplace(
                 R=self.R, M=self.M, U=self.U, lambdaV=self.lambdaV, tau=self.tau)
