@@ -7,7 +7,7 @@ import numpy
 
 
 ''' Plot settings. '''
-MSE_min, MSE_max = 675, 850
+MSE_min, MSE_max = 660, 850
 values_K = [1,2,3,4,6,8,10,15,20,30]
 
 folder_plots = "./"

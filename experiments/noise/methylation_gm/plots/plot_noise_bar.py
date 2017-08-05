@@ -34,6 +34,8 @@ ggg = eval(open(folder_results+'performances_gaussian_gaussian.txt','r').read())
 gggu = eval(open(folder_results+'performances_gaussian_gaussian_univariate.txt','r').read())
 gggw = eval(open(folder_results+'performances_gaussian_gaussian_wishart.txt','r').read())
 ggga = eval(open(folder_results+'performances_gaussian_gaussian_ard.txt','r').read())
+gll = eval(open(folder_results+'performances_gaussian_laplace.txt','r').read())
+glli = eval(open(folder_results+'performances_gaussian_laplace_ig.txt','r').read())
 gvg = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior.txt','r').read())
 gvng = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior_nonnegative.txt','r').read())
 geg = eval(open(folder_results+'performances_gaussian_gaussian_exponential.txt','r').read())
@@ -46,15 +48,17 @@ pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
 nmf_np = eval(open(folder_results+'performances_baseline_mf_nonprobabilistic.txt','r').read())
-row = eval(open(folder_results+'performances_baseline_average_row.txt','r').read())
-column = eval(open(folder_results+'performances_baseline_average_column.txt','r').read())
+#row = eval(open(folder_results+'performances_baseline_average_row.txt','r').read())
+#column = eval(open(folder_results+'performances_baseline_average_column.txt','r').read())
 
 performances_names_colours_linestyles_markers = [
     (ggg,  'GGG',  'r', '-', '.'),#'1'),
     (gggu, 'GGGU', 'r', '-', '.'),#'2'),
     (gggw, 'GGGW', 'r', '-', '.'),#'3'),
     (ggga, 'GGGA', 'r', '-', '.'),#'4'),
-    (gvg,  'GVG',  'r', '-', '.'),#'5'),
+    (gll,  'GLL',  'r', '-', '.'),#'5'),
+    (glli, 'GLLI', 'r', '-', '.'),#'6'),
+    (gvg,  'GVG',  'r', '-', '.'),#'7'),
     (geg,  'GEG',  'g', '-', '.'),#'1'),
     (gvng, 'GVnG', 'g', '-', '.'),#'2'),
     (gee,  'GEE',  'b', '-', '.'),#'1'),
@@ -65,8 +69,8 @@ performances_names_colours_linestyles_markers = [
     (pgg,  'PGG',  'y', '-', '.'),#'1'),
     (pggg, 'PGGG', 'y', '-', '.'),#'2'),
     (nmf_np, 'Row',    'grey', '-', '.'),#'1'),
-    (column, 'NMF-NP', 'grey', '-', '.'),#'2'),
-    (row,    'Col',    'grey', '-', '.'),#'3'),
+#    (column, 'NMF-NP', 'grey', '-', '.'),#'2'),
+#    (row,    'Col',    'grey', '-', '.'),#'3'),
 ]
 
 
@@ -83,11 +87,12 @@ for i, (performances, name, colour, linestyle, marker) in enumerate(performances
     y = [var/v for v, var in zip(y, variances)]
     x_i = [v+i*bar_width for v in x]
     plt.bar(x_i, y, bar_width, linestyle=linestyle, color=colour)
+plt.plot([-0.075, 7.975], [1., 1.], "k--")
 
 xlabels = ['%s%%' % int(NSR*100) for NSR in noise_to_signal_ratios]
 plt.xticks(numpy.arange(len(noise_to_signal_ratios)) + xtick_offset, xlabels, fontsize=6)
 plt.yticks(numpy.arange(0,y_max+1,1),fontsize=6)
 plt.ylim(y_min, y_max)
-plt.xlim(-0.2, len(noise_to_signal_ratios)+0.2)
+plt.xlim(-0.2, len(noise_to_signal_ratios)+0.1)
 
 plt.savefig(plot_file, dpi=600)

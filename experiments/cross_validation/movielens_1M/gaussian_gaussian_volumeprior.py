@@ -3,7 +3,7 @@ Run nested cross-validation experiment on the MovieLens 1M dataset, with
 the Gaussian + Gaussian + Volume Prior model.
 '''
 
-project_location = "/home/tab43/Documents/Projects/libraries/" # "/Users/thomasbrouwer/Documents/Projects/libraries/"
+project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/" # "/home/tab43/Documents/Projects/libraries/" # 
 import sys
 sys.path.append(project_location)
 
@@ -17,11 +17,11 @@ method = BMF_Gaussian_Gaussian_VolumePrior
 R, M = load_processed_movielens_1M()
 hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1, 'gamma':10**0 }
 train_config = {
-    'iterations' : 100,
+    'iterations' : 70,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 80,
+    'burn_in' : 50,
     'thinning' : 1,
 }
 

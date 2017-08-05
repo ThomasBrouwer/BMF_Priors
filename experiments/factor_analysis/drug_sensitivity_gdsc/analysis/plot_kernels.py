@@ -25,26 +25,28 @@ fontsize = 14
 
 
 ''' Load in the kernels. '''
-kernel_type = 'rs_correlation' # 'rp_correlation' # 'gaussian' # 
+kernel_type = 'rp_correlation' # 'gaussian' # 
 average_or_single = 'average' # 'single' # 
 folder_kernels = './kernels/' if average_or_single == 'single' else './average_kernels/'
 
 names_filenames = [
-    ('GGG',  'ggg'),
-    ('GGGU', 'gggu'),
-    ('GGGW', 'gggw'),
-    ('GGGA', 'ggga'),
-    ('GEG',  'geg'),
-    ('GEE',  'gee'),
-    ('GEEA', 'geea'),
-    ('GTT',  'gtt'),
-    ('GTTN', 'gttn'),
+    #('GGG',  'ggg'),
+    #('GGGU', 'gggu'),
+    #('GGGW', 'gggw'),
+    #('GGGA', 'ggga'),
     ('GLL',  'gll'),
-    ('GVG',  'gvg'),
-    ('GVnG', 'gvng'),
-    ('PGG',  'pgg'),
-    ('PGGG', 'pggg'),  
-    ('NMF-NP', 'nmf_np'), 
+    ('GLLI', 'glli'),
+    #('GEG',  'geg'),
+    #('GEE',  'gee'),
+    #('GEEA', 'geea'),
+    #('GTT',  'gtt'),
+    #('GTTN', 'gttn'),
+    ('GL21', 'gl21'),
+    #('GVG',  'gvg'),
+    #('GVnG', 'gvng'),
+    #('PGG',  'pgg'),
+    #('PGGG', 'pggg'),  
+    #('NMF-NP', 'nmf_np'), 
 ]
 name_plotname_kernelU_kernelV = [
     (name, filename, numpy.loadtxt(folder_kernels+'%s_%s_U.txt' % (kernel_type, filename)), 

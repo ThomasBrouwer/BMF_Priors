@@ -10,7 +10,7 @@ import numpy
 
 
 ''' Plot settings. '''
-MSE_min, MSE_max = 675, 850
+MSE_min, MSE_max = 660, 850
 values_K = [1,2,3,4,6,8,10,15,20,30]
 
 folder_plots = "./"
@@ -23,8 +23,8 @@ ggg = eval(open(folder_results+'performances_gaussian_gaussian.txt','r').read())
 gggu = eval(open(folder_results+'performances_gaussian_gaussian_univariate.txt','r').read())
 gggw = eval(open(folder_results+'performances_gaussian_gaussian_wishart.txt','r').read())
 ggga = eval(open(folder_results+'performances_gaussian_gaussian_ard.txt','r').read())
-gll = ggg#eval(open(folder_results+'performances_gaussian_laplace.txt','r').read())
-glli = gll #eval(open(folder_results+'performances_gaussian_laplace_ig.txt','r').read())
+gll = eval(open(folder_results+'performances_gaussian_laplace.txt','r').read())
+glli = eval(open(folder_results+'performances_gaussian_laplace_ig.txt','r').read())
 gvg = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior.txt','r').read())
 gvng = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior_nonnegative.txt','r').read())
 geg = eval(open(folder_results+'performances_gaussian_gaussian_exponential.txt','r').read())
@@ -33,7 +33,6 @@ geea = eval(open(folder_results+'performances_gaussian_exponential_ard.txt','r')
 gtt = eval(open(folder_results+'performances_gaussian_truncatednormal.txt','r').read())
 gttn = eval(open(folder_results+'performances_gaussian_truncatednormal_hierarchical.txt','r').read())
 gl21 = eval(open(folder_results+'performances_gaussian_l21.txt','r').read())
-#ghh = eval(open(folder_results+'performances_gaussian_halfnormal.txt','r').read())
 pgg = eval(open(folder_results+'performances_poisson_gamma.txt','r').read())
 pggg = eval(open(folder_results+'performances_poisson_gamma_gamma.txt','r').read())
 
@@ -56,7 +55,7 @@ largegraph_performances_names_colours_linestyles_markers = [
     (gvng, 'GVnG', 'g', '-', None),#'2'),
     (pgg,  'PGG',  'y', '-', None),#'1'),
     (pggg, 'PGGG', 'y', '-', None),#'2'),
-    (nmf_np, 'Row', 'grey', '-', None),#'1'),
+    (nmf_np, 'NMF-NP', 'grey', '-', None),#'1'),
 ]
 smallgraph1 = [
     (ggg,  'GGG',  'r', '-', '1'),

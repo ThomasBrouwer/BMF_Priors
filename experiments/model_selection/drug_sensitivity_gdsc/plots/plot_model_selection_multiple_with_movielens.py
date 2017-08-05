@@ -11,7 +11,7 @@ import numpy
 
 
 ''' Plot settings. '''
-gdsc_MSE_min, gdsc_MSE_max = 675, 850
+gdsc_MSE_min, gdsc_MSE_max = 660, 850
 gdsc_values_K = [1,2,3,4,6,8,10,15,20,30]
 
 ml100k_MSE_min, ml100k_MSE_max = 0.775, 1.2
@@ -28,8 +28,8 @@ gdsc_ggg = eval(open(folder_results+'performances_gaussian_gaussian.txt','r').re
 gdsc_gggu = eval(open(folder_results+'performances_gaussian_gaussian_univariate.txt','r').read())
 gdsc_gggw = eval(open(folder_results+'performances_gaussian_gaussian_wishart.txt','r').read())
 gdsc_ggga = eval(open(folder_results+'performances_gaussian_gaussian_ard.txt','r').read())
-gdsc_gll = gdsc_ggg#eval(open(folder_results+'performances_gaussian_laplace.txt','r').read())
-gdsc_glli = gdsc_gll #eval(open(folder_results+'performances_gaussian_laplace_ig.txt','r').read())
+gdsc_gll = eval(open(folder_results+'performances_gaussian_laplace.txt','r').read())
+gdsc_glli = eval(open(folder_results+'performances_gaussian_laplace_ig.txt','r').read())
 gdsc_gvg = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior.txt','r').read())
 gdsc_gvng = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior_nonnegative.txt','r').read())
 gdsc_geg = eval(open(folder_results+'performances_gaussian_gaussian_exponential.txt','r').read())
@@ -60,7 +60,7 @@ gdsc_largegraph_performances_names_colours_linestyles_markers = [
     (gdsc_gvng, 'GVnG', 'g', '-', None),#'2'),
     (gdsc_pgg,  'PGG',  'y', '-', None),#'1'),
     (gdsc_pggg, 'PGGG', 'y', '-', None),#'2'),
-    (gdsc_nmf_np, 'Row', 'grey', '-', None),#'1'),
+    (gdsc_nmf_np, 'NMF-NP', 'grey', '-', None),#'1'),
 ]
 gdsc_smallgraph1 = [
     (gdsc_ggg,  'GGG',  'r', '-', '1'),
@@ -126,7 +126,7 @@ ml100k_largegraph_performances_names_colours_linestyles_markers = [
     (ml100k_gvng, 'GVnG', 'g', '-', None),#'2'),
     (ml100k_pgg,  'PGG',  'y', '-', None),#'1'),
     (ml100k_pggg, 'PGGG', 'y', '-', None),#'2'),
-    (ml100k_nmf_np, 'Row', 'grey', '-', None),#'1'),
+    (ml100k_nmf_np, 'NMF-NP', 'grey', '-', None),#'1'),
 ]
 
 

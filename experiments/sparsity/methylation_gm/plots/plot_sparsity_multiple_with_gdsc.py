@@ -78,7 +78,7 @@ gm_smallgraph1 = [
 gm_smallgraph2 = [
     (gm_gee,  'GEE',  'b', '-', '1'),
     (gm_geea, 'GEEA', 'b', '-', '2'),
-    (gm_geea, 'GL21', 'b', '-', '5'),
+    (gm_gl21, 'GL21', 'b', '-', '5'),
 ]
 
 
@@ -89,7 +89,7 @@ gdsc_gggu = eval(open(folder_results+'performances_gaussian_gaussian_univariate.
 gdsc_gggw = eval(open(folder_results+'performances_gaussian_gaussian_wishart.txt','r').read())
 gdsc_ggga = eval(open(folder_results+'performances_gaussian_gaussian_ard.txt','r').read())
 gdsc_gll = eval(open(folder_results+'performances_gaussian_laplace.txt','r').read())
-gdsc_glli = gdsc_gll #eval(open(folder_results+'performances_gaussian_laplace_ig.txt','r').read())
+gdsc_glli = eval(open(folder_results+'performances_gaussian_laplace_ig.txt','r').read())
 gdsc_gvg = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior.txt','r').read())
 gdsc_gvng = eval(open(folder_results+'performances_gaussian_gaussian_volumeprior_nonnegative.txt','r').read())
 gdsc_geg = eval(open(folder_results+'performances_gaussian_gaussian_exponential.txt','r').read())

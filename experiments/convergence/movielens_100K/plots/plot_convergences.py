@@ -63,8 +63,8 @@ performances_names_colours_linestyles_markers = [
 
 
 ''' Plot the performances. '''
-fig = plt.figure(figsize=(3,2.5))
-fig.subplots_adjust(left=0.125, right=0.9, bottom=0.125, top=0.97)
+fig = plt.figure(figsize=(3,2.25))
+fig.subplots_adjust(left=0.125, right=0.97, bottom=0.135, top=0.97)
 plt.xlabel("Iterations", fontsize=9, labelpad=0)
 plt.ylabel("MSE", fontsize=9, labelpad=1)
 plt.yticks(fontsize=6)
@@ -73,8 +73,9 @@ plt.xticks(fontsize=6)
 x = iterations
 for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
     y = performances[:iterations[-1]]
+    print name, performances[-1]
     plt.plot(x, y, label=name, linestyle=linestyle, marker=marker, c=colour, 
-             markersize=3, linewidth=1.2)
+             markersize=3, linewidth=1.5)
  
 plt.ylim(MSE_min,MSE_max)
 plt.xlim(it_min, it_max)
