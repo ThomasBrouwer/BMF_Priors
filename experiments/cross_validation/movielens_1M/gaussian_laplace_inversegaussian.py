@@ -1,37 +1,39 @@
 '''
-Run nested cross-validation experiment on the MovieLens 1M dataset, with 
-the Gaussian + L21 model.
+Run nested cross-validation experiment on the MovieLens 1M dataset, with the 
+Gaussian + Laplace + IG model.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/" # "/home/tab43/Documents/Projects/libraries/" #
+project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/" # "/home/tab43/Documents/Projects/libraries/" # 
 import sys
 sys.path.append(project_location)
 
-from BMF_Priors.code.models.bmf_gaussian_l21 import BMF_Gaussian_L21
+from BMF_Priors.code.models.bmf_gaussian_laplace_inversegaussian import BMF_Gaussian_Laplace_IG
 from BMF_Priors.code.cross_validation.nested_matrix_cross_validation import MatrixNestedCrossValidation
 from BMF_Priors.data.movielens.load_data import load_processed_movielens_1M
 
+import math
+
 
 ''' Settings BMF model. '''
-method = BMF_Gaussian_L21
+method = BMF_Gaussian_Laplace_IG
 R, M = load_processed_movielens_1M()
-hyperparameters = { 'alpha':1., 'beta':1., 'lamb':0.1 }
+hyperparameters = { 'alpha':1., 'beta':1., 'eta':math.sqrt(10.) }
 train_config = {
-    'iterations' : 120,
+    'iterations' : 100,
     'init' : 'random',
 }
 predict_config = {
-    'burn_in' : 100,
+    'burn_in' : 80,
     'thinning' : 1,
 }
 
 
 ''' Settings nested cross-validation. '''
-K_range = [7,8,9]
+K_range = [6,7,8]
 no_folds = 5
 no_threads = 5
 parallel = False
-folder_results = './results/gaussian_l21/'
+folder_results = './results/gaussian_laplace_ig/'
 output_file = folder_results+'results.txt'
 files_nested_performances = [folder_results+'fold_%s.txt'%(fold+1) for fold in range(no_folds)]
 

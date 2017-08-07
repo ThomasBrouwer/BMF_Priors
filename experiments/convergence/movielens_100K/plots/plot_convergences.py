@@ -57,8 +57,8 @@ performances_names_colours_linestyles_markers = [
     (pgg,  'PGG',  'y', '-', ''),
     (pggg, 'PGGG', 'y', '-', ''),
     (nmf_np, 'Row',    'grey', '-', ''),
-    (column, 'NMF-NP', 'grey', '-', ''),
-    (row,    'Col',    'grey', '-', ''),
+#    (column, 'NMF-NP', 'grey', '-', ''),
+#    (row,    'Col',    'grey', '-', ''),
 ]
 
 

@@ -1,8 +1,5 @@
 """
 Plot the model selection experiment outcomes.
-Have multiple lots:
-- One large with all methods
-- A few smaller ones comparing 2-4 methods
 """
 
 import matplotlib.pyplot as plt
@@ -10,12 +7,12 @@ import numpy
 
 
 ''' Plot settings. '''
-MSE_min, MSE_max = 660, 850
+MSE_min, MSE_max = 1.25, 3.5
 values_K = [1,2,3,4,6,8,10,15,20,30]
 
 folder_plots = "./"
 folder_results = "./../results/"
-plot_file = folder_plots+"model_selection_gdsc_multiple.png"
+plot_file = folder_plots+"model_selection_methylation_gm_multiple_row.png"
 
 
 ''' Load in the performances. '''
@@ -61,6 +58,7 @@ smallgraph1 = [
     (ggg,  'GGG',  'r', '-', '1'),
     (gggw, 'GGGW', 'r', '-', '3'),
     (ggga, 'GGGA', 'r', '-', '4'),
+    (gll,  'GLL',  'r', '-', '5'),
 ]
 smallgraph2 = [
     (gee,  'GEE',  'b', '-', '1'),
@@ -84,33 +82,40 @@ smallgraph4 = [
 
 
 ''' Set up the plots. '''
-fig = plt.figure(figsize=(8,2.5))
-fig.subplots_adjust(left=0.055, right=0.99, bottom=0.145, top=0.91)
-ax1 = plt.subplot2grid((2, 4), (0, 0), rowspan=2, colspan=2)
-ax2 = plt.subplot2grid((2, 4), (0, 2))
-ax3 = plt.subplot2grid((2, 4), (0, 3))
-ax4 = plt.subplot2grid((2, 4), (1, 2))
-ax5 = plt.subplot2grid((2, 4), (1, 3))
+fig = plt.figure(figsize=(11,2))
+ax1 = plt.subplot2grid((1, 5), (0, 0))
+ax2 = plt.subplot2grid((1, 5), (0, 1), sharey=ax1)
+ax3 = plt.subplot2grid((1, 5), (0, 2), sharey=ax1)
+ax4 = plt.subplot2grid((1, 5), (0, 3), sharey=ax1)
+ax5 = plt.subplot2grid((1, 5), (0, 4), sharey=ax1)
 axes = [ax1, ax2, ax3, ax4, ax5]
+fig.subplots_adjust(left=0.04, right=0.995, bottom=0.14, top=0.90, wspace=0.05)
 
+# Set x and y limits, and label fontsizes
 for ax in [ax1, ax2, ax3, ax4, ax5]:
     for tick in ax.xaxis.get_major_ticks():
         tick.label.set_fontsize(6)
     for tick in ax.yaxis.get_major_ticks():
         tick.label.set_fontsize(6)
-    ax.set_yticks(range(0,MSE_max+1,50))
     ax.set_ylim(MSE_min,MSE_max)
     ax.set_xlim(0,values_K[-1]+1)
-for ax in [ax2, ax3, ax4, ax5]:
-    ax.set_xticks([]), ax.set_yticks([])
-ax1.set_xlabel("K", fontsize=9)
-ax1.set_ylabel("MSE", fontsize=9)
-ax1.set_title("(a) All methods", fontsize=9)
-ax2.set_title("(b) GGG, GGGW, GGGA", fontsize=9)
-ax3.set_title("(c) GEE, GEEA, GL21, ", fontsize=9)
-ax4.set_xlabel("(d) GLL, GLLI, GTT, \nGTTN, PGG, PGGG", fontsize=9, multialignment='center')
-ax5.set_xlabel("(e) GGG, GVG, GEG, GVnG", fontsize=9)
 
+# Remove ticks and ticklabels of all plots except left one
+for ax in [ax2, ax3, ax4, ax5]:
+    plt.setp(ax.get_xticklabels(), visible=False)
+    plt.setp(ax.get_yticklabels(), visible=False)
+    for tic in ax.xaxis.get_major_ticks():
+        tic.tick1On = tic.tick2On = False
+    for tic in ax.yaxis.get_major_ticks():
+        tic.tick1On = tic.tick2On = False
+
+ax1.set_xlabel("K", fontsize=9, labelpad=-1)
+ax1.set_ylabel("MSE", fontsize=9)
+ax1.set_title("(f) All methods", fontsize=8)
+ax2.set_title("(g) GGG, GGGW, GGGA, GLL", fontsize=8)
+ax3.set_title("(h) GEE, GEEA, GL21", fontsize=8)
+ax4.set_title("(i) GLL, GLLI, GTT, GTTN, PGG, PGGG", fontsize=8)
+ax5.set_title("(j) GGG, GVG, GEG, GVnG", fontsize=8)
 
 
 ''' Add the actual plots. '''
@@ -122,6 +127,6 @@ for i, performances_names_colours_linestyles_markers in enumerate([
     for performances, name, colour, linestyle, marker in performances_names_colours_linestyles_markers:
         y = numpy.mean(performances["MSE"],axis=1)
         axes[i].plot(x, y, label=name, linestyle=linestyle, marker=('$%s$' % marker if marker else ''), 
-                     c=colour, markersize=5, linewidth=(2 if i==0 else 1))
+                     c=colour, markersize=6, markevery=(7,2), linewidth=(2 if i==0 else 1))
 
 plt.savefig(plot_file, dpi=600)

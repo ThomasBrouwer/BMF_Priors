@@ -21,7 +21,7 @@ n_repeats = 10
 stratify_rows = False
 settings = {
     'M': M, 
-    'K': 8,
+    'K': 10,
     'hyperparameters': { 'alpha':1., 'beta':1. }, 
     'init': 'random', 
     'iterations': 250,

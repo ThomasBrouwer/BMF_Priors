@@ -23,7 +23,7 @@ fractions_unknown = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 settings = {
     'R': R, 
     'M': M, 
-    'K': 8,
+    'K': 10,
     'hyperparameters': { 'alpha':1., 'beta':1. }, 
     'init': 'random', 
     'iterations': 250,

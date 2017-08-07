@@ -80,7 +80,7 @@ plt.savefig(plot_file, dpi=600)
 
 ''' Set up the legend outside. '''
 font_size_legend, number_of_columns, legend_box_line_width = 12, 9, 1
-legend_line_width, legend_marker_size = 1, 2
+legend_line_width, legend_marker_size = 0, 2
 ax = fig.add_subplot(111)
 legend_fig = plt.figure(figsize=(11.4,0.63))
 legend = legend_fig.legend(*ax.get_legend_handles_labels(), 

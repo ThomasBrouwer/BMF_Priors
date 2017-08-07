@@ -9,7 +9,7 @@ import numpy
 
 ''' Helpers for loading in the crossvalidation performances. '''
 methods = ['GGG', 'GGGU', 'GGGW', 'GGGA', 'GLL', 'GLLI', 'GVG', 'GEE', 'GEEA',
-           'GTT', 'GTTN', 'GL21', 'GEG', 'GVnG', 'PGG', 'PGGG', 'NMF']
+           'GTT', 'GTTN', 'GL21', 'GEG', 'GVnG', 'PGG', 'PGGG', 'NMF-NP']
 method_to_folder = {
     'GGG':  'gaussian_gaussian',
     'GGGU': 'gaussian_gaussian_univariate',
@@ -27,7 +27,7 @@ method_to_folder = {
     'GVnG': 'gaussian_gaussian_volumeprior_nonnegative',
     'PGG':  'poisson_gamma',
     'PGGG': 'poisson_gamma_gamma',
-    'NMF': 'baseline_mf_nonprobabilistic',
+    'NMF-NP': 'baseline_mf_nonprobabilistic',
 }
 datasets = ['GDSC IC50', 'CTRP EC50', 'CCLE IC50', 'CCLE EC50', 'MovieLens 100K', 
             'MovieLens 1M', 'Gene body methylation', 'Promoter methylation']
@@ -51,6 +51,16 @@ dataset_to_MSEminmax = {
     'Gene body methylation': (0., 1.),
     'Promoter methylation': (0., 1.),
 }
+dataset_to_ylabel = {
+    'GDSC IC50': 'GDSC IC50',
+    'CTRP EC50': 'CTRP EC50',
+    'CCLE IC50': 'CCLE IC50',
+    'CCLE EC50': 'CCLE EC50',
+    'MovieLens 1M': 'MovieLens \n1M',
+    'MovieLens 100K': 'MovieLens \n100K',
+    'Gene body methylation': 'Gene body \nmethylation',
+    'Promoter methylation': 'Promoter \nmethylation',
+}
 
 def load_performances_from_file(loc):
     ''' Extract 5 performances from given file. '''
@@ -72,13 +82,22 @@ def load_all_performances(folder_crossvalidation, dataset):
 folder_crossvalidation = project_location+'BMF_Priors/experiments/cross_validation/'
 all_performances_datasets = [
     (dataset, load_all_performances(folder_crossvalidation, dataset=dataset))
-    for dataset in ['GDSC IC50', 'CCLE IC50', 'CCLE EC50', 'Gene body methylation']
+    for dataset in [
+        'GDSC IC50', 
+        'CTRP EC50',
+        'CCLE IC50', 
+        'CCLE EC50', 
+        'MovieLens 100K',
+        #'MovieLens 1M',
+        'Gene body methylation',
+        'Promoter methylation',
+    ]
 ]
 
 
 ''' Plot into one big graph. '''
 fig = plt.figure(figsize=(4, 12))
-fig.subplots_adjust(left=0.10, right=0.95, bottom=0.07, top=0.99)
+fig.subplots_adjust(left=0.10, right=0.93, bottom=0.08, top=0.995)
 ax1 = plt.subplot2grid((8, 1), (0, 0))
 ax2 = plt.subplot2grid((8, 1), (1, 0))
 ax3 = plt.subplot2grid((8, 1), (2, 0))
@@ -93,11 +112,11 @@ axes = [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8]
 for ax in axes:
     ax.set_xticks([])
     for tick in ax.yaxis.get_major_ticks():
-        tick.label.set_fontsize(8)
+        tick.label.set_fontsize(7)
 
 # Add method names to bottom plot
 xlabels = methods
-plt.xticks(numpy.arange(0,len(xlabels),0.99) + 0.7, xlabels, fontsize=6, rotation='vertical')
+plt.xticks(numpy.arange(0,len(xlabels),0.99) + 0.7, xlabels, fontsize=8, rotation='vertical')
 
 # Make the plots
 for i, (dataset, all_performances) in enumerate(all_performances_datasets):
@@ -105,7 +124,7 @@ for i, (dataset, all_performances) in enumerate(all_performances_datasets):
     y, err = numpy.mean(all_performances, axis=1), numpy.std(all_performances, axis=1)
     axes[i].errorbar(x=x, y=y, yerr=err, fmt='.', markersize=7, linewidth=1)
     axes[i].yaxis.set_label_position("right")
-    axes[i].set_ylabel(dataset, fontsize=6, rotation='vertical')
+    axes[i].set_ylabel(dataset_to_ylabel[dataset], fontsize=7, rotation='vertical')
 
 folder_plots = "./"
 plot_file = folder_plots+"crossvalidation.png"
