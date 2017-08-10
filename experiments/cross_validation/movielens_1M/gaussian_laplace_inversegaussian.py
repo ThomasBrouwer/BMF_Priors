@@ -17,7 +17,7 @@ import math
 ''' Settings BMF model. '''
 method = BMF_Gaussian_Laplace_IG
 R, M = load_processed_movielens_1M()
-hyperparameters = { 'alpha':1., 'beta':1., 'eta':math.sqrt(10.) }
+hyperparameters = { 'alpha':1., 'beta':1. }
 train_config = {
     'iterations' : 100,
     'init' : 'random',
@@ -29,7 +29,7 @@ predict_config = {
 
 
 ''' Settings nested cross-validation. '''
-K_range = [6,7,8]
+K_range = [7,8,9]
 no_folds = 5
 no_threads = 5
 parallel = False

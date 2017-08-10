@@ -1,5 +1,5 @@
 """
-Plot the cross-validation experiment outcomes.
+Plot the cross-validation experiment outcomes, in two columns.
 """
 
 project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
@@ -96,16 +96,16 @@ all_performances_datasets = [
 
 
 ''' Plot into one big graph. '''
-fig = plt.figure(figsize=(4, 12))
-fig.subplots_adjust(left=0.10, right=0.93, bottom=0.08, top=0.995)
-ax1 = plt.subplot2grid((8, 1), (0, 0))
-ax2 = plt.subplot2grid((8, 1), (1, 0))
-ax3 = plt.subplot2grid((8, 1), (2, 0))
-ax4 = plt.subplot2grid((8, 1), (3, 0))
-ax5 = plt.subplot2grid((8, 1), (4, 0))
-ax6 = plt.subplot2grid((8, 1), (5, 0))
-ax7 = plt.subplot2grid((8, 1), (6, 0))
-ax8 = plt.subplot2grid((8, 1), (7, 0))
+fig = plt.figure(figsize=(8, 5))
+fig.subplots_adjust(left=0.04, right=0.95, bottom=0.11, top=0.995)
+ax1 = plt.subplot2grid((4, 2), (0, 0))
+ax2 = plt.subplot2grid((4, 2), (1, 0))
+ax3 = plt.subplot2grid((4, 2), (2, 0))
+ax4 = plt.subplot2grid((4, 2), (3, 0))
+ax5 = plt.subplot2grid((4, 2), (0, 1))
+ax6 = plt.subplot2grid((4, 2), (1, 1))
+ax7 = plt.subplot2grid((4, 2), (2, 1))
+ax8 = plt.subplot2grid((4, 2), (3, 1))
 axes = [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8]
 
 # Turn off xticks and make ytick labels smaller
@@ -116,6 +116,8 @@ for ax in axes:
 
 # Add method names to bottom plot
 xlabels = methods
+ax4.set_xticks(numpy.arange(0,len(xlabels),1))
+ax4.set_xticklabels(xlabels, fontsize=8, rotation='vertical')
 ax8.set_xticks(numpy.arange(0,len(xlabels),0.99) + 0.7)
 ax8.set_xticklabels(xlabels, fontsize=8, rotation='vertical')
 
@@ -125,8 +127,8 @@ for i, (dataset, all_performances) in enumerate(all_performances_datasets):
     y, err = numpy.mean(all_performances, axis=1), numpy.std(all_performances, axis=1)
     axes[i].errorbar(x=x, y=y, yerr=err, fmt='.', markersize=7, linewidth=1)
     axes[i].yaxis.set_label_position("right")
-    axes[i].set_ylabel(dataset_to_ylabel[dataset], fontsize=7, rotation='vertical')
+    axes[i].set_ylabel(dataset_to_ylabel[dataset], fontsize=10, rotation='vertical')
 
 folder_plots = "./"
-plot_file = folder_plots+"crossvalidation.png"
+plot_file = folder_plots+"crossvalidation_twocolumns.png"
 plt.savefig(plot_file, dpi=600)
