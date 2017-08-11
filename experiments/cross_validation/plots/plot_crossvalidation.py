@@ -88,7 +88,7 @@ all_performances_datasets = [
         'CCLE IC50', 
         'CCLE EC50', 
         'MovieLens 100K',
-        #'MovieLens 1M',
+        'MovieLens 1M',
         'Gene body methylation',
         'Promoter methylation',
     ]
