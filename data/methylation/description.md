@@ -11,5 +11,4 @@ Files:
 - matched_methylation_genePromoter - Promoter region methylation values.  Tab-delimited, first row is sample names, first column is gene ids.
 - intogen-BRCA-drivers-data.geneid - Cancer driver gene ids (one on each line).
 
-Source of data:
-TODO
+Source of data: see paper.
