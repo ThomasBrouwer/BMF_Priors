@@ -1,6 +1,6 @@
-# (paper under review)
+# Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets
 
-This project contains implementations of sixteen Bayesian matrix factorisation models studied in a paper (currently under review). We furthermore provide all datasets used (including the preprocessing scripts), and Python scripts for experiments.
+This project contains implementations of sixteen Bayesian matrix factorisation models studied in Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets (on arXiv). We furthermore provide all datasets used (including the preprocessing scripts), and Python scripts for experiments.
 
 More details on the datasets (where to download the raw data, and the preprocessing) can be found in **/data/drug_sensitivity/description.md**, **/data/movielens/description.md**, and **/data/methylation/description.md**.
 
