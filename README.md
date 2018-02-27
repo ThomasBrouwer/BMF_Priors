@@ -1,21 +1,60 @@
 # Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets
 
-This project contains implementations of sixteen Bayesian matrix factorisation models studied in "Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets" (on arXiv). We furthermore provide all datasets used (including the preprocessing scripts), and Python scripts for experiments.
+This project contains implementations of sixteen Bayesian matrix factorisation models studied in the paper [**Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets**](https://arxiv.org/abs/1712.00288). We furthermore provide all datasets used (including the preprocessing scripts), and Python scripts for experiments.
 
-More details on the datasets (where to download the raw data, and the preprocessing) can be found in **/data/drug_sensitivity/description.md**, **/data/movielens/description.md**, and **/data/methylation/description.md**.
+#### Paper abstract
+In this paper, we study the effects of different prior and likelihood choices for Bayesian matrix factorisation, focusing on small datasets. These choices can greatly influence the predictive performance of the methods. We identify four groups of approaches: Gaussian-likelihood with real-valued priors, nonnegative priors, semi-nonnegative models, and finally Poisson-likelihood approaches. For each group we review several models from the literature, considering sixteen in total, and discuss the relations between different priors and matrix norms. We extensively compare these methods on eight real-world datasets across three application areas, giving both inter- and intra-group comparisons. We measure convergence runtime speed, cross-validation performance, sparse and noisy prediction performance, and model selection robustness. We offer several insights into the trade-offs between prior and likelihood choices for Bayesian matrix factorisation on small datasets - such as that Poisson models give poor predictions, and that nonnegative models are more constrained than real-valued ones.
 
-If you wish to reproduce the results from the paper, you can do this as follows.
-- Clone the repository to your local machine.
-- Modify variable `folder_data` in **/data/drug_sensitivity/load_data.py**, **/data/movielens/load_data.py**, **/data/methylation/load_data.py** to point to the folder containing this repository.
-- Similarly, modify `project_location` to point to this location in any scripts in **/experiments/** that you wish to run.
-- Then simply run the script, and results will automatically be stored in the appropriate files.
+#### Authors
+Thomas Brouwer, Pietro Lio'. 
+Contact: tab43@cam.ac.uk / thomas.a.brouwer@gmail.com.
 
-An outline of the folder structure is given below.
+## Installation 
+If you wish to use the matrix factorisation models, or replicate the experiments, follow these steps. Please ensure you have Python 2.7 (3 is currently not supported). 
+1. Clone the project to your computer, by running `git clone https://github.com/ThomasBrouwer/BMF_Priors.git` in your command line.
+2. In your Python script, add the project to your system path using the following lines.  
+   
+   ``` 
+   project_location = "/path/to/folder/containing/project/"
+   import sys
+   sys.path.append(project_location) 
+   ```
+   For example, if the path to the project is `/johndoe/projects/BMF_Priors/`, use `project_location = /johndoe/projects/`. 
+   If you intend to rerun some of the paper's experiments, those scripts automatically add the correct path.
+3. You may also need to add an empty file in `/johndoe/projects/` called `__init__.py`.
+4. You can now import the models in your code, e.g.
+```
+from BMF_Priors.code.models.bmf_gaussian_exponential.py import BMF_Gaussian_Exponential
+import numpy
+R, M = numpy.ones((4,3)), numpy.ones((4,3))
+model = BMF_Gaussian_Exponential(R=R, M=M, K=2, hyperparameters={})
+model.initialise()
+model.train(iterations=10)
+model.predict(M_pred=M,burn_in=5,thinning=1)
+```
+
+## Examples
+You can find good examples of the models running on data in the [convergence experiment](./experiments/convergence/convergence_experiment.py), e.g. [the model with exponential priors and a Gaussian likelihood](./experiments/convergence/drug_sensitivity_gdsc/gaussian_exponential.py).
+
+## Citation
+If this project was useful for your research, please consider our [arXiv paper](https://arxiv.org/abs/1712.00288).
+> Thomas Brouwer and Pietro Lió (2017). Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets. arXiv preprint arXiv:1712.00288.
+```
+@article{Brouwer2017c,
+  title={{Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets}},
+  author={Brouwer, Thomas and Lio, Pietro},
+  journal={arXiv preprint arXiv:1712.00288},
+  year={2017}
+}
+```
+
+## Project structure
+Below you can find a description of the different folders and files available in this repository.
 
 ### /code/
 Python code, for the models and cross-validation methods.
 
-#### /models/
+**/models/**: the Gibbs sampling code to compute the parameter values and update the random variables, as well as the matrix factorisation models that use them.
 - **/Gibbs/distributions/** - Folder containing wrappers for the different probability distributions we use (exponential, Gaussian, normal-inverse Wishart, ..).
 - **/Gibbs/parameters.py** - Methods returning the parameter values for each of the models.
 - **/Gibbs/updates.py** - Methods for drawing new values for the variables (effectively implementing the Gibbs sampler for each variable).
@@ -41,8 +80,7 @@ Python code, for the models and cross-validation methods.
 - **baseline_average_row.py** - Baseline model that uses the row average for predicting missing values.
 - **baseline_average_column.py** - Baseline model that uses the column average for predicting missing values.
 
-#### /cross_validation/
-Classes for doing cross-validation, and nested cross-validation, on the Bayesian NMF and NMTF models
+**/cross_validation/**: Classes for doing cross-validation, and nested cross-validation, on the Bayesian NMF and NMTF models
 - **matrix_cross_validation.py** - Class for finding the best value of K for any of the models (Gibbs, VB, ICM, NP), using cross-validation.
 - **parallel_matrix_cross_validation.py** - Same as matrix_cross_validation.py, but P folds are ran in parallel (not used).
 - **nested_matrix_cross_validation.py** - Class for measuring cross-validation performance, with nested cross-validation to choose K.
