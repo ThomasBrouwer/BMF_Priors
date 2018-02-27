@@ -37,7 +37,7 @@ model.predict(M_pred=M,burn_in=5,thinning=1)
 You can find good examples of the models running on data in the [convergence experiment](./experiments/convergence/convergence_experiment.py), e.g. [the model with exponential priors and a Gaussian likelihood](./experiments/convergence/drug_sensitivity_gdsc/gaussian_exponential.py).
 
 ## Citation
-If this project was useful for your research, please consider our [arXiv paper](https://arxiv.org/abs/1712.00288).
+If this project was useful for your research, please consider citing our [arXiv paper](https://arxiv.org/abs/1712.00288).
 > Thomas Brouwer and Pietro Lió (2017). Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets. arXiv preprint arXiv:1712.00288.
 ```
 @article{Brouwer2017c,
