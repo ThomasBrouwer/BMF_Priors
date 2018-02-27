@@ -4,8 +4,8 @@ X-axis: noise level.
 Y-axis: ratio of data variance to predictive error.
 """
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.experiments.noise.movielens_100K.data.create_load_noise_datasets import load_noise_datasets

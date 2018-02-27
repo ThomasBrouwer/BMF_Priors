@@ -10,8 +10,10 @@ Jester:  73421,   100,     4136360,   0.5633756009860938
 import numpy
 import itertools
 import tables
+import os
 
-folder_data = '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/jester/' # '/home/tab43/Documents/Projects/libraries/BMF_Priors/data/jester/' # 
+folder_data = os.path.dirname(__file__)+"/"
+
 file_jester_1 = folder_data+'jester-data-1.csv'
 file_jester_2 = folder_data+'jester-data-2.csv'
 file_jester_3 = folder_data+'jester-data-3.csv'

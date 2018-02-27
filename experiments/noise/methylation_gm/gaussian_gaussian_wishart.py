@@ -3,8 +3,8 @@ Measure noise experiment on the methylation GM dataset, with the All Gaussian
 model (multivariate posterior) and Wishart prior.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian_wishart import BMF_Gaussian_Gaussian_Wishart

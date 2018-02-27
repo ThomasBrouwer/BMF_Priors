@@ -3,8 +3,8 @@ Run cross-validation experiment on the methylation GM dataset, with the
 row-average baseline.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.baseline_average_row import RowAverage

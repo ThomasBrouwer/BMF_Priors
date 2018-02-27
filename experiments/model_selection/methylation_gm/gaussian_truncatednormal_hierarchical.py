@@ -3,8 +3,8 @@ Measure model selection experiment on the methylation GM dataset, with
 the Gaussian + Truncated Normal + hierarchical model.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_truncatednormal_hierarchical import BMF_Gaussian_TruncatedNormal_Hierarchical

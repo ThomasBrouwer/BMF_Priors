@@ -2,7 +2,8 @@
 Plot the cross-validation experiment outcomes, in two columns.
 """
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
+import os
+project_location = os.path.dirname(__file__)+"/../../../../"
 import matplotlib.pyplot as plt
 import numpy
 

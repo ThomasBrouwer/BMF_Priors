@@ -6,8 +6,8 @@ Plot the factor analysis outcomes:
 - Also compute the average of the non-diagonal values of these kernels.
 """
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.data.drug_sensitivity.load_data import load_gdsc_ic50

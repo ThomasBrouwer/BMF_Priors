@@ -2,8 +2,8 @@
 Measure runtime on the GDSC drug sensitivity dataset, with the non-probabilistic MF baseline.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.baseline_mf_nonprobabilistic import MF_Nonprobabilistic

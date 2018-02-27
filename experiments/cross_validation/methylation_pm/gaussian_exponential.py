@@ -3,8 +3,8 @@ Run nested cross-validation experiment on the methylation PM dataset, with
 the Gaussian + Exponential model.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_exponential import BMF_Gaussian_Exponential

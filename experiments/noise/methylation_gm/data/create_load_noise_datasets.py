@@ -3,8 +3,8 @@ Methods for creating the noisy versions of the methylation GM dataset, and
 then loading them in.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.Gibbs.distributions.normal import normal_draw

@@ -3,8 +3,8 @@ Run cross-validation for the Gaussian+Gaussian+VP model with different gamma
 values, on the drug sensitivity data.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.code.cross_validation.mask import compute_folds_attempts

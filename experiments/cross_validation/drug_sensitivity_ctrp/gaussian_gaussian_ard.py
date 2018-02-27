@@ -3,8 +3,8 @@ Run nested cross-validation experiment on the CTRP drug sensitivity dataset, wit
 the All Gaussian model (multivariate posterior) wih ARD.
 '''
 
-project_location = "/Users/thomasbrouwer/Documents/Projects/libraries/"
-import sys
+import sys, os
+project_location = os.path.dirname(__file__)+"/../../../../"
 sys.path.append(project_location)
 
 from BMF_Priors.code.models.bmf_gaussian_gaussian_ard import BMF_Gaussian_Gaussian_ARD

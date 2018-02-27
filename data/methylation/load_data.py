@@ -12,8 +12,10 @@ PM:      160,     254,       40640,     1.0
 GM:      160,     254,       40640,     1.0
 '''
 import numpy
+import os
 
-folder_data = '/Users/thomasbrouwer/Documents/Projects/libraries/BMF_Priors/data/methylation/' # '/home/tab43/Documents/Projects/libraries/BMF_Priors/data/methylation/' # 
+folder_data = os.path.dirname(__file__)+"/"
+
 file_promoter_methylation = folder_data+'matched_methylation_genePromoter'
 file_gene_body_methylation = folder_data+'matched_methylation_geneBody'
 file_driver_genes = folder_data+'intogen-BRCA-drivers-data.geneid'
