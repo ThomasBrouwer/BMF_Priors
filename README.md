@@ -2,6 +2,8 @@
 
 This project contains implementations of sixteen Bayesian matrix factorisation models studied in the paper [**Prior and Likelihood Choices for Bayesian Matrix Factorisation on Small Datasets**](https://arxiv.org/abs/1712.00288). We furthermore provide all datasets used (including the preprocessing scripts), and Python scripts for experiments.
 
+<img src="./images/mf.png" width="37%"/> <img src="./images/priors.png" width="62%"/>
+
 #### Paper abstract
 In this paper, we study the effects of different prior and likelihood choices for Bayesian matrix factorisation, focusing on small datasets. These choices can greatly influence the predictive performance of the methods. We identify four groups of approaches: Gaussian-likelihood with real-valued priors, nonnegative priors, semi-nonnegative models, and finally Poisson-likelihood approaches. For each group we review several models from the literature, considering sixteen in total, and discuss the relations between different priors and matrix norms. We extensively compare these methods on eight real-world datasets across three application areas, giving both inter- and intra-group comparisons. We measure convergence runtime speed, cross-validation performance, sparse and noisy prediction performance, and model selection robustness. We offer several insights into the trade-offs between prior and likelihood choices for Bayesian matrix factorisation on small datasets - such as that Poisson models give poor predictions, and that nonnegative models are more constrained than real-valued ones.
 
