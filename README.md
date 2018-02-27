@@ -24,12 +24,12 @@ If you wish to use the matrix factorisation models, or replicate the experiments
 3. You may also need to add an empty file in `/johndoe/projects/` called `__init__.py`.
 4. You can now import the models in your code, e.g.
 ```
-from BMF_Priors.code.models.bmf_gaussian_exponential.py import BMF_Gaussian_Exponential
+from BMF_Priors.code.models.bmf_gaussian_exponential import BMF_Gaussian_Exponential
 import numpy
 R, M = numpy.ones((4,3)), numpy.ones((4,3))
 model = BMF_Gaussian_Exponential(R=R, M=M, K=2, hyperparameters={})
-model.initialise()
-model.train(iterations=10)
+model.initialise(init='random')
+model.run(iterations=10)
 model.predict(M_pred=M,burn_in=5,thinning=1)
 ```
 
