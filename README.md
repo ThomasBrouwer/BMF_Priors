@@ -53,7 +53,6 @@ If this project was useful for your research, please consider citing our [arXiv 
 <summary>Click here to find a description of the different folders and files available in this repository.</summary>
 
 <br>
-
 ### /code/
 Python code, for the models and cross-validation methods.
 
