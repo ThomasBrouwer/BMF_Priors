@@ -49,7 +49,8 @@ If this project was useful for your research, please consider citing our [arXiv 
 ```
 
 ## Project structure
-<summary>Below you can find a description of the different folders and files available in this repository.</summary>
+<details>
+<summary>Click here to find a description of the different folders and files available in this repository.</summary>
 
 <br>
 
@@ -111,3 +112,4 @@ Scripts for the experiments, along with the results and plots thereof.
 Miscellaneous scripts for plotting the datasets, legends, and priors.
 
 </br>
+</details>
