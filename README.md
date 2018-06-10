@@ -9,7 +9,7 @@ In this paper, we study the effects of different prior and likelihood choices fo
 
 #### Authors
 Thomas Brouwer, Pietro Lio'. 
-Contact: tab43@cam.ac.uk / thomas.a.brouwer@gmail.com.
+Contact: thomas.a.brouwer@gmail.com.
 
 ## Installation 
 If you wish to use the matrix factorisation models, or replicate the experiments, follow these steps. Please ensure you have Python 2.7 (3 is currently not supported). 
